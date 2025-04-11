@@ -14,5 +14,5 @@ public class Circle
     public List<CircleMaterial>? CircleMaterials { get; set; }
 
     [ForeignKey("CircleId")]
-    public List<InterestMaterial>? InterestMaterials { get; set; }
+    public List<LessonCircle>? LessonCircles { get; set; }
 }

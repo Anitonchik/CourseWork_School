@@ -1,6 +1,6 @@
 ﻿namespace SchoolContracts;
 
-public interface IConfigurationDatabase
+public interface IConnectionString
 {
     public string ConnectionString { get; }
 }
