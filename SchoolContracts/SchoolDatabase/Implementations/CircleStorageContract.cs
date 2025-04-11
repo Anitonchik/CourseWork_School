@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
+using SchoolContracts;
 using SchoolContracts.DataModels;
 using SchoolContracts.StoragesContracts;
 using SchoolDatabase.Models;
 
 namespace SchoolDatabase.Implementations;
 
-/*public class CircleStorageContract : ICircleStorageContract
+public class CircleStorageContract : ICircleStorageContract
 {
-    private readonly SchoolDbContext _dbContext;
+    private readonly IConnectionString _connectionString;
     private readonly Mapper _mapper;
 
     public CircleStorageContract(SchoolDbContext dbContext)
@@ -58,7 +59,7 @@ namespace SchoolDatabase.Implementations;
     
     public void AddElement(CircleDataModel circleDataModel)
     {
-        throw new NotImplementedException();
+        Circle circle = new()
     }
 
     public void DelElement(string id)
@@ -72,5 +73,18 @@ namespace SchoolDatabase.Implementations;
         throw new NotImplementedException();
     }
 
+    private Circle CreateCircle(CircleDataModel circleDataModel)
+    {
+        Circle circle = new()
+        {
+            Id = circleDataModel.Id,
+            StorekeeperId = circleDataModel.StorekeeperId,
+            CircleName = circleDataModel.CircleName,
+            Description = circleDataModel.Description,
+            CircleMaterials = circleDataModel.Materials,
+            LessonCircles = circleDataModel.Lessons
+        };
+
+    }
     private Circle? GetCircleById(string id) => _dbContext.Circles.FirstOrDefault(x => x.Id == id);
-}*/
+}

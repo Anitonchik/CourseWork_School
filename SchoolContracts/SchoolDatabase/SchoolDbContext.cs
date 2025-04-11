@@ -1,4 +1,4 @@
-﻿/*using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SchoolContracts;
 using SchoolDatabase.Models;
 
@@ -6,7 +6,7 @@ namespace SchoolDatabase;
 
 public class SchoolDbContext : DbContext
 {
-    private readonly IConfigurationDatabase? _configurationDatabase;
+    /*private readonly IConfigurationDatabase? _configurationDatabase;*/
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -41,4 +41,4 @@ public class SchoolDbContext : DbContext
     public DbSet<Material> Materials { get; set; }
     public DbSet<Medal> Medals { get; set; }
     public DbSet<Storekeeper> Storekeepers { get; set; }
-}*/
+}

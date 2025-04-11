@@ -7,6 +7,6 @@ public class CircleDataModel (string id, string storekeeperId, string circleName
     public string StorekeeperId { get; private set; } = storekeeperId;
     public string CircleName { get; private set; } = circleName;
     public string Description { get; private set; } = description;
-    public List<CircleMaterialDataModel> Materails { get; private set; } = materials;
+    public List<CircleMaterialDataModel> Materials { get; private set; } = materials;
     public List<LessonCircleDataModel> Lessons { get; private set; } = lessons;
 }
