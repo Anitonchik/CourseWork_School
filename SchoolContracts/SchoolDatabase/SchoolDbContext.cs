@@ -6,7 +6,18 @@ namespace SchoolDatabase;
 
 public class SchoolDbContext : DbContext
 {
-    /*private readonly IConfigurationDatabase? _configurationDatabase;*/
+    private readonly IConnectionString? _connectionString;
+
+    public SchoolDbContext(IConnectionString connectionString)
+    {
+        _connectionString = connectionString;
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseNpgsql(_connectionString?.ConnectionString, o => o.SetPostgresVersion(12, 2));
+        base.OnConfiguring(optionsBuilder);
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

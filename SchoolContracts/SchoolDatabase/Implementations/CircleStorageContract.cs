@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using SchoolContracts;
 using SchoolContracts.DataModels;
 using SchoolContracts.StoragesContracts;
 using SchoolDatabase.Models;
@@ -8,7 +7,7 @@ namespace SchoolDatabase.Implementations;
 
 public class CircleStorageContract : ICircleStorageContract
 {
-    private readonly IConnectionString _connectionString;
+    private readonly SchoolDbContext _dbContext;
     private readonly Mapper _mapper;
 
     public CircleStorageContract(SchoolDbContext dbContext)
@@ -20,7 +19,7 @@ public class CircleStorageContract : ICircleStorageContract
             cfg.CreateMap<LessonCircle, LessonCircleDataModel>();
             cfg.CreateMap<Circle, CircleDataModel>();
             cfg.CreateMap<CircleDataModel, Circle>()
-            .ForMember(x => x.CircleMaterials, x => x.MapFrom(src => src.Materails))
+            .ForMember(x => x.CircleMaterials, x => x.MapFrom(src => src.Materials))
             .ForMember(x => x.LessonCircles, x => x.MapFrom(src => src.Lessons));
         });
         _mapper = new Mapper(config);
@@ -54,37 +53,86 @@ public class CircleStorageContract : ICircleStorageContract
 
     public CircleDataModel? GetElementByName(string name)
     {
-        throw new NotImplementedException();
+        try
+        {
+            return
+            _mapper.Map<CircleDataModel>(_dbContext.Circles.FirstOrDefault(x => x.CircleName == name));
+        }
+        catch (Exception ex)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new Exception();
+        }
     }
     
     public void AddElement(CircleDataModel circleDataModel)
     {
-        Circle circle = new()
+        try
+        {
+            _dbContext.Circles.Add(_mapper.Map<Circle>(circleDataModel));
+            _dbContext.SaveChanges();
+        }
+        /*catch (InvalidOperationException ex) when (ex.TargetSite?.Name == "ThrowIdentityConflict")
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new ElementExistsException("Id", buyerDataModel.Id);
+        }
+        catch (DbUpdateException ex) when (ex.InnerException is PostgresException { ConstraintName: "IX_Buyers_PhoneNumber" })
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new ElementExistsException("PhoneNumber", buyerDataModel.PhoneNumber);
+        }*/
+        catch (Exception ex)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new Exception();
+        }
+    }
+
+    public void UpdElement(CircleDataModel circleDataModel)
+    {
+        try
+        {
+            var element = GetCircleById(circleDataModel.Id) /*?? throw new ElementNotFoundException(buyerDataModel.Id)*/;
+            _dbContext.Circles.Update(_mapper.Map(circleDataModel, element));
+            _dbContext.SaveChanges();
+        }
+        /*catch (ElementNotFoundException)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw;
+        }
+        catch (DbUpdateException ex) when (ex.InnerException is PostgresException { ConstraintName: "IX_Buyers_PhoneNumber" })
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new ElementExistsException("PhoneNumber", buyerDataModel.PhoneNumber);
+        }*/
+        catch (Exception ex)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new Exception();
+        }
     }
 
     public void DelElement(string id)
     {
-        throw new NotImplementedException();
-    }
-
-    
-    public void UpdElement(CircleDataModel circleDataModel)
-    {
-        throw new NotImplementedException();
-    }
-
-    private Circle CreateCircle(CircleDataModel circleDataModel)
-    {
-        Circle circle = new()
+        try
         {
-            Id = circleDataModel.Id,
-            StorekeeperId = circleDataModel.StorekeeperId,
-            CircleName = circleDataModel.CircleName,
-            Description = circleDataModel.Description,
-            CircleMaterials = circleDataModel.Materials,
-            LessonCircles = circleDataModel.Lessons
-        };
-
+            var element = GetCircleById(id) /*?? throw new ElementNotFoundException(id)*/;
+            _dbContext.Circles.Remove(element);
+            _dbContext.SaveChanges();
+        }
+        /*catch (ElementNotFoundException)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw;
+        }*/
+        catch (Exception ex)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new Exception();
+        }
     }
+
     private Circle? GetCircleById(string id) => _dbContext.Circles.FirstOrDefault(x => x.Id == id);
 }
