@@ -17,8 +17,8 @@ public class Worker
     [ForeignKey("WorkerId")]
     public List<Interest>? Interests { get; set; }
 
-    /*[ForeignKey("WorkerId")]
-    public List<Lesson>? Lessons { get; set; }*/
+    [ForeignKey("WorkerId")]
+    public List<Lesson>? Lessons { get; set; }
 
     [ForeignKey("WorkerId")]
     public List<Achievement>? Achievements { get; set; }

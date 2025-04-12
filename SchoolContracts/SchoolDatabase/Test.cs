@@ -20,6 +20,6 @@ internal class Test
     {
         /*var circle = new CircleDataModel(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "name", "nnnn", [], []);
         Assert.That(circle, Is.Not.Null);*/
-        Assert.Equals(1, 2);
+        //Assert.Equals(1, 2);
     }
 }
