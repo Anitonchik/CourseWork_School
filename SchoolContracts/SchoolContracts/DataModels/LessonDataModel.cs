@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SchoolContracts.DataModels;
 
-public class LessonDataModel(string id, string workerId, string achievementId, string lessonName, string description)
+public class LessonDataModel(string id, string workerId, string achievementId, string lessonName, string description, List<LessonInterestDataModel> interests)
 {
     public string Id { get; private set; } = id;
     public string WorkerId { get; private set; } = workerId;
@@ -15,4 +15,5 @@ public class LessonDataModel(string id, string workerId, string achievementId, s
     
     public DateTime LessonDate { get; private set; } = DateTime.UtcNow;
     public string Description { get; private set; } = description;
+    public List<LessonInterestDataModel> Interests { get; private set; } = interests;
 }
