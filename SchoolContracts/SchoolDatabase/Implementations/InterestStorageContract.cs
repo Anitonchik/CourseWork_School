@@ -10,26 +10,28 @@ using System.Threading.Tasks;
 
 namespace SchoolDatabase.Implementations;
 
-public class AchievementStorageContract : IAchievementStorageContract
+public class InterestStorageContract:IInterestStorageContract
 {
     private readonly SchoolDbContext _dbContext;
     private readonly Mapper _mapper;
 
-    public AchievementStorageContract(SchoolDbContext dbContext)
+    public InterestStorageContract(SchoolDbContext dbContext)
     {
         _dbContext = dbContext;
         var config = new MapperConfiguration(cfg =>
         {
-            cfg.CreateMap<Achievement, AchievementDataModel>();
-            cfg.CreateMap<AchievementDataModel, Achievement>();
+            cfg.CreateMap<InterestMaterial, InterestMaterialDataModel>();
+            cfg.CreateMap<Interest, InterestDataModel>();
+            cfg.CreateMap<InterestDataModel, Interest>()
+            .ForMember(x => x.InterestMaterials, x => x.MapFrom(src => src.Materials));
         });
         _mapper = new Mapper(config);
     }
-     public List<AchievementDataModel> GetList()
+    public List<InterestDataModel> GetList()
     {
         try
         {
-            return [.._dbContext.Achievements.Select(x => _mapper.Map<AchievementDataModel>(x))];
+            return [.. _dbContext.Interests.Select(x => _mapper.Map<InterestDataModel>(x))];
         }
         catch (Exception ex)
         {
@@ -37,11 +39,11 @@ public class AchievementStorageContract : IAchievementStorageContract
             throw new Exception();
         }
     }
-    public AchievementDataModel? GetElementById(string id)
+    public InterestDataModel? GetElementById(string id)
     {
         try
         {
-            return _mapper.Map<AchievementDataModel>(GetAchievementById(id));
+            return _mapper.Map<InterestDataModel>(GetInterestById(id));
         }
         catch (Exception ex)
         {
@@ -49,12 +51,12 @@ public class AchievementStorageContract : IAchievementStorageContract
             throw new Exception();
         }
     }
-     public AchievementDataModel? GetElementByName(string name)
+    public InterestDataModel? GetElementByName(string name)
     {
         try
         {
             return
-            _mapper.Map<AchievementDataModel>(_dbContext.Achievements.FirstOrDefault(x => x.AchievementName == name));
+            _mapper.Map<InterestDataModel>(_dbContext.Interests.FirstOrDefault(x => x.InterestName == name));
         }
         catch (Exception ex)
         {
@@ -62,11 +64,11 @@ public class AchievementStorageContract : IAchievementStorageContract
             throw new Exception();
         }
     }
-    public void AddElement(AchievementDataModel achievementDataModel)
+    public void AddElement(InterestDataModel interestDataModel)
     {
         try
         {
-            _dbContext.Circles.Add(_mapper.Map<Circle>(achievementDataModel));
+            _dbContext.Interests.Add(_mapper.Map<Interest>(interestDataModel));
             _dbContext.SaveChanges();
         }
         catch (Exception ex)
@@ -75,12 +77,12 @@ public class AchievementStorageContract : IAchievementStorageContract
             throw new Exception();
         }
     }
-    public void UpdElement(AchievementDataModel achievementDataModel)
+    public void UpdElement(InterestDataModel interestDataModel)
     {
         try
         {
-            var element = GetAchievementById(achievementDataModel.Id);
-            _dbContext.Achievements.Update(_mapper.Map(achievementDataModel, element));
+            var element = GetInterestById(interestDataModel.Id);
+            _dbContext.Interests.Update(_mapper.Map(interestDataModel, element));
             _dbContext.SaveChanges();
         }
         catch (Exception ex)
@@ -93,8 +95,8 @@ public class AchievementStorageContract : IAchievementStorageContract
     {
         try
         {
-            var element = GetAchievementById(id);
-            _dbContext.Achievements.Remove(element);
+            var element = GetInterestById(id);
+            _dbContext.Interests.Remove(element);
             _dbContext.SaveChanges();
         }
         catch (Exception ex)
@@ -103,5 +105,5 @@ public class AchievementStorageContract : IAchievementStorageContract
             throw new Exception();
         }
     }
-    private Achievement? GetAchievementById(string id) => _dbContext.Achievements.FirstOrDefault(x => x.Id == id);
+    private Interest? GetInterestById(string id) => _dbContext.Interests.FirstOrDefault(x => x.Id == id);
 }
