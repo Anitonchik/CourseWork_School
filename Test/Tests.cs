@@ -35,8 +35,10 @@ public class Tests
     [Test]
     public void Test1()
     {
-        var circle = new CircleDataModel(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "name", "nnnn", [], []);
-        _circleStorageContract.AddElement(circle);
+        /*var circle = new CircleDataModel(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "name", "nnnn", [], []);
+        _circleStorageContract.AddElement(circle);*/
+        _circleStorageContract.DelElement("ee0ff261-0627-41f8-bf4e-c4ba951ccfc5");
+
         Assert.Equals(1, 2);
     }
 }
