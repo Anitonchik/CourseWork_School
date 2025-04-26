@@ -1,0 +1,107 @@
+--CREATE DATABASE school_rpp;
+CREATE TABLE "Circles" (
+    "Id" VARCHAR(128) NOT NULL,
+    "StorekeeperId" VARCHAR(128) NOT NULL,
+    "CircleName" VARCHAR(50) NOT NULL,
+    "Description" VARCHAR(200) NOT NULL
+);
+
+CREATE TABLE "CircleMaterials" (
+    "CircleId" VARCHAR(128) NOT NULL,
+    "MaterialId" VARCHAR(128) NOT NULL,
+    "Count" INT NULL
+);
+
+CREATE TABLE "Materials" (
+    "Id" VARCHAR(128) NOT NULL,
+    "StorekeeperId" VARCHAR(128) NOT NULL,
+    "MaterialName" VARCHAR(50) NOT NULL,
+    "Description" VARCHAR(200) NOT NULL
+);
+
+CREATE TABLE "InterestMaterials" (
+    "InterestId" VARCHAR(128) NOT NULL,
+    "MaterialId" VARCHAR(128) NOT NULL
+);
+
+CREATE TABLE "LessonCircles" (
+    "LessonId" VARCHAR(128) NOT NULL,
+    "CircleId" VARCHAR(128) NOT NULL
+);
+
+
+CREATE TABLE "Interests" (
+    "Id" VARCHAR(128) NOT NULL,
+    "WorkerId" VARCHAR(128) NOT NULL,
+    "InterestName" VARCHAR(100) NOT NULL,
+    "Description" VARCHAR(255)  
+);
+
+CREATE TABLE "Lessons" (
+    "Id" VARCHAR(128) NOT NULL,
+    "WorkerId" VARCHAR(128) NOT NULL,
+    "AchievementId" VARCHAR(128) NOT NULL,
+    "LessonName" VARCHAR(100) NOT NULL,
+    "LessonDate" TIMESTAMP NOT NULL,
+    "Description" VARCHAR(255)  
+);
+CREATE TABLE "LessonInterests" (
+    "LessonId" VARCHAR(128) NOT NULL,
+    "InterestId" VARCHAR(128) NOT NULL
+);
+
+CREATE TABLE "Achievements" (
+    "Id" VARCHAR(128) NOT NULL,
+    "WorkerId" VARCHAR(128) NOT NULL,
+    "AchievementName" VARCHAR(100) NOT NULL,
+    "AchievementDate" TIMESTAMP NOT NULL,
+    "Description" VARCHAR(255)  
+);
+CREATE TABLE "Workers" (
+    "Id" VARCHAR(128) NOT NULL,
+    "FIO" VARCHAR(50) NOT NULL,
+    "Login" VARCHAR(50) NOT NULL,
+    "Password" VARCHAR(20) NOT NULL,
+    "Mail" VARCHAR(50) NOT NULL
+);
+CREATE TABLE "Storekeepers" (
+    "Id" VARCHAR(128) NOT NULL,
+    "FIO" VARCHAR(50) NOT NULL,
+    "Login" VARCHAR(50) NOT NULL,
+    "Password" VARCHAR(20) NOT NULL,
+    "Mail" VARCHAR(50) NOT NULL
+);
+CREATE TABLE "Medals" (
+    "Id" VARCHAR(128) NOT NULL,
+    "StorekeeperId" VARCHAR(128) NOT NULL,
+    "MaterialId" VARCHAR(128) NOT NULL,
+    "MedalName" VARCHAR(100) NOT NULL,
+    "Range" INTEGER NOT NULL,
+    "Description" VARCHAR(255)  
+);
+
+SELECT * FROM "Circles";
+SELECT * FROM "CircleMaterials";
+SELECT * FROM "LessonCircles";
+SELECT * FROM "Interests";
+SELECT * FROM "Lessons";
+SELECT * FROM "LessonInterests";
+SELECT * FROM "Achievements";
+SELECT * FROM "Materials";
+SELECT * FROM "InterestMaterials";
+SELECT * FROM "Medals";
+SELECT * FROM "Workers";
+SELECT * FROM "Storekeepers";
+
+DROP TABLE "Circles";
+DROP TABLE "CircleMaterials";
+DROP TABLE "LessonCircles";
+DROP TABLE "Interests";
+DROP TABLE "Lessons";
+DROP TABLE "LessonInterest";
+DROP TABLE "Achievements";
+DROP TABLE "Materials";
+DROP TABLE "InterestMaterials";
+DROP TABLE "Medals";
+DROP TABLE "Workers";
+DROP TABLE "Storekeepers";
