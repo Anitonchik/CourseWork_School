@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SchoolContracts.DataModels;
+using SchoolContracts.Exceptions;
 using SchoolContracts.StoragesContracts;
 using SchoolDatabase.Models;
 using System;
@@ -18,12 +19,10 @@ public class AchievementStorageContract : IAchievementStorageContract
     public AchievementStorageContract(SchoolDbContext dbContext)
     {
         _dbContext = dbContext;
-        var config = new MapperConfiguration(cfg =>
-        {
-            cfg.CreateMap<Achievement, AchievementDataModel>();
-            cfg.CreateMap<AchievementDataModel, Achievement>();
-        });
-        _mapper = new Mapper(config);
+
+        var configuration = new MapperConfiguration(cfg => cfg.AddMaps(typeof(Achievement)));
+
+        _mapper = new Mapper(configuration);
     }
      public List<AchievementDataModel> GetList()
     {
@@ -41,7 +40,13 @@ public class AchievementStorageContract : IAchievementStorageContract
     {
         try
         {
-            return _mapper.Map<AchievementDataModel>(GetAchievementById(id));
+            var achievement = GetAchievementById(id) ?? throw new ElementNotFoundException(id);
+            return _mapper.Map<AchievementDataModel>(achievement);
+        }
+        catch (ElementNotFoundException)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw;
         }
         catch (Exception ex)
         {
@@ -66,8 +71,13 @@ public class AchievementStorageContract : IAchievementStorageContract
     {
         try
         {
-            _dbContext.Circles.Add(_mapper.Map<Circle>(achievementDataModel));
+            _dbContext.Achievements.Add(_mapper.Map<Achievement>(achievementDataModel));
             _dbContext.SaveChanges();
+        }
+        catch (InvalidOperationException ex)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new ElementExistsException("Id", achievementDataModel.Id);
         }
         catch (Exception ex)
         {
@@ -79,9 +89,14 @@ public class AchievementStorageContract : IAchievementStorageContract
     {
         try
         {
-            var element = GetAchievementById(achievementDataModel.Id);
+            var element = GetAchievementById(achievementDataModel.Id) ?? throw new ElementNotFoundException(achievementDataModel.Id);
             _dbContext.Achievements.Update(_mapper.Map(achievementDataModel, element));
             _dbContext.SaveChanges();
+        }
+        catch (ElementNotFoundException)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw;
         }
         catch (Exception ex)
         {
@@ -93,9 +108,14 @@ public class AchievementStorageContract : IAchievementStorageContract
     {
         try
         {
-            var element = GetAchievementById(id);
+            var element = GetAchievementById(id) ?? throw new ElementNotFoundException(id);
             _dbContext.Achievements.Remove(element);
             _dbContext.SaveChanges();
+        }
+        catch (ElementNotFoundException)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw;
         }
         catch (Exception ex)
         {

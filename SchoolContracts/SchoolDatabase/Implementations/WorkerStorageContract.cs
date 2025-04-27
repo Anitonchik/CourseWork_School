@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SchoolContracts.DataModels;
+using SchoolContracts.Exceptions;
 using SchoolContracts.StoragesContracts;
 using SchoolDatabase.Models;
 using System;
@@ -18,12 +19,10 @@ public class WorkerStorageContract: IWorkerStorageContract
     public WorkerStorageContract(SchoolDbContext dbContext)
     {
         _dbContext = dbContext;
-        var config = new MapperConfiguration(cfg =>
-        {
-            cfg.CreateMap<Worker, WorkerDataModel>();
-            cfg.CreateMap<WorkerDataModel, Worker>();
-        });
-        _mapper = new Mapper(config);
+
+        var configuration = new MapperConfiguration(cfg => cfg.AddMaps(typeof(Worker)));
+
+        _mapper = new Mapper(configuration);
     }
     public List<WorkerDataModel> GetList()
     {
@@ -41,7 +40,13 @@ public class WorkerStorageContract: IWorkerStorageContract
     {
         try
         {
-            return _mapper.Map<WorkerDataModel>(GetWorkerById(id));
+            var Worker = GetWorkerById(id) ?? throw new ElementNotFoundException(id);
+            return _mapper.Map<WorkerDataModel>(Worker);
+        }
+        catch (ElementNotFoundException)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw;
         }
         catch (Exception ex)
         {
@@ -95,6 +100,11 @@ public class WorkerStorageContract: IWorkerStorageContract
             _dbContext.Workers.Add(_mapper.Map<Worker>(workerDataModel));
             _dbContext.SaveChanges();
         }
+        catch (InvalidOperationException ex)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new ElementExistsException("Id", workerDataModel.Id);
+        }
         catch (Exception ex)
         {
             _dbContext.ChangeTracker.Clear();
@@ -105,9 +115,14 @@ public class WorkerStorageContract: IWorkerStorageContract
     {
         try
         {
-            var element = GetWorkerById(workerDataModel.Id);
+            var element = GetWorkerById(workerDataModel.Id) ?? throw new ElementNotFoundException(workerDataModel.Id);
             _dbContext.Workers.Update(_mapper.Map(workerDataModel, element));
             _dbContext.SaveChanges();
+        }
+        catch (ElementNotFoundException)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw;
         }
         catch (Exception ex)
         {
@@ -119,9 +134,14 @@ public class WorkerStorageContract: IWorkerStorageContract
     {
         try
         {
-            var element = GetWorkerById(id);
+            var element = GetWorkerById(id) ?? throw new ElementNotFoundException(id);
             _dbContext.Workers.Remove(element);
             _dbContext.SaveChanges();
+        }
+        catch (ElementNotFoundException)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw;
         }
         catch (Exception ex)
         {

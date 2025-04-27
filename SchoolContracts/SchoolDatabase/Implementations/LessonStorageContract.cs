@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SchoolContracts.DataModels;
+using SchoolContracts.Exceptions;
 using SchoolContracts.StoragesContracts;
 using SchoolDatabase.Models;
 using System;
@@ -19,14 +20,10 @@ public class LessonStorageContract: ILessonStorageContract
     public LessonStorageContract(SchoolDbContext dbContext)
     {
         _dbContext = dbContext;
-        var config = new MapperConfiguration(cfg =>
-        {
-            cfg.CreateMap<LessonInterest, LessonInterestDataModel>();
-            cfg.CreateMap<Lesson, LessonDataModel>();
-            cfg.CreateMap<LessonDataModel, Lesson>()
-            .ForMember(x => x.LessonInterests, x => x.MapFrom(src => src.Interests));
-        });
-        _mapper = new Mapper(config);
+
+        var configuration = new MapperConfiguration(cfg => cfg.AddMaps(typeof(Lesson)));
+
+        _mapper = new Mapper(configuration);
     }
     public List<LessonDataModel> GetList()
     {
@@ -44,7 +41,13 @@ public class LessonStorageContract: ILessonStorageContract
     {
         try
         {
-            return _mapper.Map<LessonDataModel>(GetLessonById(id));
+            var lesson = GetLessonById(id) ?? throw new ElementNotFoundException(id);
+            return _mapper.Map<LessonDataModel>(lesson);
+        }
+        catch (ElementNotFoundException)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw;
         }
         catch (Exception ex)
         {
@@ -72,6 +75,11 @@ public class LessonStorageContract: ILessonStorageContract
             _dbContext.Lessons.Add(_mapper.Map<Lesson>(lessonDataModel));
             _dbContext.SaveChanges();
         }
+        catch (InvalidOperationException ex)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new ElementExistsException("Id", lessonDataModel.Id);
+        }
         catch (Exception ex)
         {
             _dbContext.ChangeTracker.Clear();
@@ -82,9 +90,14 @@ public class LessonStorageContract: ILessonStorageContract
     {
         try
         {
-            var element = GetLessonById(lessonDataModel.Id);
+            var element = GetLessonById(lessonDataModel.Id) ?? throw new ElementNotFoundException(lessonDataModel.Id);
             _dbContext.Lessons.Update(_mapper.Map(lessonDataModel, element));
             _dbContext.SaveChanges();
+        }
+        catch (ElementNotFoundException)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw;
         }
         catch (Exception ex)
         {
@@ -96,9 +109,14 @@ public class LessonStorageContract: ILessonStorageContract
     {
         try
         {
-            var element = GetLessonById(id);
+            var element = GetLessonById(id) ?? throw new ElementNotFoundException(id);
             _dbContext.Lessons.Remove(element);
             _dbContext.SaveChanges();
+        }
+        catch (ElementNotFoundException)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw;
         }
         catch (Exception ex)
         {

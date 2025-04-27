@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SchoolContracts.DataModels;
+using SchoolContracts.Exceptions;
 using SchoolContracts.StoragesContracts;
 using SchoolDatabase.Models;
 using System;
@@ -18,14 +19,10 @@ public class InterestStorageContract:IInterestStorageContract
     public InterestStorageContract(SchoolDbContext dbContext)
     {
         _dbContext = dbContext;
-        var config = new MapperConfiguration(cfg =>
-        {
-            cfg.CreateMap<InterestMaterial, InterestMaterialDataModel>();
-            cfg.CreateMap<Interest, InterestDataModel>();
-            cfg.CreateMap<InterestDataModel, Interest>()
-            .ForMember(x => x.InterestMaterials, x => x.MapFrom(src => src.Materials));
-        });
-        _mapper = new Mapper(config);
+
+        var configuration = new MapperConfiguration(cfg => cfg.AddMaps(typeof(Interest)));
+
+        _mapper = new Mapper(configuration);
     }
     public List<InterestDataModel> GetList()
     {
@@ -43,7 +40,13 @@ public class InterestStorageContract:IInterestStorageContract
     {
         try
         {
-            return _mapper.Map<InterestDataModel>(GetInterestById(id));
+            var interest = GetInterestById(id) ?? throw new ElementNotFoundException(id);
+            return _mapper.Map<InterestDataModel>(interest);
+        }
+        catch (ElementNotFoundException)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw;
         }
         catch (Exception ex)
         {
@@ -71,6 +74,11 @@ public class InterestStorageContract:IInterestStorageContract
             _dbContext.Interests.Add(_mapper.Map<Interest>(interestDataModel));
             _dbContext.SaveChanges();
         }
+        catch (InvalidOperationException ex)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new ElementExistsException("Id", interestDataModel.Id);
+        }
         catch (Exception ex)
         {
             _dbContext.ChangeTracker.Clear();
@@ -81,9 +89,14 @@ public class InterestStorageContract:IInterestStorageContract
     {
         try
         {
-            var element = GetInterestById(interestDataModel.Id);
+            var element = GetInterestById(interestDataModel.Id) ?? throw new ElementNotFoundException(interestDataModel.Id);
             _dbContext.Interests.Update(_mapper.Map(interestDataModel, element));
             _dbContext.SaveChanges();
+        }
+        catch (ElementNotFoundException)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw;
         }
         catch (Exception ex)
         {
@@ -95,9 +108,14 @@ public class InterestStorageContract:IInterestStorageContract
     {
         try
         {
-            var element = GetInterestById(id);
+            var element = GetInterestById(id) ?? throw new ElementNotFoundException(id);
             _dbContext.Interests.Remove(element);
             _dbContext.SaveChanges();
+        }
+        catch (ElementNotFoundException)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw;
         }
         catch (Exception ex)
         {
