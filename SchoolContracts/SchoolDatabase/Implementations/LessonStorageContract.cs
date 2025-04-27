@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using SchoolContracts.DataModels;
 using SchoolContracts.Exceptions;
 using SchoolContracts.StoragesContracts;
@@ -79,6 +81,11 @@ public class LessonStorageContract: ILessonStorageContract
         {
             _dbContext.ChangeTracker.Clear();
             throw new ElementExistsException("Id", lessonDataModel.Id);
+        }
+        catch (DbUpdateException ex) when (ex.InnerException is PostgresException { ConstraintName: "IX_Lessons_LessonName" })
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new ElementExistsException("LessonName", lessonDataModel.LessonName);
         }
         catch (Exception ex)
         {
