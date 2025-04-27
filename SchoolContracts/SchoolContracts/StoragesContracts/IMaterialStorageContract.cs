@@ -5,6 +5,7 @@ namespace SchoolContracts.StoragesContracts;
 public interface IMaterialStorageContract
 {
     List<MaterialDataModel> GetList();
+    List<MaterialDataModel> GetMaterialsByLesson(string lessonId);
     MaterialDataModel? GetElementById(string id);
     MaterialDataModel? GetElementByName(string name);
     void AddElement(MaterialDataModel materialDataModel);

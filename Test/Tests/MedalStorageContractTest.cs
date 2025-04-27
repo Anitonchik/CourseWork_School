@@ -64,7 +64,7 @@ internal class MedalStorageContractTest : BaseStorageContractTests
         var medal = new MedalDataModel(Guid.NewGuid().ToString(), _storekeeper.Id, _material.Id, "name", 1, "nnnn");
         _medalStorageContract.AddElement(medal);
         _medalStorageContract.DelElement(medal.Id);
-        _medalStorageContract.GetElementById(medal.Id);
+
         Assert.That(() => _medalStorageContract.GetElementById(medal.Id), Throws.TypeOf<ElementNotFoundException>());
     }
 

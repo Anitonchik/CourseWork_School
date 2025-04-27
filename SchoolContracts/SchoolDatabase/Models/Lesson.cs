@@ -24,7 +24,7 @@ public class Lesson
 
     [ForeignKey("LessonId")]
     public List<LessonInterest>? LessonInterests { get; set; }
-    /*
+    
     [ForeignKey("LessonId")]
-    public List<InterestMaterial>? InterestMaterials { get; set; }*/
+    public List<InterestMaterial>? InterestMaterials { get; set; }
 }

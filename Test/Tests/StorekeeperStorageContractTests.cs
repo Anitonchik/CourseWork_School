@@ -41,7 +41,7 @@ internal class StorekeeperStorageContractTests : BaseStorageContractTests
         var storekeeper = new StorekeeperDataModel(Guid.NewGuid().ToString(), "fio", "login", "password", "mail");
         _storekeeperStorageContract.AddElement(storekeeper);
         _storekeeperStorageContract.DelElement(storekeeper.Id);
-        _storekeeperStorageContract.GetElementById(storekeeper.Id);
+
         Assert.That(() => _storekeeperStorageContract.GetElementById(storekeeper.Id), Throws.TypeOf<ElementNotFoundException>());
     }
 

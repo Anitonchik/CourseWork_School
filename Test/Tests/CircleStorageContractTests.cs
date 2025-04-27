@@ -12,15 +12,65 @@ public class CircleStorageContractTests : BaseStorageContractTests
 {
     private CircleStorageContract _circleStorageContract;
     private Storekeeper _storekeeper;
+    private Material _material;
+    private Lesson _lesson;
+
+    private Worker _worker;
+    private Achievement _achievement;
 
 
     [SetUp]
     public void Setup()
     {
         _circleStorageContract = new CircleStorageContract(SchoolDbContext);
-        _storekeeper = new Storekeeper() { Id = Guid.NewGuid().ToString(), FIO = "fio", 
-            Login = "login", Password = "password", Mail = "mail" };
+
+        _storekeeper = new Storekeeper() { 
+            Id = Guid.NewGuid().ToString(), 
+            FIO = "fio", 
+            Login = "login", 
+            Password = "password", 
+            Mail = "mail" 
+        };
         SchoolDbContext.Storekeepers.Add(_storekeeper);
+
+        _worker = new Worker()
+        {
+            Id = Guid.NewGuid().ToString(),
+            FIO = "fio",
+            Login = "login",
+            Password = "password",
+            Mail = "mail"
+        };
+        SchoolDbContext.Workers.Add(_worker);
+
+        _material = new Material()
+        {
+            Id = Guid.NewGuid().ToString(),
+            StorekeeperId = _storekeeper.Id,
+            MaterialName = "name",
+            Description = "description"
+        };
+        SchoolDbContext.Materials.Add(_material);
+
+        _achievement = new Achievement()
+        {
+            Id = Guid.NewGuid().ToString(),
+            WorkerId = _worker.Id,
+            AchievementName = "name",
+            Description = "description"
+        };
+        SchoolDbContext.Achievements.Add(_achievement);
+
+        _lesson = new Lesson()
+        {
+            Id = Guid.NewGuid().ToString(),
+            WorkerId = _worker.Id,
+            AchievementId = _achievement.Id,
+            LessonName = "name",
+            LessonDate = DateTime.Now,
+            Description = "description"
+        };
+        SchoolDbContext.Lessons.Add(_lesson);
     }
 
     [TearDown]
@@ -28,13 +78,20 @@ public class CircleStorageContractTests : BaseStorageContractTests
     {
         SchoolDbContext.Database.ExecuteSqlRaw("TRUNCATE \"Circles\" CASCADE; ");
         SchoolDbContext.Database.ExecuteSqlRaw("TRUNCATE \"Storekeepers\" CASCADE; ");
+        SchoolDbContext.Database.ExecuteSqlRaw("TRUNCATE \"Workers\" CASCADE; ");
+        SchoolDbContext.Database.ExecuteSqlRaw("TRUNCATE \"Materials\" CASCADE; ");
+        SchoolDbContext.Database.ExecuteSqlRaw("TRUNCATE \"Achievements\" CASCADE; ");
+        SchoolDbContext.Database.ExecuteSqlRaw("TRUNCATE \"Lessons\" CASCADE; ");
     }
 
 
     [Test]
     public void TestAddCircle()
     {
-        var circle = new CircleDataModel(Guid.NewGuid().ToString(), _storekeeper.Id, "name", "nnnn", [], []);
+        var circleId = Guid.NewGuid().ToString();
+        var circle = new CircleDataModel(circleId, _storekeeper.Id, "name", "nnnn", 
+            [new CircleMaterialDataModel (circleId, _material.Id, 2)], 
+            [new LessonCircleDataModel(_lesson.Id, circleId)]);
         _circleStorageContract.AddElement(circle);
 
         var dbCircle = _circleStorageContract.GetElementById(circle.Id);
@@ -47,7 +104,7 @@ public class CircleStorageContractTests : BaseStorageContractTests
         var circle = new CircleDataModel(Guid.NewGuid().ToString(), _storekeeper.Id, "name", "nnnn", [], []);
         _circleStorageContract.AddElement(circle);
         _circleStorageContract.DelElement(circle.Id);
-        _circleStorageContract.GetElementById(circle.Id);
+
         Assert.That(() => _circleStorageContract.GetElementById(circle.Id), Throws.TypeOf<ElementNotFoundException>());
     }
 
@@ -79,6 +136,12 @@ public class CircleStorageContractTests : BaseStorageContractTests
         Assert.That(list.Count, Is.EqualTo(3));
     }
 
+    [Test]
+    public void GetMaterialsByLesson()
+    {
+
+    }
+
     private void AssertElement(CircleDataModel actual, CircleDataModel expected)
     {
         Assert.That(actual.Id, Is.EqualTo(expected.Id));
@@ -86,4 +149,6 @@ public class CircleStorageContractTests : BaseStorageContractTests
         Assert.That(actual.Description, Is.EqualTo(expected.Description));
         /*Assert.That(actual.Lessons.Count, Is.EqualTo(expected.Lessons.Count));*/
     }
+
+    
 }
