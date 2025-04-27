@@ -18,16 +18,14 @@ public class LessonStorageContract: ILessonStorageContract
 
     private readonly SchoolDbContext _dbContext;
     private readonly Mapper _mapper;
-    private readonly InterestStorageContract _interestStorageContract;
 
-    public LessonStorageContract(SchoolDbContext dbContext, InterestStorageContract interestStorageContract)
+    public LessonStorageContract(SchoolDbContext dbContext)
     {
         _dbContext = dbContext;
 
         var configuration = new MapperConfiguration(cfg => cfg.AddMaps(typeof(Lesson)));
 
         _mapper = new Mapper(configuration);
-        _interestStorageContract = interestStorageContract;
     }
     public List<LessonDataModel> GetList()
     {

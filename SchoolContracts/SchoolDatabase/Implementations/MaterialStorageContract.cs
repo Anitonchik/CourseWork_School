@@ -46,6 +46,17 @@ public class MaterialStorageContract : IMaterialStorageContract
                              where lc.LessonId == lessonId
                              select m).ToList();
 
+            var sql = $"SELECT mt.\"Id\" \"MaterialId\", mt.\"StorekeeperId\", mt.\"MaterialName\"," +
+                $"mt.\"Description\", l.\"Id\" \"LessonId\"" +
+                $"FROM \"Materials\" mt" +
+                $"JOIN \"CircleMaterials\" cm ON mt.\"Id\" = cm.\"MaterialId\"" +
+                $"JOIN \"Circles\" c ON c.\"Id\" = cm.\"CircleId\"" +
+                $"JOIN \"LessonCircles\" lc ON lc.\"CircleId\" = c.\"Id\"" +
+                $"JOIN \"Lessons\" l ON l.\"Id\" = lc.\"LessonId\"" +
+                $"WHERE (l.\"Id\" = {lessonId});";
+
+             return _dbContext.Set<MaterialLesson>().FromSqlRaw(sql, lessonId).ToList();
+
             return [.. materials.Select(x => _mapper.Map<MaterialDataModel>(x))];
         }
         catch (Exception ex)
