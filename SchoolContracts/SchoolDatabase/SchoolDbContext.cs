@@ -11,6 +11,8 @@ public class SchoolDbContext : DbContext
     public SchoolDbContext(IConnectionString connectionString)
     {
         _connectionString = connectionString;
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -52,7 +52,7 @@ internal class MaterialStorageContractTests : BaseStorageContractTests
         var material = new MaterialDataModel(Guid.NewGuid().ToString(), _storekeeper.Id, "name", "nnnn");
         _materialStorageContract.AddElement(material);
         _materialStorageContract.DelElement(material.Id);
-        _materialStorageContract.GetElementById(material.Id);
+
         Assert.That(() => _materialStorageContract.GetElementById(material.Id), Throws.TypeOf<ElementNotFoundException>());
     }
 
