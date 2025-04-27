@@ -18,20 +18,41 @@ public class LessonStorageContract: ILessonStorageContract
 
     private readonly SchoolDbContext _dbContext;
     private readonly Mapper _mapper;
+    private readonly InterestStorageContract _interestStorageContract;
 
-    public LessonStorageContract(SchoolDbContext dbContext)
+    public LessonStorageContract(SchoolDbContext dbContext, InterestStorageContract interestStorageContract)
     {
         _dbContext = dbContext;
 
         var configuration = new MapperConfiguration(cfg => cfg.AddMaps(typeof(Lesson)));
 
         _mapper = new Mapper(configuration);
+        _interestStorageContract = interestStorageContract;
     }
     public List<LessonDataModel> GetList()
     {
         try
         {
             return [.. _dbContext.Lessons.Select(x => _mapper.Map<LessonDataModel>(x))];
+        }
+        catch (Exception ex)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new Exception();
+        }
+    }
+    public List<LessonDataModel> GetLessonsByMaterial(string materialId)
+    {
+        try
+        {
+            var lessons = (from l in _dbContext.Lessons
+                           join li in _dbContext.LessonInterests on l.Id equals li.LessonId
+                           join i in _dbContext.Interests on li.InterestId equals i.Id
+                           join im in _dbContext.InterestMaterials on i.Id equals im.InterestId
+                           join m in _dbContext.Materials on im.MaterialId equals m.Id
+                           where im.MaterialId == materialId
+                           select l).ToList();
+           return [.. lessons.Select(x => _mapper.Map<LessonDataModel>(x))];
         }
         catch (Exception ex)
         {
