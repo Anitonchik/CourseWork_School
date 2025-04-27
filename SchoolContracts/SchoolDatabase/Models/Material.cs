@@ -1,9 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using AutoMapper;
+using SchoolContracts.DataModels;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SchoolDatabase.Models;
 
+[AutoMap(typeof(MaterialDataModel), ReverseMap = true)]
 public class Material
 {
+    [Key]
     public required string Id { get; set; } = Guid.NewGuid().ToString();
     public required string StorekeeperId { get; set; }
     public required string MaterialName { get; set; }

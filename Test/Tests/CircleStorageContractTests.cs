@@ -4,7 +4,6 @@ using SchoolContracts.Exceptions;
 using SchoolDatabase;
 using SchoolDatabase.Implementations;
 using SchoolDatabase.Models;
-using System;
 
 namespace Test.Tests;
 
@@ -45,7 +44,7 @@ public class CircleStorageContractTests : BaseStorageContractTests
     [Test]
     public void TestDeleteCircle()
     {
-        var circle = new CircleDataModel(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "name", "nnnn", [], []);
+        var circle = new CircleDataModel(Guid.NewGuid().ToString(), _storekeeper.Id, "name", "nnnn", [], []);
         _circleStorageContract.AddElement(circle);
         _circleStorageContract.DelElement(circle.Id);
         _circleStorageContract.GetElementById(circle.Id);
@@ -55,10 +54,10 @@ public class CircleStorageContractTests : BaseStorageContractTests
     [Test]
     public void UpdateCircle()
     {
-        var circle = new CircleDataModel(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "name", "nnnn", [], []);
+        var circle = new CircleDataModel(Guid.NewGuid().ToString(), _storekeeper.Id, "name", "nnnn", [], []);
         _circleStorageContract.AddElement(circle);
 
-        var circleDataModel = new CircleDataModel(circle.Id, Guid.NewGuid().ToString(), "new name", "new description", [], []);
+        var circleDataModel = new CircleDataModel(circle.Id, _storekeeper.Id, "new name", "new description", [], []);
         _circleStorageContract.UpdElement(circleDataModel);
 
         AssertElement(_circleStorageContract.GetElementById(circle.Id), circleDataModel);
@@ -67,11 +66,10 @@ public class CircleStorageContractTests : BaseStorageContractTests
     [Test]
     public void GetListCircles()
     {
-        SchoolDbContext.Database.ExecuteSqlRaw("DELETE FROM \"Circles\";");
 
-        var circle1 = new CircleDataModel(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "name", "nnnn", [], []);
-        var circle2 = new CircleDataModel(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "name", "nnnn", [], []);
-        var circle3 = new CircleDataModel(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "name", "nnnn", [], []);
+        var circle1 = new CircleDataModel(Guid.NewGuid().ToString(), _storekeeper.Id, "name 1", "nnnn", [], []);
+        var circle2 = new CircleDataModel(Guid.NewGuid().ToString(), _storekeeper.Id, "name 2", "nnnn", [], []);
+        var circle3 = new CircleDataModel(Guid.NewGuid().ToString(), _storekeeper.Id, "name 3", "nnnn", [], []);
 
         _circleStorageContract.AddElement(circle1);
         _circleStorageContract.AddElement(circle2);
