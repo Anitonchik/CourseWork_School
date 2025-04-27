@@ -136,19 +136,12 @@ public class CircleStorageContractTests : BaseStorageContractTests
         Assert.That(list.Count, Is.EqualTo(3));
     }
 
-    [Test]
-    public void GetMaterialsByLesson()
-    {
-
-    }
+    
 
     private void AssertElement(CircleDataModel actual, CircleDataModel expected)
     {
         Assert.That(actual.Id, Is.EqualTo(expected.Id));
         Assert.That(actual.CircleName, Is.EqualTo(expected.CircleName));
         Assert.That(actual.Description, Is.EqualTo(expected.Description));
-        /*Assert.That(actual.Lessons.Count, Is.EqualTo(expected.Lessons.Count));*/
     }
-
-    
 }

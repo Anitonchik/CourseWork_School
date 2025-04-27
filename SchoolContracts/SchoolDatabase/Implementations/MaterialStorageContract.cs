@@ -11,16 +11,14 @@ public class MaterialStorageContract : IMaterialStorageContract
 {
     private readonly SchoolDbContext _dbContext;
     private readonly Mapper _mapper;
-    private readonly CircleStorageContract _circleStorageContract;
 
-    public MaterialStorageContract(SchoolDbContext dbContext, CircleStorageContract circleStorageContract)
+    public MaterialStorageContract(SchoolDbContext dbContext)
     {
         _dbContext = dbContext;
 
         var configuration = new MapperConfiguration(cfg => cfg.AddMaps(typeof(Material)));
 
         _mapper = new Mapper(configuration);
-        _circleStorageContract = circleStorageContract;
     }
 
     public List<MaterialDataModel> GetList()
