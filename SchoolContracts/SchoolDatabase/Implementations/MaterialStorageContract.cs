@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using SchoolContracts.DataModels;
 using SchoolContracts.Exceptions;
 using SchoolContracts.StoragesContracts;
@@ -10,14 +11,16 @@ public class MaterialStorageContract : IMaterialStorageContract
 {
     private readonly SchoolDbContext _dbContext;
     private readonly Mapper _mapper;
+    private readonly CircleStorageContract _circleStorageContract;
 
-    public MaterialStorageContract(SchoolDbContext dbContext)
+    public MaterialStorageContract(SchoolDbContext dbContext, CircleStorageContract circleStorageContract)
     {
         _dbContext = dbContext;
 
         var configuration = new MapperConfiguration(cfg => cfg.AddMaps(typeof(Material)));
 
         _mapper = new Mapper(configuration);
+        _circleStorageContract = circleStorageContract;
     }
 
     public List<MaterialDataModel> GetList()
@@ -32,6 +35,28 @@ public class MaterialStorageContract : IMaterialStorageContract
             throw new Exception();
         }
     }
+
+    public List<MaterialDataModel> GetMaterialsByLesson(string lessonId)
+    {   
+        try
+        {
+            var materials = (from m in _dbContext.Materials
+                             join cm in _dbContext.CircleMaterials on m.Id equals cm.MaterialId
+                             join c in _dbContext.Circles on cm.CircleId equals c.Id
+                             join lc in _dbContext.LessonCircles on c.Id equals lc.CircleId
+                             join l in _dbContext.Lessons on lc.LessonId equals l.Id
+                             where lc.LessonId == lessonId
+                             select m).ToList();
+
+            return [.. materials.Select(x => _mapper.Map<MaterialDataModel>(x))];
+        }
+        catch (Exception ex)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new Exception();
+        }
+    }
+
     public MaterialDataModel? GetElementById(string id)
     {
         try
