@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SchoolContracts;
 using SchoolContracts.DataModels;
 using SchoolContracts.Exceptions;
-using SchoolContracts.StoragesContracts;
 using SchoolDatabase;
 using SchoolDatabase.Implementations;
 using SchoolDatabase.Models;
