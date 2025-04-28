@@ -147,6 +147,19 @@ public static class SchoolDbContextExtensions
         dbContext.SaveChanges();
         return lessonCircle;
     }
+    
+    public static LessonInterest InsertAndReturnLessonInterest(this SchoolDbContext dbContext, string? lessonId = null, 
+        string? interestId = null, int count = 1)
+    {
+        var lessonInterest = new LessonInterest()
+        {
+            LessonId = lessonId ?? Guid.NewGuid().ToString(),
+            InterestId = interestId ?? Guid.NewGuid().ToString()
+        };
+        dbContext.LessonInterests.Add(lessonInterest);
+        dbContext.SaveChanges();
+        return lessonInterest;
+    }
 
     public static Achievement InsertAndReturnAchievement(this SchoolDbContext dbContext, string? id = null, 
         string? workerId = null, string achievementName = "name", string description = "description")

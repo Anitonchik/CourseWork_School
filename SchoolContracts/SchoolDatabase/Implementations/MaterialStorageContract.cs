@@ -39,7 +39,8 @@ public class MaterialStorageContract : IMaterialStorageContract
     {   
         try
         {
-            var sql = $"SELECT l.\"LessonName\" as \"LessonName\", mt.\"MaterialName\" as \"MaterialName\", cm.\"Count\" as \"Count\" " +
+            var sql = $"SELECT l.\"LessonName\" as \"LessonName\", mt.\"MaterialName\" as \"MaterialName\", " +
+                $"cm.\"Count\" as \"Count\", l.\"Description\" as \"LessonDescription\" " +
                 $"FROM \"Materials\" mt " +
                 $"JOIN \"CircleMaterials\" cm ON mt.\"Id\" = cm.\"MaterialId\" " +
                 $"JOIN \"Circles\" c ON c.\"Id\" = cm.\"CircleId\" " +
@@ -60,8 +61,8 @@ public class MaterialStorageContract : IMaterialStorageContract
     {
         try
         {
-            var circle = GetMaterialById(id) ?? throw new ElementNotFoundException(id);
-            return _mapper.Map<MaterialDataModel>(circle);
+            var material = GetMaterialById(id) ?? throw new ElementNotFoundException(id);
+            return _mapper.Map<MaterialDataModel>(material);
         }
         catch (ElementNotFoundException)
         {
