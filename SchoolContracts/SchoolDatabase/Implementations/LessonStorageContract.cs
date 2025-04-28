@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+
 using Npgsql;
 using SchoolContracts.DataModels;
 using SchoolContracts.Exceptions;
@@ -18,16 +18,14 @@ public class LessonStorageContract: ILessonStorageContract
 
     private readonly SchoolDbContext _dbContext;
     private readonly Mapper _mapper;
-    private readonly InterestStorageContract _interestStorageContract;
 
-    public LessonStorageContract(SchoolDbContext dbContext, InterestStorageContract interestStorageContract)
+    public LessonStorageContract(SchoolDbContext dbContext)
     {
         _dbContext = dbContext;
 
         var configuration = new MapperConfiguration(cfg => cfg.AddMaps(typeof(Lesson)));
 
         _mapper = new Mapper(configuration);
-        _interestStorageContract = interestStorageContract;
     }
     public List<LessonDataModel> GetList()
     {
@@ -102,11 +100,6 @@ public class LessonStorageContract: ILessonStorageContract
         {
             _dbContext.ChangeTracker.Clear();
             throw new ElementExistsException("Id", lessonDataModel.Id);
-        }
-        catch (DbUpdateException ex) when (ex.InnerException is PostgresException { ConstraintName: "IX_Lessons_LessonName" })
-        {
-            _dbContext.ChangeTracker.Clear();
-            throw new ElementExistsException("LessonName", lessonDataModel.LessonName);
         }
         catch (Exception ex)
         {

@@ -10,6 +10,7 @@ namespace SchoolContracts.StoragesContracts;
 public interface IInterestStorageContract
 {
     List<InterestDataModel> GetList();
+    List<InterestReportDataModel> GetInterestReport(DateTime startDate, DateTime endDate);
     InterestDataModel? GetElementById(string id);
     InterestDataModel? GetElementByName(string name);
     void AddElement(InterestDataModel interestDataModel);

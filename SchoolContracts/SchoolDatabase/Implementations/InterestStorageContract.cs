@@ -36,6 +36,34 @@ public class InterestStorageContract:IInterestStorageContract
             throw new Exception();
         }
     }
+    public List<InterestReportDataModel> GetInterestReport(DateTime startDate, DateTime endDate)
+    {
+        try
+        {
+            var reportData = from interest in _dbContext.Interests
+                             join lessonInterest in _dbContext.LessonInterests on interest.Id equals lessonInterest.InterestId
+                             join lesson in _dbContext.Lessons on lessonInterest.LessonId equals lesson.Id
+                             join achievement in _dbContext.Achievements on lesson.AchievementId equals achievement.Id
+                             join lessonCircle in _dbContext.LessonCircles on lesson.Id equals lessonCircle.LessonId
+                             join circle in _dbContext.Circles on lessonCircle.CircleId equals circle.Id
+                             where lesson.LessonDate >= startDate && lesson.LessonDate <= endDate
+                             select new InterestReportDataModel
+                             {
+                                 InterestName = interest.InterestName,
+                                 AchievementName = achievement.AchievementName,
+                                 CircleName = circle.CircleName,
+                                 Description = interest.Description,
+                                 Date = lesson.LessonDate
+                             };
+
+            return reportData.ToList();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Error while generating interest report: " + ex.Message);
+        }
+    }
+
     public InterestDataModel? GetElementById(string id)
     {
         try
