@@ -1,4 +1,5 @@
 ﻿using SchoolContracts.DataModels;
+using SchoolContracts.ModelsForReports;
 using SchoolDatabase.Models.ModelsForReports;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace SchoolContracts.StoragesContracts;
 public interface ILessonStorageContract
 {
     List<LessonDataModel> GetList();
-    List<MaterialByLesson> GetLessonsByMaterial(string materialId);
+    List<LessonByMaterial> GetLessonsByMaterial(string materialId);
     LessonDataModel? GetElementById(string id);
     LessonDataModel? GetElementByName(string name);
     void AddElement(LessonDataModel lessonDataModel);

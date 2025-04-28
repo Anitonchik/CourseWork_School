@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using SchoolContracts.DataModels;
 using SchoolContracts.Exceptions;
 using SchoolContracts.ModelsForReports;
@@ -39,9 +40,22 @@ public class InterestStorageContract:IInterestStorageContract
     }
     public List<InterestReportDataModel> GetInterestReport(DateTime startDate, DateTime endDate)
     {
+       /* var sql = $"SELECT c.\"CircleName\" as \"CircleName\", c.\"Description\" as \"CircleDescription\", " +
+    $"i.\"InterestName\" as \"InterestName\", md.\"MedalName\" as \"MedalName\" " +
+    $"FROM \"Circles\" c" +
+    $"JOIN \"CircleMaterials\" cm ON c.\"Id\" = cm.\"CircleId\" " +
+    $"JOIN \"Materials\" mt ON cm.\"MaterialId\" = mt.\"Id\" " +
+    $"JOIN \"Medals\" md ON md.\"MaterialId\" = cm.\"MaterialId\" " +
+    $"JOIN \"InterestMaterials\" im ON im.\"MaterialId\" = mt.\"Id\" " +
+    $"JOIN \"Interests\" i ON i.\"Id\" = im.\"InterestId\" " +
+    $"JOIN \"LessonInterests\" li ON li.\"InterestId\" = i.\"Id\" " +
+    $"JOIN \"Lessons\" l ON l.\"Id\" = li.\"LessonId\" " +
+    $"WHERE(l.\"LessonDate\" between {fromDate} and {toDate});";
+
+        return _dbContext.Set<CirclesWithInterestsWithMedals>().FromSqlRaw(sql).ToList();*/
         try
         {
-            var reportData = from interest in _dbContext.Interests
+            /*var reportData = from interest in _dbContext.Interests
                              join lessonInterest in _dbContext.LessonInterests on interest.Id equals lessonInterest.InterestId
                              join lesson in _dbContext.Lessons on lessonInterest.LessonId equals lesson.Id
                              join achievement in _dbContext.Achievements on lesson.AchievementId equals achievement.Id
@@ -57,7 +71,21 @@ public class InterestStorageContract:IInterestStorageContract
                                  Date = lesson.LessonDate
                              };
 
-             return reportData.ToList();
+             return reportData.ToList();*/
+            var sql = $"SELECT i.\"InterestName\" as \"InterestName\", " +
+          $"a.\"AchievementName\" as \"AchievementName\", " +
+          $"c.\"CircleName\" as \"CircleName\", " +
+          $"i.\"Description\" as \"Description\", " +
+          $"l.\"LessonDate\" as \"Date\" " +
+          $"FROM \"Interests\" i " +
+          $"JOIN \"LessonInterests\" li ON i.\"Id\" = li.\"InterestId\" " +
+          $"JOIN \"Lessons\" l ON li.\"LessonId\" = l.\"Id\" " +
+          $"JOIN \"Achievements\" a ON l.\"AchievementId\" = a.\"Id\" " +
+          $"JOIN \"LessonCircles\" lc ON l.\"Id\" = lc.\"LessonId\" " +
+          $"JOIN \"Circles\" c ON lc.\"CircleId\" = c.\"Id\" " +
+          $"WHERE l.\"LessonDate\" BETWEEN {startDate} AND {endDate};";
+
+            return _dbContext.Set<InterestReportDataModel>().FromSqlRaw(sql).ToList();
             /*return reportData.Select(x => _mapper.Map<InterestReportDataModel>(new
             {
                 x.InterestName,

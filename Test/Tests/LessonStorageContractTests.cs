@@ -135,7 +135,7 @@ public class LessonStorageContractTests : BaseStorageContractTests
          var interestMaterial3 = SchoolDbContext.InsertAndReturnInterestMaterial(interest3.Id, material3.Id);
 
          var list = _lessonStorageContract.GetLessonsByMaterial(material3.Id);
-        //Assert.That(list.Count, Is.EqualTo(3));
+        Assert.That(list.Count, Is.EqualTo(5));
 
     }
     

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SchoolContracts;
+using SchoolContracts.ModelsForReports;
 using SchoolDatabase.Models;
 using SchoolDatabase.Models.ModelsForReports;
 
@@ -58,6 +59,7 @@ public class SchoolDbContext : DbContext
             x.InterestId
         });
         modelBuilder.Entity<MaterialByLesson>().HasNoKey();
+        modelBuilder.Entity<LessonByMaterial>().HasNoKey();
     }
 
     public DbSet<Achievement> Achievements { get; set; }
@@ -73,4 +75,5 @@ public class SchoolDbContext : DbContext
     public DbSet<Storekeeper> Storekeepers { get; set; }
     public DbSet<Worker> Workers { get; set; }
     public DbSet<MaterialByLesson> MaterialByLessons { get; set; }
+    public DbSet<LessonByMaterial> LessonByMaterials { get; set; }
 }
