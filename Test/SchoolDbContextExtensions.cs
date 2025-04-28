@@ -162,4 +162,20 @@ public static class SchoolDbContextExtensions
         dbContext.SaveChanges();
         return achievement;
     }
+     
+    public static Medal InsertAndReturnMedal(this SchoolDbContext dbContext, string? id = null, string? storekeeperId = null,
+        string? materialId = null, string medalName = "name", int range = 1)
+    {
+        var medal = new Medal()
+        {
+            Id = Guid.NewGuid().ToString(),
+            StorekeeperId = storekeeperId ?? Guid.NewGuid().ToString(),
+            MaterialId = materialId ?? Guid.NewGuid().ToString(),
+            MedalName = medalName,
+            Range = range
+        };
+        dbContext.Medals.Add(medal);
+        dbContext.SaveChanges();
+        return medal;
+    }
 }

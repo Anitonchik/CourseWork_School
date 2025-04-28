@@ -11,8 +11,6 @@ internal class MaterialStorageContractTests : BaseStorageContractTests
 {
     private MaterialStorageContract _materialStorageContract;
     private Storekeeper _storekeeper;
-    private Material _material;
-    private Lesson _lesson;
 
     private Worker _worker;
     private Achievement _achievement;
@@ -25,9 +23,7 @@ internal class MaterialStorageContractTests : BaseStorageContractTests
 
         _storekeeper = SchoolDbContext.InsertAndReturnStorekeeper();
         _worker = SchoolDbContext.InsertAndReturnWorker();
-        //_material = SchoolDbContext.InsertAndReturnMaterial(storekeeperId: _storekeeper.Id);
         _achievement = SchoolDbContext.InsertAndReturnAchievement(workerId: _worker.Id);
-        //_lesson = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, achievementId: _achievement.Id);
     }
 
     [TearDown]
@@ -116,7 +112,7 @@ internal class MaterialStorageContractTests : BaseStorageContractTests
         var lessonCircle3 = SchoolDbContext.InsertAndReturnLessonCircle(lesson3.Id, circle1.Id);
 
         var list = _materialStorageContract.GetMaterialsByLesson(lesson3.Id);
-        /*Assert.That(list.Count, Is.EqualTo(2));*/
+        Assert.That(list.Count, Is.EqualTo(5));
     }
 
     private void AssertElement(MaterialDataModel actual, MaterialDataModel expected)

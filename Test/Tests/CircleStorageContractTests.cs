@@ -136,7 +136,38 @@ public class CircleStorageContractTests : BaseStorageContractTests
         Assert.That(list.Count, Is.EqualTo(3));
     }
 
-    
+    [Test]
+    public void GetCirclesWithInterestsWithMedals()
+    {
+        var circle1 = SchoolDbContext.InsertAndReturnCircle(storekeeperId: _storekeeper.Id, circleName: "name 1");
+        var circle2 = SchoolDbContext.InsertAndReturnCircle(storekeeperId: _storekeeper.Id, circleName: "name 2");
+        var circle3 = SchoolDbContext.InsertAndReturnCircle(storekeeperId: _storekeeper.Id, circleName: "name 3");
+
+        var material1 = SchoolDbContext.InsertAndReturnMaterial(storekeeperId: _storekeeper.Id, materialName: "name 1");
+        var material2 = SchoolDbContext.InsertAndReturnMaterial(storekeeperId: _storekeeper.Id, materialName: "name 2");
+        var material3 = SchoolDbContext.InsertAndReturnMaterial(storekeeperId: _storekeeper.Id, materialName: "name 3");
+
+        var circleMaterial1 = SchoolDbContext.InsertAndReturnCircleMaterial(circleId: circle1.Id, materialId: material3.Id);
+        var circleMaterial2 = SchoolDbContext.InsertAndReturnCircleMaterial(circleId: circle2.Id, materialId: material2.Id);
+        var circleMaterial3 = SchoolDbContext.InsertAndReturnCircleMaterial(circleId: circle3.Id, materialId: material1.Id);
+        var circleMaterial4 = SchoolDbContext.InsertAndReturnCircleMaterial(circleId: circle2.Id, materialId: material3.Id);
+        var circleMaterial5 = SchoolDbContext.InsertAndReturnCircleMaterial(circleId: circle3.Id, materialId: material2.Id);
+
+        var lesson1 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, achievementId: _achievement.Id, lessonName: "name 1");
+        var lesson2 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, achievementId: _achievement.Id, lessonName: "name 1");
+        var lesson3 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, achievementId: _achievement.Id, lessonName: "name 1");
+
+        var lessonCircle1 = SchoolDbContext.InsertAndReturnLessonCircle(lesson3.Id, circle2.Id);
+        var lessonCircle2 = SchoolDbContext.InsertAndReturnLessonCircle(lesson3.Id, circle3.Id);
+        var lessonCircle3 = SchoolDbContext.InsertAndReturnLessonCircle(lesson3.Id, circle1.Id);
+
+        var medal1 = SchoolDbContext.InsertAndReturnMedal(storekeeperId: _storekeeper.Id, materialId: material1.Id, medalName: "name 1");
+        var medal1 = SchoolDbContext.InsertAndReturnMedal(storekeeperId: _storekeeper.Id, materialId: material1.Id, medalName: "name 1");
+        var medal1 = SchoolDbContext.InsertAndReturnMedal(storekeeperId: _storekeeper.Id, materialId: material1.Id, medalName: "name 1");
+    }
+
+
+
 
     private void AssertElement(CircleDataModel actual, CircleDataModel expected)
     {
