@@ -165,7 +165,7 @@ public class CircleStorageContractTests : BaseStorageContractTests
         var medal2 = SchoolDbContext.InsertAndReturnMedal(storekeeperId: _storekeeper.Id, materialId: material2.Id, medalName: "name 2");
         var medal3 = SchoolDbContext.InsertAndReturnMedal(storekeeperId: _storekeeper.Id, materialId: material3.Id, medalName: "name 3");
 
-        var lessonInterest1 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson1.Id, interestId: );
+        //var lessonInterest1 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson1.Id, interestId: );
     }
 
 
