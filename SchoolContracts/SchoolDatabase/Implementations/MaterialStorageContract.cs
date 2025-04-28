@@ -60,8 +60,8 @@ public class MaterialStorageContract : IMaterialStorageContract
     {
         try
         {
-            var circle = GetMaterialById(id) ?? throw new ElementNotFoundException(id);
-            return _mapper.Map<MaterialDataModel>(circle);
+            var material = GetMaterialById(id) ?? throw new ElementNotFoundException(id);
+            return _mapper.Map<MaterialDataModel>(material);
         }
         catch (ElementNotFoundException)
         {
