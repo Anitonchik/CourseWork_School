@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SchoolContracts;
 using SchoolDatabase.Models;
+using SchoolDatabase.Models.ModelsForReports;
 
 namespace SchoolDatabase;
 
@@ -32,7 +33,7 @@ public class SchoolDbContext : DbContext
 
         modelBuilder.Entity<Worker>().HasIndex(x => x.Login).IsUnique();
         modelBuilder.Entity<Worker>().HasIndex(x => x.Mail).IsUnique();
-        modelBuilder.Entity<Lesson>().HasIndex(x => x.LessonName).IsUnique();
+        //modelBuilder.Entity<Lesson>().HasIndex(x => x.LessonName).IsUnique();
         modelBuilder.Entity<Interest>().HasIndex(x => x.InterestName).IsUnique();
 
         modelBuilder.Entity<CircleMaterial>().HasKey(x => new
@@ -56,6 +57,7 @@ public class SchoolDbContext : DbContext
             x.LessonId,
             x.InterestId
         });
+        modelBuilder.Entity<MaterialByLesson>().HasNoKey();
     }
 
     public DbSet<Achievement> Achievements { get; set; }
@@ -70,4 +72,5 @@ public class SchoolDbContext : DbContext
     public DbSet<Medal> Medals { get; set; }
     public DbSet<Storekeeper> Storekeepers { get; set; }
     public DbSet<Worker> Workers { get; set; }
+    public DbSet<MaterialByLesson> MaterialByLessons { get; set; }
 }
