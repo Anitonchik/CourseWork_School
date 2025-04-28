@@ -6,7 +6,7 @@ public interface IMedalStorageContract
 {
     List<MedalDataModel> GetList();
     MedalDataModel? GetElementById(string id);
-    MedalDataModel? GetElementByName(string name);
+    //void CreateConnectWithMaterial(string medalId, string materialId);
     void AddElement(MedalDataModel medalDataModel);
     void UpdElement(MedalDataModel medalDataModel);
     void DelElement(string id);
