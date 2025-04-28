@@ -10,14 +10,16 @@ public class MedalStorageContract : IMedalStorageContract
 {
     private readonly SchoolDbContext _dbContext;
     private readonly Mapper _mapper;
+    private readonly MaterialStorageContract? _materialStorageContract;
 
-    public MedalStorageContract(SchoolDbContext dbContext)
+    public MedalStorageContract(SchoolDbContext dbContext, MaterialStorageContract? materialStorageContract)
     {
         _dbContext = dbContext;
 
         var configuration = new MapperConfiguration(cfg => cfg.AddMaps(typeof(Medal)));
 
         _mapper = new Mapper(configuration);
+        _materialStorageContract = materialStorageContract;
     }
 
     public List<MedalDataModel> GetList()
@@ -51,18 +53,6 @@ public class MedalStorageContract : IMedalStorageContract
         }
     }
 
-    public MedalDataModel? GetElementByName(string name)
-    {
-        try
-        {
-            return _mapper.Map<MedalDataModel>(_dbContext.Medals.FirstOrDefault(x => x.MedalName == name));
-        }
-        catch (Exception ex)
-        {
-            _dbContext.ChangeTracker.Clear();
-            throw new Exception();
-        }
-    }
     public void AddElement(MedalDataModel medalDataModel)
     {
         try
@@ -81,6 +71,36 @@ public class MedalStorageContract : IMedalStorageContract
             throw new Exception();
         }
     }
+
+    //бизнес логика
+
+    /*public void CreateConnectWithMaterial(string medalId, string materialId)
+    {
+        try
+        {
+            if (_materialStorageContract == null)
+            {
+                throw new Exception("");
+            }
+
+            var material = _materialStorageContract.GetElementById(materialId);
+            var medal = GetElementById(medalId);
+
+            var newMedal = new MedalDataModel(medal.Id, medal.StorekeeperId, medal.Id, medal.MedalName,
+                medal.Range, medal.Description);
+            UpdElement(newMedal);
+        }
+        catch (ElementNotFoundException)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new Exception();
+        }
+    }*/
 
     public void UpdElement(MedalDataModel medalDataModel)
     {

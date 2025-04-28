@@ -33,7 +33,7 @@ public class SchoolDbContext : DbContext
 
         modelBuilder.Entity<Worker>().HasIndex(x => x.Login).IsUnique();
         modelBuilder.Entity<Worker>().HasIndex(x => x.Mail).IsUnique();
-        //modelBuilder.Entity<Lesson>().HasIndex(x => x.LessonName).IsUnique();
+        modelBuilder.Entity<Lesson>().HasIndex(x => x.LessonName).IsUnique();
         modelBuilder.Entity<Interest>().HasIndex(x => x.InterestName).IsUnique();
 
         modelBuilder.Entity<CircleMaterial>().HasKey(x => new
