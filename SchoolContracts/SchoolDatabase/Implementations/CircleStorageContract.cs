@@ -6,7 +6,6 @@ using SchoolContracts.Exceptions;
 using SchoolContracts.ModelsForReports;
 using SchoolContracts.StoragesContracts;
 using SchoolDatabase.Models;
-using SchoolDatabase.Models.ModelsForReports;
 
 namespace SchoolDatabase.Implementations;
 
