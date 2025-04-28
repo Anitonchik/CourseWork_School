@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SchoolContracts.DataModels;
 using SchoolContracts.Exceptions;
+using SchoolContracts.ModelsForReports;
 using SchoolContracts.StoragesContracts;
 using SchoolDatabase.Models;
 using System;
@@ -56,7 +57,15 @@ public class InterestStorageContract:IInterestStorageContract
                                  Date = lesson.LessonDate
                              };
 
-            return reportData.ToList();
+             return reportData.ToList();
+            /*return reportData.Select(x => _mapper.Map<InterestReportDataModel>(new
+            {
+                x.InterestName,
+                x.AchievementName,
+                x.CircleName,
+                x.Description,
+                x.Date
+            })).ToList();*/
         }
         catch (Exception ex)
         {

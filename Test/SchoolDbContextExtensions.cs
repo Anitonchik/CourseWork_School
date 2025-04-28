@@ -52,6 +52,20 @@ public static class SchoolDbContextExtensions
         dbContext.SaveChanges();
         return circle;
     }
+    public static Interest InsertAndReturnInterest(this SchoolDbContext dbContext, string id = null, string workerId = null,
+     string interestName = "name", string description = "desc")
+    {
+        var interest = new Interest()
+        {
+            Id = id ?? Guid.NewGuid().ToString(),
+            WorkerId = workerId ?? Guid.NewGuid().ToString(),
+            InterestName = interestName,
+            Description = description
+        };
+        dbContext.Interests.Add(interest);
+        dbContext.SaveChanges();
+        return interest;
+    }
 
     public static Material InsertAndReturnMaterial(this SchoolDbContext dbContext, string id = null, string storekeeperId = null,
         string materialName = "name", string description = "desc")
@@ -79,6 +93,29 @@ public static class SchoolDbContextExtensions
         dbContext.CircleMaterials.Add(circleMaterial);
         dbContext.SaveChanges();
         return circleMaterial;
+    }
+    public static LessonInterest InsertAndReturnLessonInterest(this SchoolDbContext dbContext, string lessonId = null, string interestId = null)
+    {
+        var lessonInterest = new LessonInterest()
+        {
+            LessonId = lessonId ?? Guid.NewGuid().ToString(),
+            InterestId = interestId ?? Guid.NewGuid().ToString()
+        };
+        dbContext.LessonInterests.Add(lessonInterest);
+        dbContext.SaveChanges();
+        return lessonInterest;
+    }
+    public static InterestMaterial InsertAndReturnInterestMaterial(this SchoolDbContext dbContext,  string interestId = null,string materialId = null)
+    {
+        var interestMaterial = new InterestMaterial()
+        {
+            
+            InterestId = interestId ?? Guid.NewGuid().ToString(),
+            MaterialId = materialId ?? Guid.NewGuid().ToString()
+        };
+        dbContext.InterestMaterials.Add(interestMaterial);
+        dbContext.SaveChanges();
+        return interestMaterial;
     }
 
     public static Lesson InsertAndReturnLesson(this SchoolDbContext dbContext, string? id = null, string? workerId = null,

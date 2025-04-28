@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
-
+using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using SchoolContracts.DataModels;
 using SchoolContracts.Exceptions;
 using SchoolContracts.StoragesContracts;
 using SchoolDatabase.Models;
+using SchoolDatabase.Models.ModelsForReports;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,9 +40,18 @@ public class LessonStorageContract: ILessonStorageContract
             throw new Exception();
         }
     }
-    public List<LessonDataModel> GetLessonsByMaterial(string materialId)
+    public List<MaterialByLesson> GetLessonsByMaterial(string materialId)
     {
-        try
+        /*var sql = $"SELECT l.\"LessonName\" as \"LessonName\", mt.\"MaterialName\" as \"MaterialName\", cm.\"Count\" as \"Count\" " +
+                $"FROM \"Materials\" mt " +
+                $"JOIN \"CircleMaterials\" cm ON mt.\"Id\" = cm.\"MaterialId\" " +
+                $"JOIN \"Circles\" c ON c.\"Id\" = cm.\"CircleId\" " +
+                $"JOIN \"LessonCircles\" lc ON lc.\"CircleId\" = c.\"Id\" " +
+                $"JOIN \"Lessons\" l ON l.\"Id\" = lc.\"LessonId\" " +
+                $"WHERE (l.\"Id\" = '{lessonId}');";
+
+        return _dbContext.Set<MaterialByLesson>().FromSqlRaw(sql).ToList();*/
+        /*try
         {
             var lessons = (from l in _dbContext.Lessons
                            join li in _dbContext.LessonInterests on l.Id equals li.LessonId
@@ -51,6 +61,18 @@ public class LessonStorageContract: ILessonStorageContract
                            where im.MaterialId == materialId
                            select l).ToList();
            return [.. lessons.Select(x => _mapper.Map<LessonDataModel>(x))];
+        }*/
+        try
+        {
+            var sql = $"SELECT   m.\"MaterialName\" as \"MaterialName\",l.\"LessonName\" as \"LessonName\", l.\"Description\" as \"LessonDescription\",  NULL as \"Count\" " +
+                       $"FROM \"Lessons\" l " +
+                       $"JOIN \"LessonInterests\" li ON l.\"Id\" = li.\"LessonId\" " +
+                       $"JOIN \"Interests\" i ON li.\"InterestId\" = i.\"Id\" " +
+                       $"JOIN \"InterestMaterials\" im ON i.\"Id\" = im.\"InterestId\" " +
+                       $"JOIN \"Materials\" m ON im.\"MaterialId\" = m.\"Id\" " +
+                       $"WHERE m.\"Id\" = '{materialId}';";
+
+            return _dbContext.Set<MaterialByLesson>().FromSqlRaw(sql).ToList();
         }
         catch (Exception ex)
         {

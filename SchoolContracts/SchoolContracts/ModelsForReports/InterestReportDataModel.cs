@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SchoolContracts.DataModels;
+namespace SchoolContracts.ModelsForReports;
 
 public class InterestReportDataModel
 {
