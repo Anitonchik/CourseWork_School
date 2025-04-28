@@ -11,16 +11,14 @@ public class MaterialStorageContract : IMaterialStorageContract
 {
     private readonly SchoolDbContext _dbContext;
     private readonly Mapper _mapper;
-    private readonly CircleStorageContract _circleStorageContract;
 
-    public MaterialStorageContract(SchoolDbContext dbContext, CircleStorageContract circleStorageContract)
+    public MaterialStorageContract(SchoolDbContext dbContext)
     {
         _dbContext = dbContext;
 
         var configuration = new MapperConfiguration(cfg => cfg.AddMaps(typeof(Material)));
 
         _mapper = new Mapper(configuration);
-        _circleStorageContract = circleStorageContract;
     }
 
     public List<MaterialDataModel> GetList()
@@ -47,6 +45,17 @@ public class MaterialStorageContract : IMaterialStorageContract
                              join l in _dbContext.Lessons on lc.LessonId equals l.Id
                              where lc.LessonId == lessonId
                              select m).ToList();
+
+            var sql = $"SELECT mt.\"Id\" \"MaterialId\", mt.\"StorekeeperId\", mt.\"MaterialName\"," +
+                $"mt.\"Description\", l.\"Id\" \"LessonId\"" +
+                $"FROM \"Materials\" mt" +
+                $"JOIN \"CircleMaterials\" cm ON mt.\"Id\" = cm.\"MaterialId\"" +
+                $"JOIN \"Circles\" c ON c.\"Id\" = cm.\"CircleId\"" +
+                $"JOIN \"LessonCircles\" lc ON lc.\"CircleId\" = c.\"Id\"" +
+                $"JOIN \"Lessons\" l ON l.\"Id\" = lc.\"LessonId\"" +
+                $"WHERE (l.\"Id\" = {lessonId});";
+
+             return _dbContext.Set<MaterialLesson>().FromSqlRaw(sql, lessonId).ToList();
 
             return [.. materials.Select(x => _mapper.Map<MaterialDataModel>(x))];
         }
