@@ -5,8 +5,8 @@ namespace SchoolContracts.StoragesContracts;
 
 public interface ICircleStorageContract
 {
-    List<CircleDataModel> GetList();
-    List<CirclesWithInterestsWithMedals> GetCirclesWithInterestsWithMedals(DateTime fromDate, DateTime toDate);
+    List<CircleDataModel> GetList(string storekeeperId);
+    List<CirclesWithInterestsWithMedals> GetCirclesWithInterestsWithMedals(string storekeeperId, DateTime fromDate, DateTime toDate);
     CircleDataModel? GetElementById(string id);
     CircleDataModel? GetElementByName(string name);
     void AddElement(CircleDataModel circleDataModel);

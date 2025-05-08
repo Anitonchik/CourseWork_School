@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolDatabase", "SchoolDat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "..\Test\Test.csproj", "{2C3E325F-8D6B-4151-89DE-C12FE4A5BAD5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolBusinessLogic", "SchoolBusinessLogic\SchoolBusinessLogic.csproj", "{5B06D4C1-4FC2-4FA7-A0D6-635E508C4BB3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{2C3E325F-8D6B-4151-89DE-C12FE4A5BAD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C3E325F-8D6B-4151-89DE-C12FE4A5BAD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C3E325F-8D6B-4151-89DE-C12FE4A5BAD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B06D4C1-4FC2-4FA7-A0D6-635E508C4BB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B06D4C1-4FC2-4FA7-A0D6-635E508C4BB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B06D4C1-4FC2-4FA7-A0D6-635E508C4BB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B06D4C1-4FC2-4FA7-A0D6-635E508C4BB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

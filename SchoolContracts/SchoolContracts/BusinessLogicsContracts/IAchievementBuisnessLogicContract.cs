@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SchoolContracts.BusinessLogicsContracts;
 
-internal interface IAchievementBusinessLogicContract
+internal interface IAchievementBuisnessLogicContract
 {
     List<AchievementDataModel> GetAllAchievementsByPeriod(DateTime fromDate, DateTime toDate);
     List<AchievementDataModel> GetAllAchievementsByWorker(string workerId);

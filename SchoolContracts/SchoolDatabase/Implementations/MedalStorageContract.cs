@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿    using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using SchoolContracts.DataModels;
 using SchoolContracts.Exceptions;
 using SchoolContracts.StoragesContracts;
@@ -22,11 +23,16 @@ public class MedalStorageContract : IMedalStorageContract
         _materialStorageContract = materialStorageContract;
     }
 
-    public List<MedalDataModel> GetList()
+    public List<MedalDataModel> GetList(string storekeeperId, int? range)
     {
         try
         {
-            return [.. _dbContext.Medals.Select(x => _mapper.Map<MedalDataModel>(x))];
+            var query = _dbContext.Medals.Include(x => x.StorekeeperId).Where(x => x.StorekeeperId == storekeeperId).AsQueryable();
+            if (range != null)
+            {
+                query = query.Where(x => x.Range == range);
+            }
+            return [.. query.Select(x => _mapper.Map<MedalDataModel>(x))];
         }
         catch (Exception ex)
         {
@@ -34,6 +40,7 @@ public class MedalStorageContract : IMedalStorageContract
             throw new Exception();
         }
     }
+
     public MedalDataModel? GetElementById(string id)
     {
         try
@@ -72,9 +79,7 @@ public class MedalStorageContract : IMedalStorageContract
         }
     }
 
-    //бизнес логика
-
-    /*public void CreateConnectWithMaterial(string medalId, string materialId)
+    public void CreateConnectWithMaterial(string medalId, string materialId)
     {
         try
         {
@@ -100,7 +105,7 @@ public class MedalStorageContract : IMedalStorageContract
             _dbContext.ChangeTracker.Clear();
             throw new Exception();
         }
-    }*/
+    }
 
     public void UpdElement(MedalDataModel medalDataModel)
     {
