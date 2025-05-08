@@ -27,7 +27,7 @@ public class MedalStorageContract : IMedalStorageContract
     {
         try
         {
-            var query = _dbContext.Medals.Include(x => x.StorekeeperId).Where(x => x.StorekeeperId == storekeeperId).AsQueryable();
+            var query = _dbContext.Medals.Where(x => x.StorekeeperId == storekeeperId).AsQueryable();
             if (range != null)
             {
                 query = query.Where(x => x.Range == range);

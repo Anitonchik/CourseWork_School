@@ -10,7 +10,7 @@ using UnauthorizedAccessException = SchoolContracts.Exceptions.UnauthorizedAcces
 
 namespace SchoolBusinessLogic.Implementations;
 
-internal class MedalBuisnessLogicContract(IMedalStorageContract medalStorageContract, IMaterialBuisnessLogicContract materialBuisnessLogucContract, 
+public class MedalBuisnessLogicContract(IMedalStorageContract medalStorageContract, IMaterialBuisnessLogicContract materialBuisnessLogucContract, 
     ILogger logger) : IMedalBuisnessLogicContract
 {
     private readonly ILogger _logger = logger;

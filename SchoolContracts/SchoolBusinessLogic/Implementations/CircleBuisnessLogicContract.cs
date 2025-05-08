@@ -10,7 +10,7 @@ using UnauthorizedAccessException = SchoolContracts.Exceptions.UnauthorizedAcces
 
 namespace SchoolBusinessLogic.Implementations;
 
-internal class CircleBuisnessLogicContract(ICircleStorageContract circleStorageContract, ILogger logger) : ICircleBuisnessLogicContract
+public class CircleBuisnessLogicContract(ICircleStorageContract circleStorageContract, ILogger logger) : ICircleBuisnessLogicContract
 {
     private readonly ILogger _logger = logger;
     private readonly ICircleStorageContract _circleStorageContract = circleStorageContract;
@@ -34,7 +34,10 @@ internal class CircleBuisnessLogicContract(ICircleStorageContract circleStorageC
         {
             circle = _circleStorageContract.GetElementById(data) ?? throw new ElementNotFoundException(data);
         }
-        circle = _circleStorageContract.GetElementByName(data) ?? throw new ElementNotFoundException(data);
+        else
+        {
+            circle = _circleStorageContract.GetElementByName(data) ?? throw new ElementNotFoundException(data);
+        }
 
         if (circle.StorekeeperId != storekeeperId)
         {
@@ -48,6 +51,10 @@ internal class CircleBuisnessLogicContract(ICircleStorageContract circleStorageC
         _logger.LogInformation("New data: {json}", JsonSerializer.Serialize(circleDataModel));
         ArgumentNullException.ThrowIfNull(circleDataModel);
         circleDataModel.Validate();
+        if (circleDataModel.StorekeeperId != storekeeperId)
+        {
+            throw new UnauthorizedAccessException(storekeeperId);
+        }
         _circleStorageContract.AddElement(circleDataModel);
     }
 
@@ -77,11 +84,13 @@ internal class CircleBuisnessLogicContract(ICircleStorageContract circleStorageC
             throw new ValidationException("Id is not a unique identifier");
         }
 
-        var circle = _circleStorageContract.GetElementById(id) ?? throw new ElementNotFoundException(id);
+        var circle = _circleStorageContract.GetElementById(id);
         if (circle.StorekeeperId != storekeeperId)
         {
             throw new UnauthorizedAccessException(id);
         }
+
+        GetCircleByData(storekeeperId, id);
 
         _circleStorageContract.DelElement(id);
     }

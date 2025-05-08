@@ -10,7 +10,7 @@ using UnauthorizedAccessException = SchoolContracts.Exceptions.UnauthorizedAcces
 
 namespace SchoolBusinessLogic.Implementations;
 
-internal class MaterialBuisnessLogicContract(IMaterialStorageContract materialStorageContract, ILogger logger) : IMaterialBuisnessLogicContract
+public class MaterialBuisnessLogicContract(IMaterialStorageContract materialStorageContract, ILogger logger) : IMaterialBuisnessLogicContract
 {
     private readonly ILogger _logger = logger;
     private readonly IMaterialStorageContract _materialStorageContract = materialStorageContract;

@@ -4,6 +4,7 @@ using SchoolDatabase.Implementations;
 using SchoolDatabase.Models;
 using SchoolDatabase;
 using Microsoft.EntityFrameworkCore;
+using SchoolContracts.StoragesContracts;
 
 namespace Test.Tests;
 
@@ -11,6 +12,7 @@ namespace Test.Tests;
 internal class MedalStorageContractTest : BaseStorageContractTests
 {
     private MedalStorageContract _medalStorageContract;
+    private MaterialStorageContract _materialStorageContract;
     private Storekeeper _storekeeper;
     private Material _material;
 
@@ -18,7 +20,8 @@ internal class MedalStorageContractTest : BaseStorageContractTests
     [SetUp]
     public void Setup()
     {
-        _medalStorageContract = new MedalStorageContract(SchoolDbContext);
+        _materialStorageContract = new MaterialStorageContract(SchoolDbContext);
+        _medalStorageContract = new MedalStorageContract(SchoolDbContext, _materialStorageContract);
 
         _storekeeper = new Storekeeper()
         {
@@ -92,7 +95,7 @@ internal class MedalStorageContractTest : BaseStorageContractTests
         _medalStorageContract.AddElement(medal2);
         _medalStorageContract.AddElement(medal3);
 
-        var list = _medalStorageContract.GetList();
+        var list = _medalStorageContract.GetList(_storekeeper.Id, null);
         Assert.That(list.Count, Is.EqualTo(3));
     }
 
