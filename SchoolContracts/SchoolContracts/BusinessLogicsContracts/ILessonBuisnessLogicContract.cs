@@ -9,11 +9,10 @@ namespace SchoolContracts.BusinessLogicsContracts;
 
 public interface ILessonBuisnessLogicContract
 {
-    List<LessonDataModel> GetAllLessons();
-    List<LessonDataModel> GetAllLessonsByWorker(string workerId);
-    LessonDataModel GetLessonByData(string data);
-    List<LessonInterestDataModel> GetInterestsByLessonId(string lessonId);
-    void InsertLesson(LessonDataModel lessonDataModel);
-    void UpdateLesson(LessonDataModel lessonDataModel);
-    void DeleteLesson(string id);
+    List<LessonDataModel> GetAllLessons(string workerId);
+    LessonDataModel GetLessonByData(string workerId, string data);
+    //List<LessonInterestDataModel> GetInterestsByLessonId(string lessonId);
+    void InsertLesson(string workerId, LessonDataModel lessonDataModel);
+    void UpdateLesson(string workerId, LessonDataModel lessonDataModel);
+    void DeleteLesson(string workerId, string id);
 }

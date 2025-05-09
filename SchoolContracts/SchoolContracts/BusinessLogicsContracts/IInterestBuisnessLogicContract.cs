@@ -9,11 +9,10 @@ namespace SchoolContracts.BusinessLogicsContracts;
 
 public interface IInterestBuisnessLogicContract
 {
-    List<InterestDataModel> GetAllInterests();
-    List<InterestDataModel> GetAllInterestsByWorker(string workerId);
-    InterestDataModel GetInterestByData(string data);
-    List<InterestMaterialDataModel> GetMaterialsByInterestId(string interestId);
-    void InsertInterest(InterestDataModel interestDataModel);
-    void UpdateInterest(InterestDataModel interestDataModel);
-    void DeleteInterest(string id);
+    List<InterestDataModel> GetAllInterests(string workerId);
+    InterestDataModel GetInterestByData(string workerId,string data);
+    //List<InterestMaterialDataModel> GetMaterialsByInterestId(string interestId);
+    void InsertInterest(string workerId, InterestDataModel interestDataModel);
+    void UpdateInterest(string workerId, InterestDataModel interestDataModel);
+    void DeleteInterest(string workerId, string id);
 }

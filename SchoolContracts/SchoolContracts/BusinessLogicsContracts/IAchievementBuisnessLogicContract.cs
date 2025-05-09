@@ -6,13 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SchoolContracts.BusinessLogicsContracts;
-
-internal interface IAchievementBuisnessLogicContract
+public interface IAchievementBuisnessLogicContract
 {
-    List<AchievementDataModel> GetAllAchievementsByPeriod(DateTime fromDate, DateTime toDate);
-    List<AchievementDataModel> GetAllAchievementsByWorker(string workerId);
-    AchievementDataModel GetAchievementByData(string data);
-    void InsertAchievement(AchievementDataModel achievementDataModel);
-    void UpdateAchievement(AchievementDataModel achievementDataModel);
-    void DeleteAchievement(string id);
+    List<AchievementDataModel> GetAllAchievements(string workerId);
+    AchievementDataModel GetAchievementById(string workerId, string id);
+    void CreateConnectWithLesson(string workerId, string achievementId, string lessonId);
+    void InsertAchievement(string workerId,AchievementDataModel achievementDataModel);
+    void UpdateAchievement(string workerId,AchievementDataModel achievementDataModel);
+    void DeleteAchievement(string workerId,string id);
 }
