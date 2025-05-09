@@ -21,7 +21,7 @@ internal class MedalStorageContractTest : BaseStorageContractTests
     public void Setup()
     {
         _materialStorageContract = new MaterialStorageContract(SchoolDbContext);
-        _medalStorageContract = new MedalStorageContract(SchoolDbContext, _materialStorageContract);
+        _medalStorageContract = new MedalStorageContract(SchoolDbContext);
 
         _storekeeper = new Storekeeper()
         {

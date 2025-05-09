@@ -161,4 +161,14 @@ public class LessonStorageContract: ILessonStorageContract
         }
     }
     private Lesson? GetLessonById(string id) => _dbContext.Lessons.FirstOrDefault(x => x.Id == id);
+
+    public List<LessonDataModel> GetList()
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<LessonByMaterial> GetLessonsByMaterial(string materialId)
+    {
+        throw new NotImplementedException();
+    }
 }

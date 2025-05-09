@@ -37,20 +37,28 @@ public class CircleStorageContract : ICircleStorageContract
 
     public List<CirclesWithInterestsWithMedals> GetCirclesWithInterestsWithMedals(string storekeeperId, DateTime fromDate, DateTime toDate)
     {
-        var sql = $"SELECT c.\"CircleName\" as \"CircleName\", c.\"Description\" as \"CircleDescription\", " +
-            $"i.\"InterestName\" as \"InterestName\", md.\"MedalName\" as \"MedalName\" " +
-            $"FROM \"Circles\" c" +
-            $"JOIN \"Storekeepers\" st ON st.\"Id\" = c.\"StorekeeperId\" " +
-            $"JOIN \"CircleMaterials\" cm ON c.\"Id\" = cm.\"CircleId\" " +
-            $"JOIN \"Materials\" mt ON cm.\"MaterialId\" = mt.\"Id\" " +
-            $"JOIN \"Medals\" md ON md.\"MaterialId\" = cm.\"MaterialId\" " +
-            $"JOIN \"InterestMaterials\" im ON im.\"MaterialId\" = mt.\"Id\" " +
-            $"JOIN \"Interests\" i ON i.\"Id\" = im.\"InterestId\" " +
-            $"JOIN \"LessonInterests\" li ON li.\"InterestId\" = i.\"Id\" " +
-            $"JOIN \"Lessons\" l ON l.\"Id\" = li.\"LessonId\" " +
-            $"WHERE(st.\"Id\" = '{storekeeperId}' AND l.\"LessonDate\" between {fromDate} and {toDate});";
+        try
+        {
+            var sql = $"SELECT c.\"CircleName\" as \"CircleName\", c.\"Description\" as \"CircleDescription\", " +
+                $"i.\"InterestName\" as \"InterestName\", md.\"MedalName\" as \"MedalName\" " +
+                $"FROM \"Circles\" c " +
+                $"JOIN \"Storekeepers\" st ON st.\"Id\" = c.\"StorekeeperId\" " +
+                $"JOIN \"CircleMaterials\" cm ON c.\"Id\" = cm.\"CircleId\" " +
+                $"JOIN \"Materials\" mt ON cm.\"MaterialId\" = mt.\"Id\" " +
+                $"JOIN \"Medals\" md ON md.\"MaterialId\" = cm.\"MaterialId\" " +
+                $"JOIN \"InterestMaterials\" im ON im.\"MaterialId\" = mt.\"Id\" " +
+                $"JOIN \"Interests\" i ON i.\"Id\" = im.\"InterestId\" " +
+                $"JOIN \"LessonInterests\" li ON li.\"InterestId\" = i.\"Id\" " +
+                $"JOIN \"Lessons\" l ON l.\"Id\" = li.\"LessonId\" " +
+                $"WHERE(st.\"Id\" = '{storekeeperId}' AND l.\"LessonDate\" between '{fromDate}' and '{toDate}');";
 
-        return _dbContext.Set<CirclesWithInterestsWithMedals>().FromSqlRaw(sql).ToList();
+            return _dbContext.Set<CirclesWithInterestsWithMedals>().FromSqlRaw(sql).ToList();
+        }
+        catch (Exception ex)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new Exception();
+        }
 
     }
 

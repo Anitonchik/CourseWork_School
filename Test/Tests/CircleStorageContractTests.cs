@@ -160,9 +160,27 @@ public class CircleStorageContractTests : BaseStorageContractTests
         var lessonCircle2 = SchoolDbContext.InsertAndReturnLessonCircle(lesson3.Id, circle3.Id);
         var lessonCircle3 = SchoolDbContext.InsertAndReturnLessonCircle(lesson3.Id, circle1.Id);
 
-        var medal1 = SchoolDbContext.InsertAndReturnMedal(storekeeperId: _storekeeper.Id, materialId: material1.Id, medalName: "name 1");
-        //var medal1 = SchoolDbContext.InsertAndReturnMedal(storekeeperId: _storekeeper.Id, materialId: material1.Id, medalName: "name 1");
-        //var medal1 = SchoolDbContext.InsertAndReturnMedal(storekeeperId: _storekeeper.Id, materialId: material1.Id, medalName: "name 1");
+        var medal1 = SchoolDbContext.InsertAndReturnMedal(storekeeperId: _storekeeper.Id, materialId: material2.Id, medalName: "name 1");
+        var medal2 = SchoolDbContext.InsertAndReturnMedal(storekeeperId: _storekeeper.Id, materialId: material1.Id, medalName: "name 2");
+        var medal3 = SchoolDbContext.InsertAndReturnMedal(storekeeperId: _storekeeper.Id, materialId: material3.Id, medalName: "name 3");
+
+        var interest1 = SchoolDbContext.InsertAndReturnInterest(workerId: _worker.Id, interestName: "name 1", description: "desc 1");
+        var interest2 = SchoolDbContext.InsertAndReturnInterest(workerId: _worker.Id, interestName: "name 2", description: "desc 2");
+        var interest3 = SchoolDbContext.InsertAndReturnInterest(workerId: _worker.Id, interestName: "name 3", description: "desc 3");
+
+        var lessonInterest1 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson1.Id, interestId: interest2.Id);
+        var lessonInterest2 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson2.Id, interestId: interest2.Id);
+        var lessonInterest3 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson1.Id, interestId: interest1.Id);
+        var lessonInterest4 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson3.Id, interestId: interest1.Id);
+
+        var interestMaterial1 = SchoolDbContext.InsertAndReturnInterestMaterial(interestId: interest1.Id, materialId: material3.Id);
+        var interestMaterial2 = SchoolDbContext.InsertAndReturnInterestMaterial(interestId: interest2.Id, materialId: material3.Id);
+        var interestMaterial3 = SchoolDbContext.InsertAndReturnInterestMaterial(interestId: interest2.Id, materialId: material2.Id);
+        var interestMaterial4 = SchoolDbContext.InsertAndReturnInterestMaterial(interestId: interest1.Id, materialId: material2.Id);
+        var interestMaterial5 = SchoolDbContext.InsertAndReturnInterestMaterial(interestId: interest3.Id, materialId: material1.Id);
+
+        var list = _circleStorageContract.GetCirclesWithInterestsWithMedals(_storekeeper.Id, DateTime.UtcNow.AddDays(-10), DateTime.UtcNow.AddDays(3));
+        Assert.That(list.Count.Equals(16));
     }
 
     [Test]
