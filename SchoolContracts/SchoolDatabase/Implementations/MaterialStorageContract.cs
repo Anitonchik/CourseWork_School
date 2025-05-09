@@ -22,11 +22,11 @@ public class MaterialStorageContract : IMaterialStorageContract
         _mapper = new Mapper(configuration);
     }
 
-    public List<MaterialDataModel> GetList()
+    public List<MaterialDataModel> GetList(string storekeeperId)
     {
         try
         {
-            return [.. _dbContext.Materials.Select(x => _mapper.Map<MaterialDataModel>(x))];
+            return [.. _dbContext.Materials.Where(x => x.StorekeeperId == storekeeperId).Select(x => _mapper.Map<MaterialDataModel>(x))];
         }
         catch (Exception ex)
         {
@@ -35,18 +35,19 @@ public class MaterialStorageContract : IMaterialStorageContract
         }
     }
 
-    public List<MaterialByLesson> GetMaterialsByLesson(string lessonId)
+    public List<MaterialByLesson> GetMaterialsByLesson(string storekeeperId, string lessonId)
     {   
         try
         {
             var sql = $"SELECT l.\"LessonName\" as \"LessonName\", mt.\"MaterialName\" as \"MaterialName\", " +
                 $"cm.\"Count\" as \"Count\", l.\"Description\" as \"LessonDescription\" " +
                 $"FROM \"Materials\" mt " +
+                $"JOIN \"Storekeepers\" st ON st.\"Id\" = mt.\"StorekeeperId\" " +
                 $"JOIN \"CircleMaterials\" cm ON mt.\"Id\" = cm.\"MaterialId\" " +
                 $"JOIN \"Circles\" c ON c.\"Id\" = cm.\"CircleId\" " +
                 $"JOIN \"LessonCircles\" lc ON lc.\"CircleId\" = c.\"Id\" " +
                 $"JOIN \"Lessons\" l ON l.\"Id\" = lc.\"LessonId\" " +
-                $"WHERE (l.\"Id\" = '{lessonId}');";
+                $"WHERE (st.\"Id\" = '{storekeeperId}' AND l.\"Id\" = '{lessonId}');";
 
             return _dbContext.Set<MaterialByLesson>().FromSqlRaw(sql).ToList();
         }

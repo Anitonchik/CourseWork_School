@@ -82,7 +82,7 @@ internal class MaterialStorageContractTests : BaseStorageContractTests
         _materialStorageContract.AddElement(material2);
         _materialStorageContract.AddElement(material3);
 
-        var list = _materialStorageContract.GetList();
+        var list = _materialStorageContract.GetList(_storekeeper.Id);
         Assert.That(list.Count, Is.EqualTo(3));
     }
 
@@ -104,14 +104,14 @@ internal class MaterialStorageContractTests : BaseStorageContractTests
         var circleMaterial5 = SchoolDbContext.InsertAndReturnCircleMaterial(circleId: circle3.Id, materialId: material2.Id);
 
         var lesson1 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, achievementId: _achievement.Id, lessonName: "name 1");
-        var lesson2 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, achievementId: _achievement.Id, lessonName: "name 1");
-        var lesson3 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, achievementId: _achievement.Id, lessonName: "name 1");
+        var lesson2 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, achievementId: _achievement.Id, lessonName: "name 2");
+        var lesson3 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, achievementId: _achievement.Id, lessonName: "name 3");
 
         var lessonCircle1 = SchoolDbContext.InsertAndReturnLessonCircle(lesson3.Id, circle2.Id);
         var lessonCircle2 = SchoolDbContext.InsertAndReturnLessonCircle(lesson3.Id, circle3.Id);
         var lessonCircle3 = SchoolDbContext.InsertAndReturnLessonCircle(lesson3.Id, circle1.Id);
 
-        var list = _materialStorageContract.GetMaterialsByLesson(lesson3.Id);
+        var list = _materialStorageContract.GetMaterialsByLesson(_storekeeper.Id, lesson3.Id);
         Assert.That(list.Count, Is.EqualTo(5));
     }
 

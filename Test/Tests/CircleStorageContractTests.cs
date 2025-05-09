@@ -132,7 +132,7 @@ public class CircleStorageContractTests : BaseStorageContractTests
         _circleStorageContract.AddElement(circle2);
         _circleStorageContract.AddElement(circle3);
 
-        var list = _circleStorageContract.GetList();
+        var list = _circleStorageContract.GetList(_storekeeper.Id);
         Assert.That(list.Count, Is.EqualTo(3));
     }
 
@@ -154,8 +154,8 @@ public class CircleStorageContractTests : BaseStorageContractTests
         var circleMaterial5 = SchoolDbContext.InsertAndReturnCircleMaterial(circleId: circle3.Id, materialId: material2.Id);
 
         var lesson1 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, achievementId: _achievement.Id, lessonName: "name 1");
-        var lesson2 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, achievementId: _achievement.Id, lessonName: "name 1");
-        var lesson3 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, achievementId: _achievement.Id, lessonName: "name 1");
+        var lesson2 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, achievementId: _achievement.Id, lessonName: "name 2");
+        var lesson3 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, achievementId: _achievement.Id, lessonName: "name 3");
 
         var lessonCircle1 = SchoolDbContext.InsertAndReturnLessonCircle(lesson3.Id, circle2.Id);
         var lessonCircle2 = SchoolDbContext.InsertAndReturnLessonCircle(lesson3.Id, circle3.Id);
@@ -164,6 +164,28 @@ public class CircleStorageContractTests : BaseStorageContractTests
         var medal1 = SchoolDbContext.InsertAndReturnMedal(storekeeperId: _storekeeper.Id, materialId: material1.Id, medalName: "name 1");
         var medal1 = SchoolDbContext.InsertAndReturnMedal(storekeeperId: _storekeeper.Id, materialId: material1.Id, medalName: "name 1");
         var medal1 = SchoolDbContext.InsertAndReturnMedal(storekeeperId: _storekeeper.Id, materialId: material1.Id, medalName: "name 1");
+    }
+
+    [Test]
+    public void GetCircles_WithoutAuth_ThrowException_Test()
+    {
+        //Arrange
+        var storekeeperId = Guid.NewGuid().ToString();
+        SchoolDbContext.InsertAndReturnStorekeeper(storekeeperId, login: "login 1", password: "psw 1", mail: "mail 1");
+
+        var id = Guid.NewGuid().ToString();
+        var listOriginal = new List<CircleDataModel>()
+        {
+            new(id, storekeeperId, "name 1", "desc", [(new CircleMaterialDataModel (id, _material.Id, 1))], []),
+            new(Guid.NewGuid().ToString(), storekeeperId, "name 2", "desc", [], []),
+            new(Guid.NewGuid().ToString(), storekeeperId, "name 3", "desc", [], []),
+        };
+
+        //Act
+        var list = _circleStorageContract.GetList(_storekeeper.Id);
+        //Assert
+        Assert.That(list, Is.Not.Null);
+        Assert.That(list.Count().Equals(0));
     }
 
 

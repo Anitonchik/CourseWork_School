@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SchoolContracts.BusinessLogicsContracts;
 
-public interface IWorkerBusinessLogicContract
+public interface IWorkerBuisnessLogicContract
 {
     List<WorkerDataModel> GetAllWorkers();
     WorkerDataModel GetWorkerByData(string data);

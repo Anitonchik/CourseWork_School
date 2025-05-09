@@ -1,5 +1,7 @@
-﻿using System;
+﻿using SchoolContracts.Extensions;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,4 +15,22 @@ public class WorkerDataModel(string id, string fio, string login, string passwor
     public string Login { get; private set; } = login;
     public string Password { get; private set; } = password;
     public string Mail { get; private set; } = mail;
+
+    public void Validate()
+    {
+        if (Id.IsEmpty())
+            throw new ValidationException("Field Id is empty");
+
+        if (!Id.IsGuid())
+            throw new ValidationException("The value in the field Id is not a unique identifier");
+
+        if (FIO.IsEmpty())
+            throw new ValidationException("Field FIO is empty");
+
+        if (Password.IsEmpty())
+            throw new ValidationException("Field Password is empty");
+
+        if (Mail.IsEmpty())
+            throw new ValidationException("Field Mail is empty");
+    }
 }

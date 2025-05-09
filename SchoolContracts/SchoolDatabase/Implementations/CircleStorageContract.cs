@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using NUnit.Framework.Internal;
 using SchoolContracts.DataModels;
 using SchoolContracts.Exceptions;
 using SchoolContracts.ModelsForReports;
@@ -23,11 +22,11 @@ public class CircleStorageContract : ICircleStorageContract
         _mapper = new Mapper(configuration);
     }
 
-    public List<CircleDataModel> GetList()
+    public List<CircleDataModel> GetList(string storekeeperId)
     {
         try
         {
-            return [.. _dbContext.Circles.Select(x => _mapper.Map<CircleDataModel>(x))];
+            return [.. _dbContext.Circles.Where(x => x.StorekeeperId == storekeeperId).Select(x => _mapper.Map<CircleDataModel>(x))];
         }
         catch (Exception ex)
         {
@@ -36,11 +35,12 @@ public class CircleStorageContract : ICircleStorageContract
         }
     }
 
-    public List<CirclesWithInterestsWithMedals> GetCirclesWithInterestsWithMedals(DateTime fromDate, DateTime toDate)
+    public List<CirclesWithInterestsWithMedals> GetCirclesWithInterestsWithMedals(string storekeeperId, DateTime fromDate, DateTime toDate)
     {
         var sql = $"SELECT c.\"CircleName\" as \"CircleName\", c.\"Description\" as \"CircleDescription\", " +
             $"i.\"InterestName\" as \"InterestName\", md.\"MedalName\" as \"MedalName\" " +
             $"FROM \"Circles\" c" +
+            $"JOIN \"Storekeepers\" st ON st.\"Id\" = c.\"StorekeeperId\" " +
             $"JOIN \"CircleMaterials\" cm ON c.\"Id\" = cm.\"CircleId\" " +
             $"JOIN \"Materials\" mt ON cm.\"MaterialId\" = mt.\"Id\" " +
             $"JOIN \"Medals\" md ON md.\"MaterialId\" = cm.\"MaterialId\" " +
@@ -48,7 +48,7 @@ public class CircleStorageContract : ICircleStorageContract
             $"JOIN \"Interests\" i ON i.\"Id\" = im.\"InterestId\" " +
             $"JOIN \"LessonInterests\" li ON li.\"InterestId\" = i.\"Id\" " +
             $"JOIN \"Lessons\" l ON l.\"Id\" = li.\"LessonId\" " +
-            $"WHERE(l.\"LessonDate\" between {fromDate} and {toDate});";
+            $"WHERE(st.\"Id\" = '{storekeeperId}' AND l.\"LessonDate\" between {fromDate} and {toDate});";
 
         return _dbContext.Set<CirclesWithInterestsWithMedals>().FromSqlRaw(sql).ToList();
 
