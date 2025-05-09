@@ -38,7 +38,7 @@ public class InterestStorageContract:IInterestStorageContract
             throw new Exception();
         }
     }
-    public List<InterestReportDataModel> GetInterestReport(string workerId,DateTime startDate, DateTime endDate)
+    public List<InterestsWithAchievementsWithCircles> GetInterestsWithAchievementsWithCircles(string workerId,DateTime startDate, DateTime endDate)
     {
        /* var sql = $"SELECT c.\"CircleName\" as \"CircleName\", c.\"Description\" as \"CircleDescription\", " +
     $"i.\"InterestName\" as \"InterestName\", md.\"MedalName\" as \"MedalName\" " +
@@ -86,7 +86,7 @@ public class InterestStorageContract:IInterestStorageContract
           $"JOIN \"Circles\" c ON lc.\"CircleId\" = c.\"Id\" " +
           $"WHERE wo.\"Id\" = '{workerId}' AND  l.\"LessonDate\" BETWEEN {startDate} AND {endDate};";
 
-            return _dbContext.Set<InterestReportDataModel>().FromSqlRaw(sql).ToList();
+            return _dbContext.Set<InterestsWithAchievementsWithCircles>().FromSqlRaw(sql).ToList();
             /*return reportData.Select(x => _mapper.Map<InterestReportDataModel>(new
             {
                 x.InterestName,

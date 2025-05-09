@@ -118,16 +118,14 @@ public static class SchoolDbContextExtensions
         return interestMaterial;
     }
 
-    public static Lesson InsertAndReturnLesson(this SchoolDbContext dbContext, string? id = null, string? workerId = null,
-        string? achievementId = null, string lessonName = "name", string description = "desc")
+    public static Lesson InsertAndReturnLesson(this SchoolDbContext dbContext, string? id = null, string? workerId = null, string lessonName = "name", DateTime? lessonDate = null,string description = "desc")
     {
         var lesson = new Lesson()
         {
             Id = id ?? Guid.NewGuid().ToString(),
             WorkerId = workerId ?? Guid.NewGuid().ToString(),
-            AchievementId = achievementId ?? Guid.NewGuid().ToString(),
             LessonName = lessonName,
-            LessonDate = DateTime.UtcNow,
+            LessonDate = lessonDate ?? DateTime.UtcNow,
             Description = description
         };
         dbContext.Lessons.Add(lesson);
@@ -162,12 +160,13 @@ public static class SchoolDbContextExtensions
     }
 
     public static Achievement InsertAndReturnAchievement(this SchoolDbContext dbContext, string? id = null, 
-        string? workerId = null, string achievementName = "name", string description = "description")
+        string? workerId = null, string? lessonId=null, string achievementName = "name", string description = "description")
     {
         var achievement = new Achievement()
         {
             Id = Guid.NewGuid().ToString(),
             WorkerId = workerId ?? Guid.NewGuid().ToString(),
+            LessonId = lessonId ?? Guid.NewGuid().ToString(),
             AchievementName = achievementName,
             Description = description
         };

@@ -65,7 +65,6 @@ public class CircleStorageContractTests : BaseStorageContractTests
         {
             Id = Guid.NewGuid().ToString(),
             WorkerId = _worker.Id,
-            AchievementId = _achievement.Id,
             LessonName = "name",
             LessonDate = DateTime.Now,
             Description = "description"
@@ -135,7 +134,7 @@ public class CircleStorageContractTests : BaseStorageContractTests
         var list = _circleStorageContract.GetList(_storekeeper.Id);
         Assert.That(list.Count, Is.EqualTo(3));
     }
-
+   
     [Test]
     public void GetCirclesWithInterestsWithMedals()
     {
@@ -153,17 +152,17 @@ public class CircleStorageContractTests : BaseStorageContractTests
         var circleMaterial4 = SchoolDbContext.InsertAndReturnCircleMaterial(circleId: circle2.Id, materialId: material3.Id);
         var circleMaterial5 = SchoolDbContext.InsertAndReturnCircleMaterial(circleId: circle3.Id, materialId: material2.Id);
 
-        var lesson1 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, achievementId: _achievement.Id, lessonName: "name 1");
-        var lesson2 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, achievementId: _achievement.Id, lessonName: "name 2");
-        var lesson3 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, achievementId: _achievement.Id, lessonName: "name 3");
+        var lesson1 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id,  lessonName: "name 1");
+        var lesson2 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id,  lessonName: "name 2");
+        var lesson3 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id,  lessonName: "name 3");
 
         var lessonCircle1 = SchoolDbContext.InsertAndReturnLessonCircle(lesson3.Id, circle2.Id);
         var lessonCircle2 = SchoolDbContext.InsertAndReturnLessonCircle(lesson3.Id, circle3.Id);
         var lessonCircle3 = SchoolDbContext.InsertAndReturnLessonCircle(lesson3.Id, circle1.Id);
 
         var medal1 = SchoolDbContext.InsertAndReturnMedal(storekeeperId: _storekeeper.Id, materialId: material1.Id, medalName: "name 1");
-        var medal1 = SchoolDbContext.InsertAndReturnMedal(storekeeperId: _storekeeper.Id, materialId: material1.Id, medalName: "name 1");
-        var medal1 = SchoolDbContext.InsertAndReturnMedal(storekeeperId: _storekeeper.Id, materialId: material1.Id, medalName: "name 1");
+        //var medal1 = SchoolDbContext.InsertAndReturnMedal(storekeeperId: _storekeeper.Id, materialId: material1.Id, medalName: "name 1");
+        //var medal1 = SchoolDbContext.InsertAndReturnMedal(storekeeperId: _storekeeper.Id, materialId: material1.Id, medalName: "name 1");
     }
 
     [Test]

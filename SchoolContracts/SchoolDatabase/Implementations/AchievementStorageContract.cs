@@ -32,7 +32,7 @@ public class AchievementStorageContract : IAchievementStorageContract
     {
         try
         {
-            var query = _dbContext.Achievements.Include(x => x.WorkerId).Where(x => x.WorkerId == workerId).AsQueryable();
+            var query = _dbContext.Achievements.Where(x => x.WorkerId == workerId).AsQueryable();
             return [.. query.Select(x => _mapper.Map<AchievementDataModel>(x))];
         }
         catch (Exception ex)
@@ -71,7 +71,7 @@ public class AchievementStorageContract : IAchievementStorageContract
             var lesson = _lessonStorageContract.GetElementById(lessonId);
             var achievement = GetElementById(achievementId);
 
-            var newAchievement = new AchievementDataModel(achievement.Id, achievement.WorkerId, achievement.Id, achievement.LessonName,
+            var newAchievement = new AchievementDataModel(achievement.Id, achievement.WorkerId, achievement.Id, achievement.AchievementName,
                 achievement.Description);
             UpdElement(newAchievement);
         }

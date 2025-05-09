@@ -63,7 +63,7 @@ public class LessonStorageContract: ILessonStorageContract
                        $"JOIN \"Interests\" i ON li.\"InterestId\" = i.\"Id\" " +
                        $"JOIN \"InterestMaterials\" im ON i.\"Id\" = im.\"InterestId\" " +
                        $"JOIN \"Materials\" m ON im.\"MaterialId\" = m.\"Id\" " +
-                       $"WHERE (wo.\"Id\" = '{workerId}' AND  m.\"Id\" = '{materialId}';";
+                       $"WHERE (wo.\"Id\" = '{workerId}' AND  m.\"Id\" = '{materialId}');";
 
             return _dbContext.Set<LessonByMaterial>().FromSqlRaw(sql).ToList();
         }

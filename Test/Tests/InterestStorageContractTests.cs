@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SchoolContracts.DataModels;
 using SchoolContracts.Exceptions;
+using SchoolContracts.ModelsForReports;
 using SchoolContracts.StoragesContracts;
 using SchoolDatabase.Implementations;
 using SchoolDatabase.Models;
@@ -16,6 +17,7 @@ public class InterestStorageContractTests : BaseStorageContractTests
 {
     private InterestStorageContract _interestStorageContract;
     private Worker _worker;
+    private Storekeeper _storekeeper;
     [SetUp]
     public void Setup()
     {
@@ -29,6 +31,15 @@ public class InterestStorageContractTests : BaseStorageContractTests
             Mail = "mail"
         };
         SchoolDbContext.Workers.Add(_worker);
+        _storekeeper = new Storekeeper()
+        {
+            Id = Guid.NewGuid().ToString(),
+            FIO = "fio",
+            Login = "login",
+            Password = "password",
+            Mail = "mail"
+        };
+        SchoolDbContext.Storekeepers.Add(_storekeeper);
     }
 
     [TearDown]
@@ -36,6 +47,11 @@ public class InterestStorageContractTests : BaseStorageContractTests
     {
         SchoolDbContext.Database.ExecuteSqlRaw("TRUNCATE \"Interests\" CASCADE; ");
         SchoolDbContext.Database.ExecuteSqlRaw("TRUNCATE \"Workers\" CASCADE; ");
+        SchoolDbContext.Database.ExecuteSqlRaw("TRUNCATE \"Storekeepers\" CASCADE; ");
+        SchoolDbContext.Database.ExecuteSqlRaw("TRUNCATE \"Lessons\" CASCADE; ");
+        SchoolDbContext.Database.ExecuteSqlRaw("TRUNCATE \"Interests\" CASCADE; ");
+        SchoolDbContext.Database.ExecuteSqlRaw("TRUNCATE \"Achievements\" CASCADE; ");
+        SchoolDbContext.Database.ExecuteSqlRaw("TRUNCATE \"Circles\" CASCADE; ");
     }
     [Test]
     public void TestAddLesson()
@@ -81,8 +97,42 @@ public class InterestStorageContractTests : BaseStorageContractTests
         _interestStorageContract.AddElement(Lesson2);
         _interestStorageContract.AddElement(Lesson3);
 
-        var list = _interestStorageContract.GetList();
+        var list = _interestStorageContract.GetList(_worker.Id);
         Assert.That(list.Count, Is.EqualTo(3));
+    }
+
+    
+    [Test]
+    public void GetInterestsWithAchievementsWithCircles()
+    {
+        var interest1 = SchoolDbContext.InsertAndReturnInterest(workerId: _worker.Id, interestName: "name 1");
+        var interest2 = SchoolDbContext.InsertAndReturnInterest(workerId: _worker.Id, interestName: "name 2");
+        var interest3 = SchoolDbContext.InsertAndReturnInterest(workerId: _worker.Id, interestName: "name 3");
+
+        var lesson1 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, lessonName: "name 1", lessonDate: DateTime.UtcNow);
+        var lesson2 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, lessonName: "name 2", lessonDate: DateTime.UtcNow.AddDays(+1));
+        var lesson3 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, lessonName: "name 3", lessonDate: DateTime.UtcNow.AddDays(+2));
+
+        var lessonInterest1 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson1.Id, interestId: interest3.Id);
+        var lessonInterest2 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson2.Id, interestId: interest2.Id);
+        var lessonInterest3 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson3.Id, interestId: interest1.Id);
+        var lessonInterest4 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson2.Id, interestId: interest3.Id);
+        var lessonInterest5 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson3.Id, interestId: interest2.Id);
+
+        var circle1 = SchoolDbContext.InsertAndReturnCircle(storekeeperId: _storekeeper.Id, circleName: "name 1");
+        var circle2 = SchoolDbContext.InsertAndReturnCircle(storekeeperId: _storekeeper.Id, circleName: "name 2");
+        var circle3 = SchoolDbContext.InsertAndReturnCircle(storekeeperId: _storekeeper.Id, circleName: "name 3");
+
+        var lessonCircle1 = SchoolDbContext.InsertAndReturnLessonCircle(lesson3.Id, circle2.Id);
+        var lessonCircle2 = SchoolDbContext.InsertAndReturnLessonCircle(lesson3.Id, circle3.Id);
+        var lessonCircle3 = SchoolDbContext.InsertAndReturnLessonCircle(lesson3.Id, circle1.Id);
+
+        var achievement1 = SchoolDbContext.InsertAndReturnAchievement(workerId: _worker.Id, lessonId: lesson1.Id, achievementName: "name 1");
+        var achievement2 = SchoolDbContext.InsertAndReturnAchievement(workerId: _worker.Id, lessonId: lesson1.Id, achievementName: "name 1");
+        var achievement3 = SchoolDbContext.InsertAndReturnAchievement(workerId: _worker.Id, lessonId: lesson1.Id, achievementName: "name 1");
+
+        var results = _interestStorageContract.GetInterestsWithAchievementsWithCircles(_worker.Id, DateTime.UtcNow.AddDays(-1), DateTime.UtcNow.AddDays(+1));
+        Assert.That(results.Count, Is.EqualTo(2));
     }
     private void AssertElement(InterestDataModel actual, InterestDataModel expected)
     {
