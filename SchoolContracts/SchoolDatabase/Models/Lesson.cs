@@ -15,12 +15,10 @@ public class Lesson
     [Key]
     public required string Id { get; set; } = Guid.NewGuid().ToString();
     public required string WorkerId { get; set; }
-    public required string AchievementId { get; set; }
     public required string LessonName { get; set; }
     public DateTime LessonDate { get; set; }
     public string Description { get; set; }
     public Worker? Worker { get; set; }
-    public Achievement? Achievement { get; set; }
 
     [ForeignKey("LessonId")]
     public List<LessonInterest>? LessonInterests { get; set; }

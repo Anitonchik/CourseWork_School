@@ -17,14 +17,16 @@ public class AchievementStorageContract : IAchievementStorageContract
 {
     private readonly SchoolDbContext _dbContext;
     private readonly Mapper _mapper;
+    private readonly LessonStorageContract? _lessonStorageContract;
 
-    public AchievementStorageContract(SchoolDbContext dbContext)
+    public AchievementStorageContract(SchoolDbContext dbContext, LessonStorageContract? lessonStorageContract)
     {
         _dbContext = dbContext;
 
         var configuration = new MapperConfiguration(cfg => cfg.AddMaps(typeof(Achievement)));
 
         _mapper = new Mapper(configuration);
+        _lessonStorageContract = lessonStorageContract;
     }
      public List<AchievementDataModel> GetList(string workerId)
     {
@@ -57,12 +59,26 @@ public class AchievementStorageContract : IAchievementStorageContract
             throw new Exception();
         }
     }
-     public AchievementDataModel? GetElementByName(string name)
+    public void CreateConnectWithLesson(string achievementId, string lessonId)
     {
         try
         {
-            return
-            _mapper.Map<AchievementDataModel>(_dbContext.Achievements.FirstOrDefault(x => x.AchievementName == name));
+            if (_lessonStorageContract == null)
+            {
+                throw new Exception("");
+            }
+
+            var lesson = _lessonStorageContract.GetElementById(lessonId);
+            var achievement = GetElementById(achievementId);
+
+            var newAchievement = new AchievementDataModel(achievement.Id, achievement.WorkerId, achievement.Id, achievement.LessonName,
+                achievement.Description);
+            UpdElement(newAchievement);
+        }
+        catch (ElementNotFoundException)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw;
         }
         catch (Exception ex)
         {

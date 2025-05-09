@@ -33,7 +33,7 @@ public class LessonStorageContract: ILessonStorageContract
     {
         try
         {
-            return [.. _dbContext.Lessons.Select(x => _mapper.Map<LessonDataModel>(x))];
+            return [.. _dbContext.Lessons.Where(x => x.WorkerId == workerId).Select(x => _mapper.Map<LessonDataModel>(x))];
         }
         catch (Exception ex)
         {

@@ -3,10 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SchoolContracts.DataModels;
 
-public class AchievementDataModel(string id, string workerId, string achievementName, string description)
+public class AchievementDataModel(string id, string workerId,string lessonId, string achievementName, string description)
 {
     public string Id { get; private set; } = id;
     public string WorkerId { get; private set; } = workerId;
+    public string? LessonId { get; private set; } = lessonId;
     public string AchievementName { get; private set; } = achievementName;
     public DateTime AchievementDate { get; private set; } = DateTime.UtcNow;
     public string Description { get; private set; } = description;
