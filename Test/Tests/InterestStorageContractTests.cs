@@ -109,9 +109,9 @@ public class InterestStorageContractTests : BaseStorageContractTests
         var interest2 = SchoolDbContext.InsertAndReturnInterest(workerId: _worker.Id, interestName: "name 2");
         var interest3 = SchoolDbContext.InsertAndReturnInterest(workerId: _worker.Id, interestName: "name 3");
 
-        var lesson1 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, lessonName: "name 1", lessonDate: DateTime.UtcNow);
-        var lesson2 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, lessonName: "name 2", lessonDate: DateTime.UtcNow.AddDays(+1));
-        var lesson3 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, lessonName: "name 3", lessonDate: DateTime.UtcNow.AddDays(+2));
+        var lesson1 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, lessonName: "name 1");
+        var lesson2 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, lessonName: "name 2");
+        var lesson3 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, lessonName: "name 3");
 
         var lessonInterest1 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson1.Id, interestId: interest3.Id);
         var lessonInterest2 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson2.Id, interestId: interest2.Id);
@@ -128,11 +128,11 @@ public class InterestStorageContractTests : BaseStorageContractTests
         var lessonCircle3 = SchoolDbContext.InsertAndReturnLessonCircle(lesson3.Id, circle1.Id);
 
         var achievement1 = SchoolDbContext.InsertAndReturnAchievement(workerId: _worker.Id, lessonId: lesson1.Id, achievementName: "name 1");
-        var achievement2 = SchoolDbContext.InsertAndReturnAchievement(workerId: _worker.Id, lessonId: lesson1.Id, achievementName: "name 1");
-        var achievement3 = SchoolDbContext.InsertAndReturnAchievement(workerId: _worker.Id, lessonId: lesson1.Id, achievementName: "name 1");
+        var achievement2 = SchoolDbContext.InsertAndReturnAchievement(workerId: _worker.Id, lessonId: lesson2.Id, achievementName: "name 2");
+        var achievement3 = SchoolDbContext.InsertAndReturnAchievement(workerId: _worker.Id, lessonId: lesson3.Id, achievementName: "name 3");
 
         var results = _interestStorageContract.GetInterestsWithAchievementsWithCircles(_worker.Id, DateTime.UtcNow.AddDays(-1), DateTime.UtcNow.AddDays(+1));
-        Assert.That(results.Count, Is.EqualTo(2));
+        Assert.That(results.Count, Is.EqualTo(6));
     }
     private void AssertElement(InterestDataModel actual, InterestDataModel expected)
     {

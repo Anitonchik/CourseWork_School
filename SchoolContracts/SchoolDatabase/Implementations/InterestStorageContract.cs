@@ -53,8 +53,7 @@ public class InterestStorageContract:IInterestStorageContract
     $"WHERE(l.\"LessonDate\" between {fromDate} and {toDate});";
 
         return _dbContext.Set<CirclesWithInterestsWithMedals>().FromSqlRaw(sql).ToList();*/
-        try
-        {
+ 
             /*var reportData = from interest in _dbContext.Interests
                              join lessonInterest in _dbContext.LessonInterests on interest.Id equals lessonInterest.InterestId
                              join lesson in _dbContext.Lessons on lessonInterest.LessonId equals lesson.Id
@@ -81,10 +80,10 @@ public class InterestStorageContract:IInterestStorageContract
           $"JOIN \"Workers\" wo ON wo.\"Id\" = i.\"WorkerId\" " +
           $"JOIN \"LessonInterests\" li ON i.\"Id\" = li.\"InterestId\" " +
           $"JOIN \"Lessons\" l ON li.\"LessonId\" = l.\"Id\" " +
-          $"JOIN \"Achievements\" a ON l.\"AchievementId\" = a.\"Id\" " +
+          $"JOIN \"Achievements\" a ON a.\"LessonId\" = l.\"Id\" " +
           $"JOIN \"LessonCircles\" lc ON l.\"Id\" = lc.\"LessonId\" " +
           $"JOIN \"Circles\" c ON lc.\"CircleId\" = c.\"Id\" " +
-          $"WHERE wo.\"Id\" = '{workerId}' AND  l.\"LessonDate\" BETWEEN {startDate} AND {endDate};";
+          $"WHERE (wo.\"Id\" = '{workerId}' AND  l.\"LessonDate\" BETWEEN '{startDate}' AND '{endDate}');";
 
             return _dbContext.Set<InterestsWithAchievementsWithCircles>().FromSqlRaw(sql).ToList();
             /*return reportData.Select(x => _mapper.Map<InterestReportDataModel>(new
@@ -95,11 +94,7 @@ public class InterestStorageContract:IInterestStorageContract
                 x.Description,
                 x.Date
             })).ToList();*/
-        }
-        catch (Exception ex)
-        {
-            throw new Exception("Error while generating interest report: " + ex.Message);
-        }
+      
     }
 
     public InterestDataModel? GetElementById(string id)
