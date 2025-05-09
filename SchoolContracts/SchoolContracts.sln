@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolContracts", "SchoolCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolDatabase", "SchoolDatabase\SchoolDatabase.csproj", "{FB6E6C44-EC22-4772-AB66-80E3922030F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "..\Test\Test.csproj", "{2C3E325F-8D6B-4151-89DE-C12FE4A5BAD5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolTests", "..\Test\SchoolTests.csproj", "{2C3E325F-8D6B-4151-89DE-C12FE4A5BAD5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolBuisnessLogic", "SchoolBusinessLogic\SchoolBuisnessLogic.csproj", "{5B06D4C1-4FC2-4FA7-A0D6-635E508C4BB3}"
 EndProject

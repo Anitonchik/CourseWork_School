@@ -24,8 +24,7 @@ internal class MaterialStorageContractTests : BaseStorageContractTests
 
         _storekeeper = SchoolDbContext.InsertAndReturnStorekeeper();
         _worker = SchoolDbContext.InsertAndReturnWorker();
-        _lesson = SchoolDbContext.InsertAndReturnLesson(workerId:_worker.Id);
-        _achievement = SchoolDbContext.InsertAndReturnAchievement(workerId: _worker.Id,lessonId:_lesson.Id);
+        _achievement = SchoolDbContext.InsertAndReturnAchievement(workerId: _worker.Id);
     }
 
     [TearDown]

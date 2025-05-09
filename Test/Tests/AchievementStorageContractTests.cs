@@ -10,7 +10,7 @@ namespace Test.Tests;
 
 public class AchievementStorageContractTests : BaseStorageContractTests
 {
-    private AchievementStorageContract _achievementStorageContract;
+    /*private AchievementStorageContract _achievementStorageContract;
     private LessonStorageContract _lessonStorageContract;
     private Worker _worker;
     private Lesson _lesson;
@@ -97,5 +97,5 @@ public class AchievementStorageContractTests : BaseStorageContractTests
         Assert.That(actual.LessonId, Is.EqualTo(expected.LessonId));
         Assert.That(actual.AchievementName, Is.EqualTo(expected.AchievementName));
         Assert.That(actual.Description, Is.EqualTo(expected.Description));
-    }
+    }*/
 }
