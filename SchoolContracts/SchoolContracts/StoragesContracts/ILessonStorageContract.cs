@@ -11,8 +11,8 @@ namespace SchoolContracts.StoragesContracts;
 
 public interface ILessonStorageContract
 {
-    List<LessonDataModel> GetList();
-    List<LessonByMaterial> GetLessonsByMaterial(string materialId);
+    List<LessonDataModel> GetList(string workerId);
+    List<LessonByMaterial> GetLessonsByMaterial(string workerId,string materialId);
     LessonDataModel? GetElementById(string id);
     LessonDataModel? GetElementByName(string name);
     void AddElement(LessonDataModel lessonDataModel);

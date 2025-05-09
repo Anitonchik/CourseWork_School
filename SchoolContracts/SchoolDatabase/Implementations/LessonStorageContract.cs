@@ -29,7 +29,7 @@ public class LessonStorageContract: ILessonStorageContract
 
         _mapper = new Mapper(configuration);
     }
-    public List<LessonDataModel> GetList()
+    public List<LessonDataModel> GetList(string workerId)
     {
         try
         {
@@ -41,7 +41,7 @@ public class LessonStorageContract: ILessonStorageContract
             throw new Exception();
         }
     }
-    public List<LessonByMaterial> GetLessonsByMaterial(string materialId)
+    public List<LessonByMaterial> GetLessonsByMaterial(string workerId,string materialId)
     {
         /*try
         {
@@ -58,11 +58,12 @@ public class LessonStorageContract: ILessonStorageContract
         {
             var sql = $"SELECT   m.\"MaterialName\" as \"MaterialName\",l.\"LessonName\" as \"LessonName\", l.\"Description\" as \"LessonDescription\" " +
                        $"FROM \"Lessons\" l " +
+                       $"JOIN \"Workers\" wo ON wo.\"Id\" = l.\"WorkerId\" " +
                        $"JOIN \"LessonInterests\" li ON l.\"Id\" = li.\"LessonId\" " +
                        $"JOIN \"Interests\" i ON li.\"InterestId\" = i.\"Id\" " +
                        $"JOIN \"InterestMaterials\" im ON i.\"Id\" = im.\"InterestId\" " +
                        $"JOIN \"Materials\" m ON im.\"MaterialId\" = m.\"Id\" " +
-                       $"WHERE m.\"Id\" = '{materialId}';";
+                       $"WHERE (wo.\"Id\" = '{workerId}' AND  m.\"Id\" = '{materialId}';";
 
             return _dbContext.Set<LessonByMaterial>().FromSqlRaw(sql).ToList();
         }

@@ -9,7 +9,7 @@ namespace SchoolContracts.StoragesContracts;
 
 public interface IAchievementStorageContract
 {
-    List<AchievementDataModel> GetList();
+    List<AchievementDataModel> GetList(string workerId);
     AchievementDataModel? GetElementById(string id);
     AchievementDataModel? GetElementByName(string name);
     void AddElement(AchievementDataModel achievementDataModel);

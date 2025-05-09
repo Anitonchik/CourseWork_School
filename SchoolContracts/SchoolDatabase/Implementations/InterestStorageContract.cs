@@ -26,11 +26,11 @@ public class InterestStorageContract:IInterestStorageContract
 
         _mapper = new Mapper(configuration);
     }
-    public List<InterestDataModel> GetList()
+    public List<InterestDataModel> GetList(string workerId)
     {
         try
         {
-            return [.. _dbContext.Interests.Select(x => _mapper.Map<InterestDataModel>(x))];
+            return [.. _dbContext.Interests.Where(x => x.WorkerId == workerId).Select(x => _mapper.Map<InterestDataModel>(x))];
         }
         catch (Exception ex)
         {
@@ -38,7 +38,7 @@ public class InterestStorageContract:IInterestStorageContract
             throw new Exception();
         }
     }
-    public List<InterestReportDataModel> GetInterestReport(DateTime startDate, DateTime endDate)
+    public List<InterestReportDataModel> GetInterestReport(string workerId,DateTime startDate, DateTime endDate)
     {
        /* var sql = $"SELECT c.\"CircleName\" as \"CircleName\", c.\"Description\" as \"CircleDescription\", " +
     $"i.\"InterestName\" as \"InterestName\", md.\"MedalName\" as \"MedalName\" " +
@@ -78,12 +78,13 @@ public class InterestStorageContract:IInterestStorageContract
           $"i.\"Description\" as \"Description\", " +
           $"l.\"LessonDate\" as \"Date\" " +
           $"FROM \"Interests\" i " +
+          $"JOIN \"Workers\" wo ON wo.\"Id\" = i.\"WorkerId\" " +
           $"JOIN \"LessonInterests\" li ON i.\"Id\" = li.\"InterestId\" " +
           $"JOIN \"Lessons\" l ON li.\"LessonId\" = l.\"Id\" " +
           $"JOIN \"Achievements\" a ON l.\"AchievementId\" = a.\"Id\" " +
           $"JOIN \"LessonCircles\" lc ON l.\"Id\" = lc.\"LessonId\" " +
           $"JOIN \"Circles\" c ON lc.\"CircleId\" = c.\"Id\" " +
-          $"WHERE l.\"LessonDate\" BETWEEN {startDate} AND {endDate};";
+          $"WHERE wo.\"Id\" = '{workerId}' AND  l.\"LessonDate\" BETWEEN {startDate} AND {endDate};";
 
             return _dbContext.Set<InterestReportDataModel>().FromSqlRaw(sql).ToList();
             /*return reportData.Select(x => _mapper.Map<InterestReportDataModel>(new

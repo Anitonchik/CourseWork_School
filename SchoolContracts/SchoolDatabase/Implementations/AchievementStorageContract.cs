@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using SchoolContracts.DataModels;
 using SchoolContracts.Exceptions;
 using SchoolContracts.StoragesContracts;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static NUnit.Framework.Constraints.Tolerance;
 
 namespace SchoolDatabase.Implementations;
 
@@ -24,11 +26,12 @@ public class AchievementStorageContract : IAchievementStorageContract
 
         _mapper = new Mapper(configuration);
     }
-     public List<AchievementDataModel> GetList()
+     public List<AchievementDataModel> GetList(string workerId)
     {
         try
         {
-            return [.._dbContext.Achievements.Select(x => _mapper.Map<AchievementDataModel>(x))];
+            var query = _dbContext.Achievements.Include(x => x.WorkerId).Where(x => x.WorkerId == workerId).AsQueryable();
+            return [.. query.Select(x => _mapper.Map<AchievementDataModel>(x))];
         }
         catch (Exception ex)
         {
