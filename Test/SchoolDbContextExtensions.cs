@@ -160,12 +160,13 @@ public static class SchoolDbContextExtensions
     }
 
     public static Achievement InsertAndReturnAchievement(this SchoolDbContext dbContext, string? id = null, 
-        string? workerId = null, string achievementName = "name", string description = "description")
+        string? workerId = null, string? lessonId = null,string achievementName = "name", string description = "description")
     {
         var achievement = new Achievement()
         {
             Id = Guid.NewGuid().ToString(),
             WorkerId = workerId ?? Guid.NewGuid().ToString(),
+            LessonId = lessonId ?? Guid.NewGuid().ToString(),
             AchievementName = achievementName,
             Description = description
         };
