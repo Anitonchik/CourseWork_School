@@ -14,8 +14,8 @@ builder.Services.AddSingleton(loggerFactory.CreateLogger("Any"));
 builder.Services.AddOpenApi();
 
 
-builder.Services.AddAuthentication("Bearer")  // добавление сервисов аутентификации
-    .AddJwtBearer();      // подключение аутентификации с помощью jwt-токенов
+//builder.Services.AddAuthentication("Bearer")  // добавление сервисов аутентификации
+ //   .AddJwtBearer();      // подключение аутентификации с помощью jwt-токенов
 builder.Services.AddAuthorization();            // добавление сервисов авторизации
 
 var app = builder.Build();

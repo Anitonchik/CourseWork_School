@@ -11,7 +11,7 @@ namespace SchoolContracts.StoragesContracts;
 public interface IInterestStorageContract
 {
     List<InterestDataModel> GetList(string workerId);
-    List<InterestsWithAchievementsWithCircles> GetInterestsWithAchievementsWithCircles(string workerId,DateTime startDate, DateTime endDate);
+   // List<InterestsWithAchievementsWithCircles> GetInterestsWithAchievementsWithCircles(string workerId,DateTime startDate, DateTime endDate);
     InterestDataModel? GetElementById(string id);
     InterestDataModel? GetElementByName(string name);
     void AddElement(InterestDataModel interestDataModel);
