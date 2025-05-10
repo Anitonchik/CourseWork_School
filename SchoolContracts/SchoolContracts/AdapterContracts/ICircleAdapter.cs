@@ -5,13 +5,13 @@ namespace SchoolContracts.AdapterContracts;
 
 public interface ICircleAdapter
 {
-    CircleOperationResponse GetList();
+    CircleOperationResponse GetList(string storekeeperId);
 
-    CircleOperationResponse GetElement(string data);
+    CircleOperationResponse GetElement(string storekeeperId, string data);
 
-    CircleOperationResponse RegisterCircle(CircleBindingModel circleModel);
+    CircleOperationResponse RegisterCircle(string storekeeperId, CircleBindingModel circleModel);
 
-    CircleOperationResponse ChangeCircleInfo(CircleBindingModel circleModel);
+    CircleOperationResponse ChangeCircleInfo(string storekeeperId, CircleBindingModel circleModel);
 
-    CircleOperationResponse RemoveCircle(string id);
+    CircleOperationResponse RemoveCircle(string storekeeperId, string id);
 }
