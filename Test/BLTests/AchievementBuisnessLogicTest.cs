@@ -27,7 +27,7 @@ internal class AchievementBuisnessLogicTest : BaseStorageContractTests
     public void OneTimeSetUp()
     {
         _achievementStorageContract = new Mock<IAchievementStorageContract>();
-       // _achievementBuisnessLogicContract = new AchievementBuisnessLogicContract(_achievementStorageContract.Object, new Mock<ILogger>().Object);
+        _achievementBuisnessLogicContract = new AchievementBuisnessLogicContract(_achievementStorageContract.Object, new Mock<ILogger>().Object);
 
         _worker = SchoolDbContext.InsertAndReturnWorker();
         _lesson = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id);
