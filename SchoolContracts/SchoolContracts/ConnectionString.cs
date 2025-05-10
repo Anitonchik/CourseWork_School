@@ -1,4 +1,6 @@
-﻿namespace SchoolContracts;
+﻿using SchoolContracts.Infrastructure;
+
+namespace SchoolContracts;
 
 public class ConnectionString : IConnectionString
 {

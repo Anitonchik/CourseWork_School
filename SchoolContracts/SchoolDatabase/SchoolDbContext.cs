@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SchoolContracts;
+using SchoolContracts.Infrastructure;
 using SchoolContracts.ModelsForReports;
 using SchoolDatabase.Models;
 using SchoolDatabase.Models.ModelsForReports;

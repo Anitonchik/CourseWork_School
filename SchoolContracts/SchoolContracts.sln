@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolTests", "..\Test\Scho
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolBuisnessLogic", "SchoolBusinessLogic\SchoolBuisnessLogic.csproj", "{5B06D4C1-4FC2-4FA7-A0D6-635E508C4BB3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolWebApi", "SchoolWebApi\SchoolWebApi.csproj", "{B2AF27A7-5D80-4850-A668-BF56BA702255}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{5B06D4C1-4FC2-4FA7-A0D6-635E508C4BB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B06D4C1-4FC2-4FA7-A0D6-635E508C4BB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B06D4C1-4FC2-4FA7-A0D6-635E508C4BB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2AF27A7-5D80-4850-A668-BF56BA702255}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2AF27A7-5D80-4850-A668-BF56BA702255}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2AF27A7-5D80-4850-A668-BF56BA702255}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2AF27A7-5D80-4850-A668-BF56BA702255}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
