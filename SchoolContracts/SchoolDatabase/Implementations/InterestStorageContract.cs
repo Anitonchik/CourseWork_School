@@ -40,38 +40,39 @@ public class InterestStorageContract/*: IInterestStorageContract*/
     }
     public List<InterestsWithAchievementsWithCircles> GetInterestsWithAchievementsWithCircles(string workerId,DateTime startDate, DateTime endDate)
     {
-       /* var sql = $"SELECT c.\"CircleName\" as \"CircleName\", c.\"Description\" as \"CircleDescription\", " +
-    $"i.\"InterestName\" as \"InterestName\", md.\"MedalName\" as \"MedalName\" " +
-    $"FROM \"Circles\" c" +
-    $"JOIN \"CircleMaterials\" cm ON c.\"Id\" = cm.\"CircleId\" " +
-    $"JOIN \"Materials\" mt ON cm.\"MaterialId\" = mt.\"Id\" " +
-    $"JOIN \"Medals\" md ON md.\"MaterialId\" = cm.\"MaterialId\" " +
-    $"JOIN \"InterestMaterials\" im ON im.\"MaterialId\" = mt.\"Id\" " +
-    $"JOIN \"Interests\" i ON i.\"Id\" = im.\"InterestId\" " +
-    $"JOIN \"LessonInterests\" li ON li.\"InterestId\" = i.\"Id\" " +
-    $"JOIN \"Lessons\" l ON l.\"Id\" = li.\"LessonId\" " +
-    $"WHERE(l.\"LessonDate\" between {fromDate} and {toDate});";
+        /* var sql = $"SELECT c.\"CircleName\" as \"CircleName\", c.\"Description\" as \"CircleDescription\", " +
+     $"i.\"InterestName\" as \"InterestName\", md.\"MedalName\" as \"MedalName\" " +
+     $"FROM \"Circles\" c" +
+     $"JOIN \"CircleMaterials\" cm ON c.\"Id\" = cm.\"CircleId\" " +
+     $"JOIN \"Materials\" mt ON cm.\"MaterialId\" = mt.\"Id\" " +
+     $"JOIN \"Medals\" md ON md.\"MaterialId\" = cm.\"MaterialId\" " +
+     $"JOIN \"InterestMaterials\" im ON im.\"MaterialId\" = mt.\"Id\" " +
+     $"JOIN \"Interests\" i ON i.\"Id\" = im.\"InterestId\" " +
+     $"JOIN \"LessonInterests\" li ON li.\"InterestId\" = i.\"Id\" " +
+     $"JOIN \"Lessons\" l ON l.\"Id\" = li.\"LessonId\" " +
+     $"WHERE(l.\"LessonDate\" between {fromDate} and {toDate});";
 
-        return _dbContext.Set<CirclesWithInterestsWithMedals>().FromSqlRaw(sql).ToList();*/
+         return _dbContext.Set<CirclesWithInterestsWithMedals>().FromSqlRaw(sql).ToList();*/
+
+        /*var reportData = from interest in _dbContext.Interests
+                         join lessonInterest in _dbContext.LessonInterests on interest.Id equals lessonInterest.InterestId
+                         join lesson in _dbContext.Lessons on lessonInterest.LessonId equals lesson.Id
+                         join achievement in _dbContext.Achievements on lesson.AchievementId equals achievement.Id
+                         join lessonCircle in _dbContext.LessonCircles on lesson.Id equals lessonCircle.LessonId
+                         join circle in _dbContext.Circles on lessonCircle.CircleId equals circle.Id
+                         where lesson.LessonDate >= startDate && lesson.LessonDate <= endDate
+                         select new InterestReportDataModel
+                         {
+                             InterestName = interest.InterestName,
+                             AchievementName = achievement.AchievementName,
+                             CircleName = circle.CircleName,
+                             Description = interest.Description,
+                             Date = lesson.LessonDate
+                         };
+
+         return reportData.ToList();*/
         try
         {
-            /*var reportData = from interest in _dbContext.Interests
-                             join lessonInterest in _dbContext.LessonInterests on interest.Id equals lessonInterest.InterestId
-                             join lesson in _dbContext.Lessons on lessonInterest.LessonId equals lesson.Id
-                             join achievement in _dbContext.Achievements on lesson.AchievementId equals achievement.Id
-                             join lessonCircle in _dbContext.LessonCircles on lesson.Id equals lessonCircle.LessonId
-                             join circle in _dbContext.Circles on lessonCircle.CircleId equals circle.Id
-                             where lesson.LessonDate >= startDate && lesson.LessonDate <= endDate
-                             select new InterestReportDataModel
-                             {
-                                 InterestName = interest.InterestName,
-                                 AchievementName = achievement.AchievementName,
-                                 CircleName = circle.CircleName,
-                                 Description = interest.Description,
-                                 Date = lesson.LessonDate
-                             };
-
-             return reportData.ToList();*/
             var sql = $"SELECT i.\"InterestName\" as \"InterestName\", " +
           $"a.\"AchievementName\" as \"AchievementName\", " +
           $"c.\"CircleName\" as \"CircleName\", " +
@@ -81,10 +82,10 @@ public class InterestStorageContract/*: IInterestStorageContract*/
           $"JOIN \"Workers\" wo ON wo.\"Id\" = i.\"WorkerId\" " +
           $"JOIN \"LessonInterests\" li ON i.\"Id\" = li.\"InterestId\" " +
           $"JOIN \"Lessons\" l ON li.\"LessonId\" = l.\"Id\" " +
-          $"JOIN \"Achievements\" a ON l.\"AchievementId\" = a.\"Id\" " +
+          $"JOIN \"Achievements\" a ON a.\"LessonId\" = l.\"Id\" " +
           $"JOIN \"LessonCircles\" lc ON l.\"Id\" = lc.\"LessonId\" " +
           $"JOIN \"Circles\" c ON lc.\"CircleId\" = c.\"Id\" " +
-          $"WHERE wo.\"Id\" = '{workerId}' AND  l.\"LessonDate\" BETWEEN {startDate} AND {endDate};";
+          $"WHERE (wo.\"Id\" = '{workerId}' AND  l.\"LessonDate\" BETWEEN '{startDate}' AND '{endDate}');";
 
             return _dbContext.Set<InterestsWithAchievementsWithCircles>().FromSqlRaw(sql).ToList();
             /*return reportData.Select(x => _mapper.Map<InterestReportDataModel>(new
@@ -98,8 +99,10 @@ public class InterestStorageContract/*: IInterestStorageContract*/
         }
         catch (Exception ex)
         {
-            throw new Exception("Error while generating interest report: " + ex.Message);
+            _dbContext.ChangeTracker.Clear();
+            throw new Exception();
         }
+
     }
 
     public InterestDataModel? GetElementById(string id)

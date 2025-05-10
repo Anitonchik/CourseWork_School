@@ -35,9 +35,10 @@ public class AchievementBuisnessLogicContract(IAchievementStorageContract achiev
         {
             throw new ValidationException("Id is not a unique identifier");
         }
-
-        achievement = _achievementStorageContract.GetElementById(data) ?? throw new ElementNotFoundException(data);
-
+        else
+        {
+            achievement = _achievementStorageContract.GetElementById(data) ?? throw new ElementNotFoundException(data);
+        }
         if (achievement.WorkerId != workerId)
         {
             throw new UnauthorizedAccessException(data);
