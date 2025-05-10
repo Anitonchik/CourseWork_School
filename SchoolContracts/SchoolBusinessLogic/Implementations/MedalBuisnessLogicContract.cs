@@ -10,12 +10,12 @@ using UnauthorizedAccessException = SchoolContracts.Exceptions.UnauthorizedAcces
 
 namespace SchoolBusinessLogic.Implementations;
 
-public class MedalBuisnessLogicContract(IMedalStorageContract medalStorageContract, IMaterialBuisnessLogicContract materialBuisnessLogucContract, 
+public class MedalBuisnessLogicContract(IMedalStorageContract medalStorageContract, /*IMaterialBuisnessLogicContract materialBuisnessLogucContract, */
     ILogger logger) : IMedalBuisnessLogicContract
 {
     private readonly ILogger _logger = logger;
     private readonly IMedalStorageContract _medalStorageContract = medalStorageContract;
-    private readonly IMaterialBuisnessLogicContract _materialBuisnessLogucContract = materialBuisnessLogucContract;
+    //private readonly IMaterialBuisnessLogicContract _materialBuisnessLogucContract = materialBuisnessLogucContract;
 
     public List<MedalDataModel> GetAllMedals(string storekeeperId)
     {
@@ -52,7 +52,7 @@ public class MedalBuisnessLogicContract(IMedalStorageContract medalStorageContra
         else return medal;
     }
 
-    public void CreateConnectWithMaterial(string storekeeperId, string medalId, string materialId)
+    /*public void CreateConnectWithMaterial(string storekeeperId, string medalId, string materialId)
     {
         _logger.LogInformation("Create connection between medal and material");
         if (!medalId.IsGuid() || !materialId.IsGuid())
@@ -64,7 +64,7 @@ public class MedalBuisnessLogicContract(IMedalStorageContract medalStorageContra
         GetMedalById(storekeeperId, medalId);
 
         _medalStorageContract.CreateConnectWithMaterial(medalId, materialId);
-    }
+    }*/
 
     public void InsertMedal(string storekeeperId, MedalDataModel medalDataModel)
     {

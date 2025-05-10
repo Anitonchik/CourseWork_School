@@ -11,16 +11,16 @@ public class MedalStorageContract : IMedalStorageContract
 {
     private readonly SchoolDbContext _dbContext;
     private readonly Mapper _mapper;
-    private readonly MaterialStorageContract? _materialStorageContract;
+    //private readonly MaterialStorageContract? _materialStorageContract;
 
-    public MedalStorageContract(SchoolDbContext dbContext, MaterialStorageContract? materialStorageContract)
+    public MedalStorageContract(SchoolDbContext dbContext/*, MaterialStorageContract? materialStorageContract*/)
     {
         _dbContext = dbContext;
 
         var configuration = new MapperConfiguration(cfg => cfg.AddMaps(typeof(Medal)));
 
         _mapper = new Mapper(configuration);
-        _materialStorageContract = materialStorageContract;
+        //_materialStorageContract = materialStorageContract;
     }
 
     public List<MedalDataModel> GetList(string storekeeperId, int? range)
@@ -79,7 +79,7 @@ public class MedalStorageContract : IMedalStorageContract
         }
     }
 
-    public void CreateConnectWithMaterial(string medalId, string materialId)
+    /*public void CreateConnectWithMaterial(string medalId, string materialId)
     {
         try
         {
@@ -105,7 +105,7 @@ public class MedalStorageContract : IMedalStorageContract
             _dbContext.ChangeTracker.Clear();
             throw new Exception();
         }
-    }
+    }*/
 
     public void UpdElement(MedalDataModel medalDataModel)
     {

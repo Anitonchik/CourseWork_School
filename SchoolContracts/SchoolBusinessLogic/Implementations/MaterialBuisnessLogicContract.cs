@@ -34,7 +34,10 @@ public class MaterialBuisnessLogicContract(IMaterialStorageContract materialStor
         {
             material = _materialStorageContract.GetElementById(data) ?? throw new ElementNotFoundException(data);
         }
-        material = _materialStorageContract.GetElementByName(data) ?? throw new ElementNotFoundException(data);
+        else
+        {
+            material = _materialStorageContract.GetElementByName(data) ?? throw new ElementNotFoundException(data);
+        }
 
         if (material.StorekeeperId != storekeeperId)
         {

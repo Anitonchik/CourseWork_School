@@ -60,8 +60,6 @@ public class SchoolDbContext : DbContext
         });
         modelBuilder.Entity<MaterialByLesson>().HasNoKey();
         modelBuilder.Entity<LessonByMaterial>().HasNoKey();
-        modelBuilder.Entity<InterestsWithAchievementsWithCircles>().HasNoKey();
-        
     }
 
     public DbSet<Achievement> Achievements { get; set; }
@@ -78,5 +76,4 @@ public class SchoolDbContext : DbContext
     public DbSet<Worker> Workers { get; set; }
     public DbSet<MaterialByLesson> MaterialByLessons { get; set; }
     public DbSet<LessonByMaterial> LessonByMaterials { get; set; }
-    public DbSet<InterestsWithAchievementsWithCircles> InterestsWithAchievementsWithCircles { get; set; }
 }
