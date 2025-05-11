@@ -5,6 +5,8 @@ namespace SchoolContracts.AdapterContracts;
 
 public interface IStorekeeperAdapter
 {
+    StorekeeperOperationResponse GetUserByLogin(string login);
+
     StorekeeperOperationResponse RegisterStorekeeper(string storekeeperId, StorekeeperBindingModel storekeeperModel);
 
     StorekeeperOperationResponse ChangeStorekeeperInfo(string storekeeperId, StorekeeperBindingModel storekeeperModel);

@@ -7,8 +7,8 @@ public interface IStorekeeperStorageContract
     List<StorekeeperDataModel> GetList();
     StorekeeperDataModel? GetElementById(string id);
     StorekeeperDataModel? GetElementByFIO(string fio);
-    StorekeeperDataModel? GetElementByLogin(string phoneLogin);
-    StorekeeperDataModel? GetElementByMail(string phoneMail);
+    StorekeeperDataModel? GetElementByLogin(string login);
+    StorekeeperDataModel? GetElementByMail(string mail);
     void AddElement(StorekeeperDataModel storekeeperDataModel);
     void UpdElement(StorekeeperDataModel storekeeperDataModel);
     void DelElement(string id);

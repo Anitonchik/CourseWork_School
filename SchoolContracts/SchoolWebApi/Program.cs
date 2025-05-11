@@ -1,4 +1,19 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Serilog;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.Text;
+using SchoolWebApi.Services;
+using SchoolContracts.AdapterContracts;
+using SchoolWebApi.Controllers;
+using SchoolWebApi.Adapters;
+using SchoolContracts.StoragesContracts;
+using SchoolDatabase.Implementations;
+using SchoolDatabase;
+using SchoolContracts.Infrastructure;
+using SchoolContracts;
+using SchoolContracts.BusinessLogicsContracts;
+using SchoolBuisnessLogic.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,10 +28,39 @@ builder.Services.AddSingleton(loggerFactory.CreateLogger("Any"));
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    //options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = builder.Configuration["JwtConfig:Issuer"],
+        ValidAudience = builder.Configuration["JwtConfig:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtConfig:Key"]!)),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true
+    };
+});
 
-//builder.Services.AddAuthentication("Bearer")  // добавление сервисов аутентификации
- //   .AddJwtBearer();      // подключение аутентификации с помощью jwt-токенов
-builder.Services.AddAuthorization();            // добавление сервисов авторизации
+builder.Services.AddAuthorization();
+
+builder.Services.AddSingleton<IConnectionString, ConnectionString>();
+
+builder.Services.AddTransient<IStorekeeperBuisnessLogicContract, StorekeeperBuisnessLogicContract>();
+
+builder.Services.AddTransient<SchoolDbContext>();
+builder.Services.AddTransient<IStorekeeperStorageContract, StorekeeperStorageContract>();
+
+builder.Services.AddTransient<IStorekeeperAdapter, UserStorekeeperAdapter>();
+
+builder.Services.AddScoped<JwtService>();
 
 var app = builder.Build();
 
@@ -28,6 +72,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

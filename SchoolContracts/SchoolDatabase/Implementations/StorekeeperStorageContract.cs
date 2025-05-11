@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using SchoolContracts.DataModels;
 using SchoolContracts.Exceptions;
+using SchoolContracts.StoragesContracts;
 using SchoolDatabase.Models;
 
 namespace SchoolDatabase.Implementations;
 
-public class StorekeeperStorageContract
+public class StorekeeperStorageContract : IStorekeeperStorageContract
 {
     private readonly SchoolDbContext _dbContext;
     private readonly Mapper _mapper;
@@ -58,6 +59,32 @@ public class StorekeeperStorageContract
         try
         {
             return _mapper.Map<StorekeeperDataModel>(_dbContext.Storekeepers.FirstOrDefault(x => x.FIO == fio));
+        }
+        catch (Exception ex)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new Exception();
+        }
+    }
+
+    public StorekeeperDataModel? GetElementByLogin(string login)
+    {
+        try
+        {
+            return _mapper.Map<StorekeeperDataModel>(_dbContext.Storekeepers.FirstOrDefault(x => x.Login == login));
+        }
+        catch (Exception ex)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new Exception();
+        }
+    }
+
+    public StorekeeperDataModel? GetElementByMail(string mail)
+    {
+        try
+        {
+            return _mapper.Map<StorekeeperDataModel>(_dbContext.Storekeepers.FirstOrDefault(x => x.Mail == mail));
         }
         catch (Exception ex)
         {
