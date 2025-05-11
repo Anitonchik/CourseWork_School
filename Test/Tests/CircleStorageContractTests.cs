@@ -90,7 +90,7 @@ public class CircleStorageContractTests : BaseStorageContractTests
         var circleId = Guid.NewGuid().ToString();
         var circle = new CircleDataModel(circleId, _storekeeper.Id, "name", "nnnn", 
             [new CircleMaterialDataModel (circleId, _material.Id, 2)], 
-            [new LessonCircleDataModel(_lesson.Id, circleId)]);
+            [new LessonCircleDataModel(_lesson.Id, circleId, 2)]);
         _circleStorageContract.AddElement(circle);
 
         var dbCircle = _circleStorageContract.GetElementById(circle.Id);

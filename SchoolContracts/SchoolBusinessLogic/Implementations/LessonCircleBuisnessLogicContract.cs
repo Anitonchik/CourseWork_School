@@ -10,29 +10,34 @@ using UnauthorizedAccessException = SchoolContracts.Exceptions.UnauthorizedAcces
 
 namespace SchoolBuisnessLogic.Implementations;
 
-public class LessonCircleBuisnessLogicContract(ILessonCircleStorageContract lessonCircleStorageContract, 
-    ICircleBuisnessLogicContract circleBuisnessLogicContract, ILessonStorageContract lessonStorageContract,
+public class LessonCircleBuisnessLogicContract(ILessonCircleStorageContract lessonCircleStorageContract, ICircleBuisnessLogicContract circleBuisnessLogicContract, 
     ILogger logger) : ILessonCircleBuisnessLogicContract
 {
     private readonly ILogger _logger = logger;
-    private readonly ILessonCircleStorageContract _lessonCircleStorageContract = lessonCircleStorageContract;
     private readonly ICircleBuisnessLogicContract _circleBuisnessLogicContract = circleBuisnessLogicContract;
-    private readonly ILessonStorageContract _lessonStorageContract = lessonStorageContract;
+    private readonly ILessonCircleStorageContract _lessonCircleStorageContract = lessonCircleStorageContract;
 
-    public void CreateLessonCircle(string storekeeperId, LessonCircleDataModel lessonCircleDataModel)
+    public void CreateLessonCircle(string storekeeperId, CircleDataModel circleDataModel,  LessonCircleDataModel lessonCircleDataModel)
     {
+        _logger.LogInformation("New data: {json}", JsonSerializer.Serialize(circleDataModel));
         _logger.LogInformation("New data: {json}", JsonSerializer.Serialize(lessonCircleDataModel));
+        ArgumentNullException.ThrowIfNull(circleDataModel);
         ArgumentNullException.ThrowIfNull(lessonCircleDataModel);
+        circleDataModel.Validate();
         lessonCircleDataModel.Validate();
-        try
+        if (circleDataModel.Id != lessonCircleDataModel.CircleId)
         {
-            circleBuisnessLogicContract.GetCircleByData(storekeeperId, lessonCircleDataModel.CircleId);
+            throw new ArgumentException("Id are not equals");
         }
-        catch (UnauthorizedAccessException)
+        if (circleDataModel.StorekeeperId != storekeeperId)
         {
-            throw;
+            throw new UnauthorizedAccessException(storekeeperId);
         }
-        _lessonCircleStorageContract.AddElement(lessonCircleDataModel);
+
+        circleDataModel.Lessons.Add(lessonCircleDataModel);
+        _circleBuisnessLogicContract.UpdateCircle(storekeeperId, circleDataModel);
+
+
     }
 
     public void DeleteLessonCircle(string storekeeperId, string lessonId, string circleId)
@@ -57,10 +62,10 @@ public class LessonCircleBuisnessLogicContract(ILessonCircleStorageContract less
 
         try
         {
-            _circleBuisnessLogicContract.GetCircleByData(storekeeperId, circleId);
-            _lessonStorageContract.GetElementById(lessonId);
-
-            _lessonCircleStorageContract.DeleteElement(lessonId, circleId);
+            var circle = _circleBuisnessLogicContract.GetCircleByData(storekeeperId, circleId);
+            var lessonCircle = _lessonCircleStorageContract.GetLessonCircleById(lessonId, circleId);
+            circle.Lessons.Remove(lessonCircle);
+            _circleBuisnessLogicContract.UpdateCircle(storekeeperId , circle);
         }
         catch (ElementNotFoundException)
         {

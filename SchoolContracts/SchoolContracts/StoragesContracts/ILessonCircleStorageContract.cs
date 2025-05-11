@@ -4,6 +4,5 @@ namespace SchoolContracts.StoragesContracts;
 
 public interface ILessonCircleStorageContract
 {
-    public void AddElement(LessonCircleDataModel lessonCircleDataModel);
-    public void DeleteElement(string lessonId, string circleId);
+    public LessonCircleDataModel? GetLessonCircleById(string lessonId, string circleId);
 }
