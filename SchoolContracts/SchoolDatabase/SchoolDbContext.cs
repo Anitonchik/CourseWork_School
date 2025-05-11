@@ -29,6 +29,16 @@ public class SchoolDbContext : DbContext
 
         modelBuilder.Entity<Storekeeper>().HasIndex(x => x.Login).IsUnique();
         modelBuilder.Entity<Storekeeper>().HasIndex(x => x.Mail).IsUnique();
+        modelBuilder.Entity<Storekeeper>().HasData([
+            new Storekeeper {
+                Id = Guid.NewGuid().ToString(),
+                FIO = "fio",
+                Login = "storekeeper login",
+                Password = "psw",
+                Mail = "mail@a.com"
+            }
+        ]);
+
         modelBuilder.Entity<Circle>().HasIndex(x => x.CircleName).IsUnique();
         modelBuilder.Entity<Material>().HasIndex(x => x.MaterialName).IsUnique();
 

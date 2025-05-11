@@ -23,14 +23,14 @@ public class JwtService
 
     public async Task<LoginResponseModel> Authenticate(LoginRequestModel request)
     {
-        if (string.IsNullOrWhiteSpace(request.UserName) || string.IsNullOrWhiteSpace(request.Password))
+        if (string.IsNullOrWhiteSpace(request.UserLogin) || string.IsNullOrWhiteSpace(request.Password))
         {
             return null;
         }
 
-        var userAccaunt = _adapter.GetUserByLogin(request.UserName);
+        var userAccaunt = _adapter.GetUserByLogin(request.UserLogin);
         // добавить проверку на верность пароля из request
-        if (userAccaunt is null)
+        if (userAccaunt is null || request.Password != userAccaunt)
             return null;
 
         var issuer = _configuration["JwtConfig:Issuer"];
@@ -45,7 +45,7 @@ public class JwtService
             {
                 // данные внутри токена, вписываем login и роль пользователя
                 new Claim(JwtRegisteredClaimNames.Actort, request.Role.ToString()),
-                new Claim(JwtRegisteredClaimNames.Name, request.UserName)
+                //new Claim(JwtRegisteredClaimNames.Name, request.UserLogin)
             }),
             Expires = tokenExpiryTimeStamp,
             Issuer = issuer,
@@ -62,7 +62,7 @@ public class JwtService
         return new LoginResponseModel
         {
             AccessToken = accessToken,
-            UserName = request.UserName,
+            UserLogin = request.UserLogin,
             ExpiresIn = (int)tokenExpiryTimeStamp.Subtract(DateTime.UtcNow).TotalSeconds
         };
     }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SchoolBusinessLogic.Implementations;
 using SchoolContracts.AdapterContracts;
 using SchoolContracts.AdapterContracts.OperationResponses;
 using SchoolContracts.BindingModels;
@@ -6,6 +7,8 @@ using SchoolContracts.BusinessLogicsContracts;
 using SchoolContracts.DataModels;
 using SchoolContracts.Exceptions;
 using SchoolContracts.ViewModels;
+using SchoolDatabase.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace SchoolWebApi.Adapters;
 
@@ -57,17 +60,46 @@ public class UserStorekeeperAdapter : IStorekeeperAdapter
         }
     }
 
-    public StorekeeperOperationResponse ChangeStorekeeperInfo(string storekeeperId, StorekeeperBindingModel storekeeperModel)
+    public StorekeeperOperationResponse ChangeStorekeeperInfo(StorekeeperBindingModel storekeeperModel)
     {
         throw new NotImplementedException();
     }
 
-    public StorekeeperOperationResponse RegisterStorekeeper(string storekeeperId, StorekeeperBindingModel storekeeperModel)
+    public StorekeeperOperationResponse RegisterStorekeeper(StorekeeperBindingModel storekeeperModel)
     {
-        throw new NotImplementedException();
+        try
+        {
+            _storekeeperBuisnessLogicContract.InsertStorekeeper(_mapper.Map<StorekeeperDataModel>(storekeeperModel));
+            return StorekeeperOperationResponse.NoContent();
+        }
+        catch (ArgumentNullException ex)
+        {
+            _logger.LogError(ex, "ArgumentNullException");
+            return StorekeeperOperationResponse.BadRequest("Data is empty");
+        }
+        catch (ValidationException ex)
+        {
+            _logger.LogError(ex, "ValidationException");
+            return StorekeeperOperationResponse.BadRequest($"Incorrect data transmitted: {ex.Message}");
+        }
+        catch (ElementExistsException ex)
+        {
+            _logger.LogError(ex, "ElementExistsException");
+            return StorekeeperOperationResponse.BadRequest(ex.Message);
+        }
+        catch (StorageException ex)
+        {
+            _logger.LogError(ex, "StorageException");
+            return StorekeeperOperationResponse.BadRequest($"Error while working with data storage: {ex.InnerException!.Message}");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Exception");
+            return StorekeeperOperationResponse.InternalServerError(ex.Message);
+        }
     }
 
-    public StorekeeperOperationResponse RemoveStorekeeper(string storekeeperId, string id)
+    public StorekeeperOperationResponse RemoveStorekeeper(string id)
     {
         throw new NotImplementedException();
     }
