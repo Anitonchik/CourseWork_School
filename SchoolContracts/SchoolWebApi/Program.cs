@@ -22,10 +22,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 
-//”¡–¿“‹ œŒ“ŒÃ —–Œ◊ÕŒ
-var SchoolDbContext = new SchoolDbContext(new ConnectionString());
-SchoolDbContext.Database.EnsureDeleted();
-SchoolDbContext.Database.EnsureCreated();
+
 
 
 using var loggerFactory = new LoggerFactory();
@@ -130,9 +127,3 @@ app.MapControllers();
 
 app.Run();
 
-[TearDown]
-void TearDown()
-{
-    SchoolDbContext.Database.EnsureDeleted();
-    SchoolDbContext.Dispose();
-}

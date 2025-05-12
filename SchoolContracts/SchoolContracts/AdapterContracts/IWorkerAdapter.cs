@@ -10,9 +10,10 @@ namespace SchoolContracts.AdapterContracts;
 
 public interface IWorkerAdapter
 {
-    WorkerOperationResponse RegisterWorker(string workerId, WorkerBindingModel workerModel);
+    WorkerOperationResponse GetUserByLogin(string login);
+    WorkerOperationResponse RegisterWorker( WorkerBindingModel workerModel);
 
-    WorkerOperationResponse ChangeWorkerInfo(string workerId, WorkerBindingModel workerModel);
+    WorkerOperationResponse ChangeWorkerInfo( WorkerBindingModel workerModel);
 
-    WorkerOperationResponse RemoveWorker(string workerId, string id);
+    WorkerOperationResponse RemoveWorker(string id);
 }

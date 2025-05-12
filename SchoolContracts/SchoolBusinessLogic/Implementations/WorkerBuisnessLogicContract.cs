@@ -25,7 +25,16 @@ public class WorkerBuisnessLogicContract(IWorkerStorageContract workerStorageCon
         }
         return _workerStorageContract.GetElementByLogin(login) ?? throw new ElementNotFoundException(login);
     }
+    public WorkerDataModel GetWorkerByMail(string mail)
+    {
+        _logger.LogInformation("Get element by login: {data}", mail);
 
+        if (mail.IsEmpty())
+        {
+            throw new ValidationException("Mail is not a unique identifier");
+        }
+        return _workerStorageContract.GetElementByLogin(mail) ?? throw new ElementNotFoundException(mail);
+    }
     public void InsertWorker(WorkerDataModel workerDataModel)
     {
         _logger.LogInformation("New data: {json}", JsonSerializer.Serialize(workerDataModel));
