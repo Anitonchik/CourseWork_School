@@ -133,7 +133,7 @@ public class JwtService
             {
                 // данные внутри токена, вписываем login и роль пользователя
                 new Claim(JwtRegisteredClaimNames.Actort, request.Role.ToString()),
-                //new Claim(JwtRegisteredClaimNames.Name, request.UserLogin)
+                new Claim(JwtRegisteredClaimNames.Name, request.UserLogin)
             }),
             Expires = tokenExpiryTimeStamp,
             Issuer = issuer,

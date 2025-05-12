@@ -64,6 +64,7 @@ builder.Services.AddSingleton<IConnectionString, ConnectionString>();
 builder.Services.AddTransient<IStorekeeperBuisnessLogicContract, StorekeeperBuisnessLogicContract>();
 builder.Services.AddTransient<IWorkerBuisnessLogicContract, WorkerBuisnessLogicContract>();
 builder.Services.AddTransient<ICircleBuisnessLogicContract, CircleBuisnessLogicContract>();
+builder.Services.AddTransient<ILessonCircleBuisnessLogicContract, LessonCircleBuisnessLogicContract>();
 builder.Services.AddTransient<IMaterialBuisnessLogicContract, MaterialBuisnessLogicContract>();
 builder.Services.AddTransient<IMedalBuisnessLogicContract, MedalBuisnessLogicContract>();
 
@@ -71,11 +72,15 @@ builder.Services.AddTransient<SchoolDbContext>();
 builder.Services.AddTransient<IStorekeeperStorageContract, StorekeeperStorageContract>();
 builder.Services.AddTransient<IWorkerStorageContract, WorkerStorageContract>();
 builder.Services.AddTransient<ICircleStorageContract, CircleStorageContract>();
+builder.Services.AddTransient<ILessonCircleStorageContract, LessonCircleStorageContract>();
 builder.Services.AddTransient<IMaterialStorageContract, MaterialStorageContract>();
 builder.Services.AddTransient<IMedalStorageContract, MedalStorageContract>();
 
 builder.Services.AddTransient<IStorekeeperAdapter, UserStorekeeperAdapter>();
 builder.Services.AddTransient<ICircleAdapter, CircleAdapter>();
+builder.Services.AddTransient<IMaterialAdapter, MaterialAdapter>();
+builder.Services.AddTransient<IMedalAdapter, MedalAdapter>();
+builder.Services.AddTransient<ILessonCircleAdapter, LessonCircleAdapter>();
 
 builder.Services.AddScoped<JwtService>();
 

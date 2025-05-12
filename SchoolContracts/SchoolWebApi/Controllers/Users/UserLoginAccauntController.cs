@@ -6,11 +6,11 @@ using SchoolWebApi.Services;
 
 namespace SchoolWebApi.Controllers.Users;
 
-public class StorekeeperLoginAccauntController : ControllerBase
+public class UserLoginAccauntController : ControllerBase
 {
 
     private readonly JwtService _jwtService;
-    public StorekeeperLoginAccauntController(JwtService jwtService) => _jwtService = jwtService;
+    public UserLoginAccauntController(JwtService jwtService) => _jwtService = jwtService;
 
     [AllowAnonymous]
     [HttpPost("Login")]
