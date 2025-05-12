@@ -62,12 +62,14 @@ builder.Services.AddAuthorization();
 builder.Services.AddSingleton<IConnectionString, ConnectionString>();
 
 builder.Services.AddTransient<IStorekeeperBuisnessLogicContract, StorekeeperBuisnessLogicContract>();
+builder.Services.AddTransient<IWorkerBuisnessLogicContract, WorkerBuisnessLogicContract>();
 builder.Services.AddTransient<ICircleBuisnessLogicContract, CircleBuisnessLogicContract>();
 builder.Services.AddTransient<IMaterialBuisnessLogicContract, MaterialBuisnessLogicContract>();
 builder.Services.AddTransient<IMedalBuisnessLogicContract, MedalBuisnessLogicContract>();
 
 builder.Services.AddTransient<SchoolDbContext>();
 builder.Services.AddTransient<IStorekeeperStorageContract, StorekeeperStorageContract>();
+builder.Services.AddTransient<IWorkerStorageContract, WorkerStorageContract>();
 builder.Services.AddTransient<ICircleStorageContract, CircleStorageContract>();
 builder.Services.AddTransient<IMaterialStorageContract, MaterialStorageContract>();
 builder.Services.AddTransient<IMedalStorageContract, MedalStorageContract>();

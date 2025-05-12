@@ -9,6 +9,7 @@ namespace SchoolContracts.BusinessLogicsContracts;
 
 public interface IWorkerBuisnessLogicContract
 {
+    WorkerDataModel GetWorkerByLogin(string login);
     void InsertWorker(WorkerDataModel workerDataModel);
     void UpdateWorker(WorkerDataModel workerDataModel);
     void DeleteWorker(string id);

@@ -70,7 +70,11 @@ public class UserStorekeeperAdapter : IStorekeeperAdapter
         try
         {
             _storekeeperBuisnessLogicContract.InsertStorekeeper(_mapper.Map<StorekeeperDataModel>(storekeeperModel));
-            return StorekeeperOperationResponse.NoContent();
+
+            var registeredUserData = _storekeeperBuisnessLogicContract.GetStorekeeperByLogin(storekeeperModel.Login);
+            var viewModel = _mapper.Map<StorekeeperViewModel>(registeredUserData);
+
+            return StorekeeperOperationResponse.OK(viewModel);
         }
         catch (ArgumentNullException ex)
         {

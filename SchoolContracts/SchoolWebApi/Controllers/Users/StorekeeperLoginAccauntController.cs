@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SchoolContracts.BindingModels;
 using SchoolWebApi.Models;
 using SchoolWebApi.Services;
 
@@ -22,5 +23,19 @@ public class StorekeeperLoginAccauntController : ControllerBase
 
         return result;
     }
+
+    [AllowAnonymous]
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] UserBindingModel model)
+    {
+        var result = await _jwtService.Register(model);
+
+        return Ok(new
+        {
+            User = result.UserLogin,
+            AccessToken = result.AccessToken
+        });
+    }
+
 
 }
