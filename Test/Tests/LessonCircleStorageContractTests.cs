@@ -5,7 +5,7 @@ using SchoolDatabase.Models;
 using Test;
 using Test.Tests;
 
-namespace SchoolTests.Tests;
+namespace Test.Tests;
 
 [TestFixture]
 internal class LessonCircleStorageContractTests : BaseStorageContractTests

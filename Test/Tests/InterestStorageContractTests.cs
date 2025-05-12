@@ -113,11 +113,11 @@ public class InterestStorageContractTests : BaseStorageContractTests
         var lesson2 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, lessonName: "name 2");
         var lesson3 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, lessonName: "name 3");
 
-        var lessonInterest1 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson1.Id, interestId: interest3.Id);
-        var lessonInterest2 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson2.Id, interestId: interest2.Id);
-        var lessonInterest3 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson3.Id, interestId: interest1.Id);
-        var lessonInterest4 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson2.Id, interestId: interest3.Id);
-        var lessonInterest5 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson3.Id, interestId: interest2.Id);
+        var lessonInterest1 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson1.Id, interestId: interest3.Id, category: "name 1");
+        var lessonInterest2 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson2.Id, interestId: interest2.Id, category: "name 2");
+        var lessonInterest3 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson3.Id, interestId: interest1.Id, category: "name 3");
+        var lessonInterest4 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson2.Id, interestId: interest3.Id, category: "name 4");
+        var lessonInterest5 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson3.Id, interestId: interest2.Id, category: "name 5");
 
         var circle1 = SchoolDbContext.InsertAndReturnCircle(storekeeperId: _storekeeper.Id, circleName: "name 1");
         var circle2 = SchoolDbContext.InsertAndReturnCircle(storekeeperId: _storekeeper.Id, circleName: "name 2");

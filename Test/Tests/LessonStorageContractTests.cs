@@ -68,7 +68,7 @@ public class LessonStorageContractTests : BaseStorageContractTests
     [Test]
     public void TestAddLesson()
     {
-        var lesson = new LessonDataModel(Guid.NewGuid().ToString(), _worker.Id,  "name", "nnnn",[]);
+        var lesson = new LessonDataModel(Guid.NewGuid().ToString(), _worker.Id,  "name", DateTime.UtcNow, "nnnn",[]);
         _lessonStorageContract.AddElement(lesson);
 
         var dbLesson = _lessonStorageContract.GetElementById(lesson.Id);
@@ -77,7 +77,7 @@ public class LessonStorageContractTests : BaseStorageContractTests
     [Test]
     public void TestDeleteLesson()
     {
-        var lesson = new LessonDataModel(Guid.NewGuid().ToString(), _worker.Id,  "name", "nnnn", []);
+        var lesson = new LessonDataModel(Guid.NewGuid().ToString(), _worker.Id,  "name",DateTime.UtcNow, "nnnn", []);
         _lessonStorageContract.AddElement(lesson);
         _lessonStorageContract.DelElement(lesson.Id);
         //_lessonStorageContract.GetElementById(lesson.Id);
@@ -87,10 +87,10 @@ public class LessonStorageContractTests : BaseStorageContractTests
     [Test]
     public void UpdateLesson()
     {
-        var lesson = new LessonDataModel(Guid.NewGuid().ToString(), _worker.Id,  "name", "nnnn",  []);
+        var lesson = new LessonDataModel(Guid.NewGuid().ToString(), _worker.Id,  "name", DateTime.UtcNow, "nnnn",  []);
         _lessonStorageContract.AddElement(lesson);
 
-        var lessonDataModel = new LessonDataModel(lesson.Id, _worker.Id, "new name", "new description", []);
+        var lessonDataModel = new LessonDataModel(lesson.Id, _worker.Id, "new name", DateTime.UtcNow, "new description", []);
         _lessonStorageContract.UpdElement(lessonDataModel);
 
         AssertElement(_lessonStorageContract.GetElementById(lesson.Id), lessonDataModel);
@@ -100,9 +100,9 @@ public class LessonStorageContractTests : BaseStorageContractTests
     public void GetListLessons()
     {
 
-        var Lesson1 = new LessonDataModel(Guid.NewGuid().ToString(), _worker.Id, "name1", "nnnn",  []);
-        var Lesson2 = new LessonDataModel(Guid.NewGuid().ToString(), _worker.Id,  "name2", "nnnn", []);
-        var Lesson3 = new LessonDataModel(Guid.NewGuid().ToString(), _worker.Id,  "name3", "nnnn", []);
+        var Lesson1 = new LessonDataModel(Guid.NewGuid().ToString(), _worker.Id, "name1", DateTime.UtcNow, "nnnn",  []);
+        var Lesson2 = new LessonDataModel(Guid.NewGuid().ToString(), _worker.Id,  "name2", DateTime.UtcNow, "nnnn", []);
+        var Lesson3 = new LessonDataModel(Guid.NewGuid().ToString(), _worker.Id,  "name3", DateTime.UtcNow, "nnnn", []);
 
         _lessonStorageContract.AddElement(Lesson1);
         _lessonStorageContract.AddElement(Lesson2);
@@ -122,11 +122,11 @@ public class LessonStorageContractTests : BaseStorageContractTests
          var lesson2 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, lessonName: "name 2");
          var lesson3 = SchoolDbContext.InsertAndReturnLesson(workerId: _worker.Id, lessonName: "name 3");
 
-         var lessonInterest1 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson3.Id, interestId: interest1.Id);
-         var lessonInterest2 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson2.Id, interestId: interest2.Id);
-         var lessonInterest3 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson1.Id, interestId: interest3.Id);
-         var lessonInterest4 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson3.Id, interestId: interest2.Id);
-         var lessonInterest5 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson2.Id, interestId: interest3.Id);
+         var lessonInterest1 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson3.Id, interestId: interest1.Id, category: "name1");
+         var lessonInterest2 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson2.Id, interestId: interest2.Id, category: "name2");
+         var lessonInterest3 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson1.Id, interestId: interest3.Id, category: "name3");
+         var lessonInterest4 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson3.Id, interestId: interest2.Id, category: "name4");
+         var lessonInterest5 = SchoolDbContext.InsertAndReturnLessonInterest(lessonId: lesson2.Id, interestId: interest3.Id, category: "name5");
 
          var material1 = SchoolDbContext.InsertAndReturnMaterial(storekeeperId: _storekeeper.Id, materialName: "name 1");
          var material2 = SchoolDbContext.InsertAndReturnMaterial(storekeeperId: _storekeeper.Id, materialName: "name 2");
@@ -150,9 +150,9 @@ public class LessonStorageContractTests : BaseStorageContractTests
         var id = Guid.NewGuid().ToString();
         var listOriginal = new List<LessonDataModel>()
         {
-            new(id, workerId, "name 1", "desc", [(new LessonInterestDataModel (id, _interest.Id))]),
-            new(Guid.NewGuid().ToString(), workerId, "name 2", "desc", []),
-            new(Guid.NewGuid().ToString(), workerId, "name 3", "desc", []),
+            new(id, workerId, "name 1",DateTime.UtcNow, "desc", [(new LessonInterestDataModel (id, _interest.Id,"name"))]),
+            new(Guid.NewGuid().ToString(), workerId, "name 2",DateTime.UtcNow.AddDays(1), "desc", []),
+            new(Guid.NewGuid().ToString(), workerId, "name 3",DateTime.UtcNow.AddDays(2), "desc", []),
         };
 
         //Act
