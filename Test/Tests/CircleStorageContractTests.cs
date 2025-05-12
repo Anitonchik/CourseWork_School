@@ -4,6 +4,7 @@ using SchoolContracts.Exceptions;
 using SchoolDatabase;
 using SchoolDatabase.Implementations;
 using SchoolDatabase.Models;
+using SchoolTests.Infrastructure;
 
 namespace Test.Tests;
 

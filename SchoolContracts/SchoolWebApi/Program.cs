@@ -12,7 +12,6 @@ using SchoolContracts.Infrastructure;
 using SchoolContracts;
 using SchoolContracts.BusinessLogicsContracts;
 using SchoolBuisnessLogic.Implementations;
-using NUnit.Framework;
 using Microsoft.OpenApi.Models;
 using SchoolBusinessLogic.Implementations;
 
@@ -21,12 +20,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-
-
-//”¡–¿“‹ œŒ“ŒÃ —–Œ◊ÕŒ
-var SchoolDbContext = new SchoolDbContext(new ConnectionString());
-SchoolDbContext.Database.EnsureDeleted();
-SchoolDbContext.Database.EnsureCreated();
 
 
 using var loggerFactory = new LoggerFactory();
@@ -130,10 +123,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-[TearDown]
-void TearDown()
-{
-    SchoolDbContext.Database.EnsureDeleted();
-    SchoolDbContext.Dispose();
-}

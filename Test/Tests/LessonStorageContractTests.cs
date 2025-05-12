@@ -4,6 +4,7 @@ using SchoolContracts.Exceptions;
 using SchoolContracts.StoragesContracts;
 using SchoolDatabase.Implementations;
 using SchoolDatabase.Models;
+using SchoolTests.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;

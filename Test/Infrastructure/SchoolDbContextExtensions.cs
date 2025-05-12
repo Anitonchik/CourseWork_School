@@ -2,11 +2,11 @@
 using SchoolDatabase;
 using Microsoft.EntityFrameworkCore;
 
-namespace Test;
+namespace SchoolTests.Infrastructure;
 
 public static class SchoolDbContextExtensions
 {
-    public static Storekeeper InsertAndReturnStorekeeper(this SchoolDbContext dbContext, string id = null, 
+    public static Storekeeper InsertAndReturnStorekeeper(this SchoolDbContext dbContext, string id = null,
         string fio = "fio", string login = "login", string password = "password", string mail = "mail")
     {
         var storekeeper = new Storekeeper()
@@ -21,8 +21,8 @@ public static class SchoolDbContextExtensions
         dbContext.SaveChanges();
         return storekeeper;
     }
-    
-    public static Worker InsertAndReturnWorker (this SchoolDbContext dbContext, string id = null, 
+
+    public static Worker InsertAndReturnWorker(this SchoolDbContext dbContext, string id = null,
         string fio = "fio", string login = "login", string password = "password", string mail = "mail")
     {
         var worker = new Worker()
@@ -106,11 +106,11 @@ public static class SchoolDbContextExtensions
         dbContext.SaveChanges();
         return lessonInterest;
     }
-    public static InterestMaterial InsertAndReturnInterestMaterial(this SchoolDbContext dbContext,  string interestId = null,string materialId = null)
+    public static InterestMaterial InsertAndReturnInterestMaterial(this SchoolDbContext dbContext, string interestId = null, string materialId = null)
     {
         var interestMaterial = new InterestMaterial()
         {
-            
+
             InterestId = interestId ?? Guid.NewGuid().ToString(),
             MaterialId = materialId ?? Guid.NewGuid().ToString()
         };
@@ -119,7 +119,7 @@ public static class SchoolDbContextExtensions
         return interestMaterial;
     }
 
-    public static Lesson InsertAndReturnLesson(this SchoolDbContext dbContext, string? id = null, string? workerId = null, string lessonName = "name", DateTime? lessonDate = null,string description = "desc")
+    public static Lesson InsertAndReturnLesson(this SchoolDbContext dbContext, string? id = null, string? workerId = null, string lessonName = "name", DateTime? lessonDate = null, string description = "desc")
     {
         var lesson = new Lesson()
         {
@@ -134,7 +134,7 @@ public static class SchoolDbContextExtensions
         return lesson;
     }
 
-    public static LessonCircle InsertAndReturnLessonCircle(this SchoolDbContext dbContext, string? lessonId = null, 
+    public static LessonCircle InsertAndReturnLessonCircle(this SchoolDbContext dbContext, string? lessonId = null,
         string? circleId = null, int count = 1)
     {
         var lessonCircle = new LessonCircle()
@@ -146,8 +146,8 @@ public static class SchoolDbContextExtensions
         dbContext.SaveChanges();
         return lessonCircle;
     }
-    
-    public static LessonInterest InsertAndReturnLessonInterest(this SchoolDbContext dbContext, string? lessonId = null, 
+
+    public static LessonInterest InsertAndReturnLessonInterest(this SchoolDbContext dbContext, string? lessonId = null,
         string? interestId = null, int count = 1)
     {
         var lessonInterest = new LessonInterest()
@@ -160,8 +160,8 @@ public static class SchoolDbContextExtensions
         return lessonInterest;
     }
 
-    public static Achievement InsertAndReturnAchievement(this SchoolDbContext dbContext, string? id = null, 
-        string? workerId = null, string? lessonId = null,string achievementName = "name", string description = "description")
+    public static Achievement InsertAndReturnAchievement(this SchoolDbContext dbContext, string? id = null,
+        string? workerId = null, string? lessonId = null, string achievementName = "name", string description = "description")
     {
         var achievement = new Achievement()
         {
@@ -175,7 +175,7 @@ public static class SchoolDbContextExtensions
         dbContext.SaveChanges();
         return achievement;
     }
-     
+
     public static Medal InsertAndReturnMedal(this SchoolDbContext dbContext, string? id = null, string? storekeeperId = null,
         string? materialId = null, string medalName = "name", int range = 1)
     {

@@ -2,7 +2,7 @@
 using SchoolContracts.DataModels;
 using SchoolDatabase.Implementations;
 using SchoolDatabase.Models;
-using Test;
+using SchoolTests.Infrastructure;
 using Test.Tests;
 
 namespace Test.Tests;
