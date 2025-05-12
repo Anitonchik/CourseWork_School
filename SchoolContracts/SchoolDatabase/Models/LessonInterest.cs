@@ -10,6 +10,7 @@ public class LessonInterest
 {
     public required string LessonId { get; set; }
     public required string InterestId { get; set; }
+    public  string Category { get; set; }
     public Lesson? Lesson { get; set; }
     public Interest? Interest { get; set; }   
 }

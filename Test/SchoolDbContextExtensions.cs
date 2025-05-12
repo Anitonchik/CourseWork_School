@@ -94,12 +94,13 @@ public static class SchoolDbContextExtensions
         dbContext.SaveChanges();
         return circleMaterial;
     }
-    public static LessonInterest InsertAndReturnLessonInterest(this SchoolDbContext dbContext, string lessonId = null, string interestId = null)
+    public static LessonInterest InsertAndReturnLessonInterest(this SchoolDbContext dbContext, string lessonId = null, string interestId = null,string category = "живопись")
     {
         var lessonInterest = new LessonInterest()
         {
             LessonId = lessonId ?? Guid.NewGuid().ToString(),
-            InterestId = interestId ?? Guid.NewGuid().ToString()
+            InterestId = interestId ?? Guid.NewGuid().ToString(),
+            Category = category
         };
         dbContext.LessonInterests.Add(lessonInterest);
         dbContext.SaveChanges();

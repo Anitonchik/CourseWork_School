@@ -80,14 +80,14 @@ public class ConnectEntitiesStorageContract : IConnectEntitiesStorageContract
         }
     }
 
-    public void CreateConnectLessonAndInterest(string lessonId, string interestId)
+    public void CreateConnectLessonAndInterest(string lessonId, string interestId,string category)
     {
         try
         {
             _interestStorageContract.GetElementById(interestId);
             _lessonStorageContract.GetElementById(lessonId);
 
-            var lessonInterestDataModel = new LessonInterestDataModel(interestId, lessonId);
+            var lessonInterestDataModel = new LessonInterestDataModel(interestId, lessonId, category);
             _dbContext.LessonInterests.Add(_mapperLessonInterest.Map<LessonInterest>(lessonInterestDataModel));
             _dbContext.SaveChanges();
         }

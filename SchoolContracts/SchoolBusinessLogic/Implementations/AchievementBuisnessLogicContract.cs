@@ -10,12 +10,12 @@ using UnauthorizedAccessException = SchoolContracts.Exceptions.UnauthorizedAcces
 
 namespace SchoolBuisnessLogic.Implementations;
 
-public class AchievementBuisnessLogicContract(IAchievementStorageContract achievementStorageContract, ILessonBuisnessLogicContract lessonBuisnessLogucContract,
+public class AchievementBuisnessLogicContract(IAchievementStorageContract achievementStorageContract/*, ILessonBuisnessLogicContract lessonBuisnessLogucContract*/,
     ILogger logger):IAchievementBuisnessLogicContract
 {
     private readonly ILogger _logger = logger;
     private readonly IAchievementStorageContract _achievementStorageContract = achievementStorageContract;
-    private readonly ILessonBuisnessLogicContract _lessonBuisnessLogucContract = lessonBuisnessLogucContract;
+    //private readonly ILessonBuisnessLogicContract _lessonBuisnessLogucContract = lessonBuisnessLogucContract;
 
     public List<AchievementDataModel> GetAllAchievements(string workerId)
     {
@@ -46,7 +46,7 @@ public class AchievementBuisnessLogicContract(IAchievementStorageContract achiev
         else return achievement;
     }
 
-    public void CreateConnectWithLesson(string workerId, string achievementId, string lessonId)
+    /*public void CreateConnectWithLesson(string workerId, string achievementId, string lessonId)
     {
         _logger.LogInformation("Create connection between medal and lesson");
         if (!lessonId.IsGuid() || !lessonId.IsGuid())
@@ -58,7 +58,7 @@ public class AchievementBuisnessLogicContract(IAchievementStorageContract achiev
         GetAchievementById(workerId, lessonId);
 
         _achievementStorageContract.CreateConnectWithLesson(achievementId, lessonId);
-    }
+    }*/
 
     public void InsertAchievement(string цщклукId, AchievementDataModel achievementDataModel)
     {
