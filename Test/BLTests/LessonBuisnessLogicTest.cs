@@ -44,9 +44,9 @@ internal class LessonBuisnessLogicTest : BaseStorageContractTests
         var id = Guid.NewGuid().ToString();
         var listOriginal = new List<LessonDataModel>()
         {
-            new(id, _worker.Id, "name 1", "desc",[]),
-            new(Guid.NewGuid().ToString(), _worker.Id, "name 2", "desc",[]),
-            new(Guid.NewGuid().ToString(), _worker.Id, "name 3", "desc",[]),
+            new(id, _worker.Id, "name 1",DateTime.UtcNow, "desc",[]),
+            new(Guid.NewGuid().ToString(), _worker.Id, "name 2",DateTime.UtcNow, "desc",[]),
+            new(Guid.NewGuid().ToString(), _worker.Id, "name 3",DateTime.UtcNow, "desc",[]),
         };
 
         _lessonStorageContract.Setup(x => x.GetList(_worker.Id)).Returns(listOriginal);
@@ -67,9 +67,9 @@ internal class LessonBuisnessLogicTest : BaseStorageContractTests
         var id = Guid.NewGuid().ToString();
         var listOriginal = new List<LessonDataModel>()
         {
-            new(id, workerId, "name 1", "desc",[]),
-            new(Guid.NewGuid().ToString(), workerId, "name 2", "desc",[]),
-            new(Guid.NewGuid().ToString(), workerId, "name 3", "desc",[]),
+            new(id, workerId, "name 1", DateTime.UtcNow,"desc",[]),
+            new(Guid.NewGuid().ToString(), workerId, "name 2", DateTime.UtcNow,"desc",[]),
+            new(Guid.NewGuid().ToString(), workerId, "name 3", DateTime.UtcNow,"desc",[]),
         };
 
         _lessonStorageContract.Setup(x => x.GetList(workerId)).Returns(listOriginal);
@@ -82,7 +82,7 @@ internal class LessonBuisnessLogicTest : BaseStorageContractTests
     {
         //Arrange
         var id = Guid.NewGuid().ToString();
-        var record = new LessonDataModel(id, _worker.Id, "name 2", "desc", []);
+        var record = new LessonDataModel(id, _worker.Id, "name 2", DateTime.UtcNow, "desc", []);
         _lessonStorageContract.Setup(x => x.GetElementById(id)).Returns(record);
         //Act
         var element = _lessonBuisnessLogicContract.GetLessonByData(_worker.Id, id);
@@ -97,7 +97,7 @@ internal class LessonBuisnessLogicTest : BaseStorageContractTests
     {
         //Arrange
         var name = "new name";
-        var record = new LessonDataModel(Guid.NewGuid().ToString(), _worker.Id, name, "desc", []);
+        var record = new LessonDataModel(Guid.NewGuid().ToString(), _worker.Id, name, DateTime.UtcNow, "desc", []);
         _lessonStorageContract.Setup(x => x.GetElementByName(name)).Returns(record);
         //Act
         var element = _lessonBuisnessLogicContract.GetLessonByData(_worker.Id, name);
@@ -122,7 +122,7 @@ internal class LessonBuisnessLogicTest : BaseStorageContractTests
     {
         //Arrange
         var workerId = Guid.NewGuid().ToString();
-        var record = new LessonDataModel(Guid.NewGuid().ToString(), workerId, "name", "desc", []);
+        var record = new LessonDataModel(Guid.NewGuid().ToString(), workerId, "name", DateTime.UtcNow, "desc", []);
         _lessonStorageContract.Setup(x => x.GetElementByName("name")).Returns(record);
 
         //Act&Assert
@@ -134,7 +134,7 @@ internal class LessonBuisnessLogicTest : BaseStorageContractTests
     {
         //Arrange
         var flag = false;
-        var record = new LessonDataModel(Guid.NewGuid().ToString(), _worker.Id, "name", "desc", []);
+        var record = new LessonDataModel(Guid.NewGuid().ToString(), _worker.Id, "name", DateTime.UtcNow, "desc", []);
         _lessonStorageContract.Setup(x => x.AddElement(It.IsAny<LessonDataModel>()))
             .Callback((LessonDataModel x) =>
             {
@@ -152,7 +152,7 @@ internal class LessonBuisnessLogicTest : BaseStorageContractTests
     {
         //Arrange
         var workerId = Guid.NewGuid().ToString();
-        var record = new LessonDataModel(Guid.NewGuid().ToString(), workerId, "name", "desc", []);
+        var record = new LessonDataModel(Guid.NewGuid().ToString(), workerId, "name", DateTime.UtcNow, "desc", []);
         _lessonStorageContract.Setup(x => x.AddElement(It.IsAny<LessonDataModel>()));
 
         //Act&
@@ -165,7 +165,7 @@ internal class LessonBuisnessLogicTest : BaseStorageContractTests
         //Arrange
         _lessonStorageContract.Setup(x => x.AddElement(It.IsAny<LessonDataModel>())).Throws(new ElementExistsException("Data", "Data"));
         //Act&Assert
-        Assert.That(() => _lessonBuisnessLogicContract.InsertLesson(_worker.Id, new(Guid.NewGuid().ToString(), _worker.Id, "name", "desc", [])),
+        Assert.That(() => _lessonBuisnessLogicContract.InsertLesson(_worker.Id, new(Guid.NewGuid().ToString(), _worker.Id, "name", DateTime.UtcNow,"desc", [])),
             Throws.TypeOf<ElementExistsException>());
         _lessonStorageContract.Verify(x => x.AddElement(It.IsAny<LessonDataModel>()), Times.Once);
     }
@@ -181,7 +181,7 @@ internal class LessonBuisnessLogicTest : BaseStorageContractTests
     public void InsertLesson_InvalidRecord_ThrowException_Test()
     {
         //Act&Assert
-        Assert.That(() => _lessonBuisnessLogicContract.InsertLesson(_worker.Id, new LessonDataModel("id", _worker.Id, "name", "desc", [])), Throws.TypeOf<ValidationException>());
+        Assert.That(() => _lessonBuisnessLogicContract.InsertLesson(_worker.Id, new LessonDataModel("id", _worker.Id, "name", DateTime.UtcNow, "desc", [])), Throws.TypeOf<ValidationException>());
         _lessonStorageContract.Verify(x => x.AddElement(It.IsAny<LessonDataModel>()), Times.Never);
     }
 
@@ -190,7 +190,7 @@ internal class LessonBuisnessLogicTest : BaseStorageContractTests
     {
         //Arrange
         var flag = false;
-        var record = new LessonDataModel(Guid.NewGuid().ToString(), _worker.Id, "name", "desc", []);
+        var record = new LessonDataModel(Guid.NewGuid().ToString(), _worker.Id, "name", DateTime.UtcNow, "desc", []);
         _lessonStorageContract.Setup(x => x.UpdElement(It.IsAny<LessonDataModel>()))
         .Callback((LessonDataModel x) =>
         {
@@ -208,7 +208,7 @@ internal class LessonBuisnessLogicTest : BaseStorageContractTests
     {
         //Arrange
         var workerId = Guid.NewGuid().ToString();
-        var record = new LessonDataModel(Guid.NewGuid().ToString(), workerId, "name", "desc", []);
+        var record = new LessonDataModel(Guid.NewGuid().ToString(), workerId, "name", DateTime.UtcNow, "desc", []);
         _lessonStorageContract.Setup(x => x.UpdElement(It.IsAny<LessonDataModel>()));
 
         //Act&
@@ -221,7 +221,7 @@ internal class LessonBuisnessLogicTest : BaseStorageContractTests
         //Arrange
         _lessonStorageContract.Setup(x => x.UpdElement(It.IsAny<LessonDataModel>())).Throws(new ElementNotFoundException(""));
         //Act&Assert
-        Assert.That(() => _lessonBuisnessLogicContract.UpdateLesson(_worker.Id, new(Guid.NewGuid().ToString(), _worker.Id, "name", "desc", [])), Throws.TypeOf<ElementNotFoundException>());
+        Assert.That(() => _lessonBuisnessLogicContract.UpdateLesson(_worker.Id, new(Guid.NewGuid().ToString(), _worker.Id, "name", DateTime.UtcNow, "desc", [])), Throws.TypeOf<ElementNotFoundException>());
         _lessonStorageContract.Verify(x => x.UpdElement(It.IsAny<LessonDataModel>()), Times.Once);
     }
 
@@ -231,7 +231,7 @@ internal class LessonBuisnessLogicTest : BaseStorageContractTests
         //Arrange
         _lessonStorageContract.Setup(x => x.UpdElement(It.IsAny<LessonDataModel>())).Throws(new ElementExistsException("Data", "Data"));
         //Act&Assert
-        Assert.That(() => _lessonBuisnessLogicContract.UpdateLesson(_worker.Id, new(Guid.NewGuid().ToString(), _worker.Id, "name", "desc", [])), Throws.TypeOf<ElementExistsException>());
+        Assert.That(() => _lessonBuisnessLogicContract.UpdateLesson(_worker.Id, new(Guid.NewGuid().ToString(), _worker.Id, "name", DateTime.UtcNow, "desc", [])), Throws.TypeOf<ElementExistsException>());
         _lessonStorageContract.Verify(x => x.UpdElement(It.IsAny<LessonDataModel>()), Times.Once);
     }
     [Test]
@@ -245,7 +245,7 @@ internal class LessonBuisnessLogicTest : BaseStorageContractTests
     public void UpdateLesson_InvalidRecord_ThrowException_Test()
     {
         //Act&Assert
-        Assert.That(() => _lessonBuisnessLogicContract.UpdateLesson(_worker.Id, new LessonDataModel("id", _worker.Id, "name", "desc", [])),
+        Assert.That(() => _lessonBuisnessLogicContract.UpdateLesson(_worker.Id, new LessonDataModel("id", _worker.Id, "name", DateTime.UtcNow, "desc", [])),
         Throws.TypeOf<ValidationException>());
         _lessonStorageContract.Verify(x => x.UpdElement(It.IsAny<LessonDataModel>()), Times.Never);
     }
@@ -270,7 +270,7 @@ internal class LessonBuisnessLogicTest : BaseStorageContractTests
         //Arrange
         var storekeeperId = Guid.NewGuid().ToString();
         var id = Guid.NewGuid().ToString();
-        var record = new LessonDataModel(id, storekeeperId, "name", "desc", []);
+        var record = new LessonDataModel(id, storekeeperId, "name", DateTime.UtcNow, "desc", []);
         _lessonStorageContract.Setup(x => x.GetElementById(id)).Returns(record);
         _lessonStorageContract.Setup(x => x.UpdElement(It.IsAny<LessonDataModel>()));
 

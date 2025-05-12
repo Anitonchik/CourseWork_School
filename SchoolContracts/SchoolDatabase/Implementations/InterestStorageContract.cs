@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace SchoolDatabase.Implementations;
 
-public class InterestStorageContract/*: IInterestStorageContract*/
+public class InterestStorageContract: IInterestStorageContract
 {
     private readonly SchoolDbContext _dbContext;
     private readonly Mapper _mapper;

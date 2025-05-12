@@ -44,6 +44,15 @@ public class SchoolDbContext : DbContext
 
         modelBuilder.Entity<Worker>().HasIndex(x => x.Login).IsUnique();
         modelBuilder.Entity<Worker>().HasIndex(x => x.Mail).IsUnique();
+        modelBuilder.Entity<Worker>().HasData([
+            new Worker {
+                Id = Guid.NewGuid().ToString(),
+                FIO = "fio2",
+                Login = "worker login",
+                Password = "psw2",
+                Mail = "mail2@a.com"
+            }
+        ]);
         modelBuilder.Entity<Lesson>().HasIndex(x => x.LessonName).IsUnique();
         modelBuilder.Entity<Interest>().HasIndex(x => x.InterestName).IsUnique();
 

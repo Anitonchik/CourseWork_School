@@ -60,11 +60,15 @@ public class AchievementBuisnessLogicContract(IAchievementStorageContract achiev
         _achievementStorageContract.CreateConnectWithLesson(achievementId, lessonId);
     }*/
 
-    public void InsertAchievement(string цщклукId, AchievementDataModel achievementDataModel)
+    public void InsertAchievement(string workerId, AchievementDataModel achievementDataModel)
     {
         _logger.LogInformation("New data: {json}", JsonSerializer.Serialize(achievementDataModel));
         ArgumentNullException.ThrowIfNull(achievementDataModel);
         achievementDataModel.Validate();
+        if (achievementDataModel.WorkerId != workerId)
+        {
+            throw new UnauthorizedAccessException(workerId);
+        }
         _achievementStorageContract.AddElement(achievementDataModel);
     }
 

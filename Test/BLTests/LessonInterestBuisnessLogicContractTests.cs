@@ -9,6 +9,7 @@ using Test;
 using Microsoft.Extensions.Logging;
 using SchoolContracts.DataModels;
 using SchoolDatabase.Implementations;
+using SchoolTests.Infrastructure;
 
 
 namespace SchoolTests.BLTests;

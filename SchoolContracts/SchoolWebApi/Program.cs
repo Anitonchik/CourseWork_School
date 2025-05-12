@@ -59,24 +59,37 @@ builder.Services.AddSingleton<IConnectionString, ConnectionString>();
 
 builder.Services.AddTransient<IStorekeeperBuisnessLogicContract, StorekeeperBuisnessLogicContract>();
 builder.Services.AddTransient<IWorkerBuisnessLogicContract, WorkerBuisnessLogicContract>();
+builder.Services.AddTransient<IAchievementBuisnessLogicContract, AchievementBuisnessLogicContract>();
 builder.Services.AddTransient<ICircleBuisnessLogicContract, CircleBuisnessLogicContract>();
+builder.Services.AddTransient<IInterestBuisnessLogicContract, InterestBuisnessLogicContract>();
+builder.Services.AddTransient<ILessonBuisnessLogicContract, LessonBuisnessLogicContract>();
 builder.Services.AddTransient<ILessonCircleBuisnessLogicContract, LessonCircleBuisnessLogicContract>();
+builder.Services.AddTransient<ILessonInterestBuisnessLogicContract, LessonInterestBuisnessLogicContract>();
 builder.Services.AddTransient<IMaterialBuisnessLogicContract, MaterialBuisnessLogicContract>();
 builder.Services.AddTransient<IMedalBuisnessLogicContract, MedalBuisnessLogicContract>();
 
 builder.Services.AddTransient<SchoolDbContext>();
 builder.Services.AddTransient<IStorekeeperStorageContract, StorekeeperStorageContract>();
 builder.Services.AddTransient<IWorkerStorageContract, WorkerStorageContract>();
+builder.Services.AddTransient<IAchievementStorageContract, AchievementStorageContract>();
 builder.Services.AddTransient<ICircleStorageContract, CircleStorageContract>();
+builder.Services.AddTransient<IInterestStorageContract, InterestStorageContract>();
+builder.Services.AddTransient<ILessonStorageContract, LessonStorageContract>();
 builder.Services.AddTransient<ILessonCircleStorageContract, LessonCircleStorageContract>();
+builder.Services.AddTransient<ILessonInterestStorageContract, LessonInterestStorageContract>();
 builder.Services.AddTransient<IMaterialStorageContract, MaterialStorageContract>();
 builder.Services.AddTransient<IMedalStorageContract, MedalStorageContract>();
 
 builder.Services.AddTransient<IStorekeeperAdapter, UserStorekeeperAdapter>();
+builder.Services.AddTransient<IWorkerAdapter, UserWorkerAdapter>();
+builder.Services.AddTransient<IAchievementAdapter, AchievementAdapter>();
 builder.Services.AddTransient<ICircleAdapter, CircleAdapter>();
+builder.Services.AddTransient<IInterestAdapter, InterestAdapter>();
+builder.Services.AddTransient<ILessonAdapter, LessonAdapter>();
 builder.Services.AddTransient<IMaterialAdapter, MaterialAdapter>();
 builder.Services.AddTransient<IMedalAdapter, MedalAdapter>();
 builder.Services.AddTransient<ILessonCircleAdapter, LessonCircleAdapter>();
+builder.Services.AddTransient<ILessonInterestAdapter, LessonInterestAdapter>();
 
 builder.Services.AddScoped<JwtService>();
 

@@ -22,6 +22,7 @@
   <ItemGroup>
 	  <ProjectReference Include="..\SchoolContracts\SchoolBusinessLogic\SchoolBuisnessLogic.csproj" />
 	  <ProjectReference Include="..\SchoolContracts\SchoolDatabase\SchoolDatabase.csproj" />
+	  <ProjectReference Include="..\SchoolContracts\SchoolWebApi\SchoolWebApi.csproj" />
   </ItemGroup>
 
   <ItemGroup>

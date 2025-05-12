@@ -6,6 +6,9 @@ using Serilog;
 using SchoolTests.Infrastructure;
 
 using SchoolDatabase;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
 
 namespace SchoolTests.WebApiTests;
 

@@ -11,13 +11,14 @@ using SchoolContracts.Exceptions;
 using System.ComponentModel.DataAnnotations;
 using UnauthorizedAccessException = SchoolContracts.Exceptions.UnauthorizedAccessException;
 using SchoolBuisnessLogic.Implementations;
+using SchoolTests.Infrastructure;
 
 namespace Test.BLTests;
 
 [TestFixture]
 internal class AchievementBuisnessLogicTest : BaseStorageContractTests
 {
-    /*private IAchievementBuisnessLogicContract _achievementBuisnessLogicContract;
+    private IAchievementBuisnessLogicContract _achievementBuisnessLogicContract;
     private Mock<IAchievementStorageContract> _achievementStorageContract;
     private Worker _worker;
     private Lesson _lesson;
@@ -294,5 +295,5 @@ internal class AchievementBuisnessLogicTest : BaseStorageContractTests
         //Act&Assert
         Assert.That(() => _achievementBuisnessLogicContract.DeleteAchievement(_worker.Id, "id"), Throws.TypeOf<ValidationException>());
         _achievementStorageContract.Verify(x => x.DelElement(It.IsAny<string>()), Times.Never);
-    }*/
+    }
 }

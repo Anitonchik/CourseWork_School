@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using SchoolContracts.DataModels;
+using SchoolDatabase.Implementations;
+using SchoolDatabase.Models;
+using SchoolTests.Infrastructure;
 using Test.Tests;
 
-namespace SchoolTests.Tests;
+namespace Test.Tests;
 
 [TestFixture]
 internal class LessonInterestStorageContractTests : BaseStorageContractTests
