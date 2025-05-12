@@ -80,7 +80,53 @@ public class ConnectEntitiesStorageContract : IConnectEntitiesStorageContract
         }
     }
 
-    public void CreateConnectLessonAndInterest(string lessonId, string interestId,string category)
+    public void CreateConnectCircleAndMaterial(string circleId, string materialId, int count = 1)
+    {
+        try
+        {
+            _circleStorageContract.GetElementById(circleId);
+            _materialStorageContract.GetElementById(materialId);
+
+            var circleMaterialDataModel = new CircleMaterialDataModel(circleId, materialId, count);
+            _dbContext.CircleMaterials.Add(_mapperMaterialCircle.Map<CircleMaterial>(circleMaterialDataModel));
+            _dbContext.SaveChanges();
+        }
+        catch (ElementNotFoundException)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new Exception();
+        }
+    }
+
+    public void DeleteConnectCircleAndMaterial(string circleId, string materialId, int count = 1)
+    {
+        try
+        {
+            _circleStorageContract.GetElementById(circleId);
+            _materialStorageContract.GetElementById(materialId);
+
+            var element = GetCircleMaterialById(circleId, materialId, count) ?? throw new ConnectElementsNotFoundException(circleId, materialId);
+            _dbContext.CircleMaterials.Remove(element);
+            _dbContext.SaveChanges();
+        }
+        catch (ElementNotFoundException)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new Exception();
+        }
+    }
+
+    public void CreateConnectLessonAndInterest(string lessonId, string interestId)
     {
         try
         {
