@@ -17,7 +17,7 @@ public class ConnectEntitiesStorageContract : IConnectEntitiesStorageContract
     private readonly InterestStorageContract _interestStorageContract;
 
 
-    public ConnectEntitiesStorageContract(SchoolDbContext dbContext, 
+    public ConnectEntitiesStorageContract(SchoolDbContext dbContext,
         CircleStorageContract? circleStorageContract, LessonStorageContract? lessonStorageContract,
         InterestStorageContract? interestStorageContract)
     {
@@ -25,7 +25,7 @@ public class ConnectEntitiesStorageContract : IConnectEntitiesStorageContract
 
         var configurationLessonCircle = new MapperConfiguration(cfg => cfg.AddMaps(typeof(LessonCircle)));
         var configurationLessonInterest = new MapperConfiguration(cfg => cfg.AddMaps(typeof(LessonInterest)));
-       
+
         _mapperLessonCircle = new Mapper(configurationLessonCircle);
         _mapperLessonInterest = new Mapper(configurationLessonInterest);
 
@@ -80,53 +80,7 @@ public class ConnectEntitiesStorageContract : IConnectEntitiesStorageContract
         }
     }
 
-    public void CreateConnectCircleAndMaterial(string circleId, string materialId, int count = 1)
-    {
-        try
-        {
-            _circleStorageContract.GetElementById(circleId);
-            _materialStorageContract.GetElementById(materialId);
-
-            var circleMaterialDataModel = new CircleMaterialDataModel(circleId, materialId, count);
-            _dbContext.CircleMaterials.Add(_mapperMaterialCircle.Map<CircleMaterial>(circleMaterialDataModel));
-            _dbContext.SaveChanges();
-        }
-        catch (ElementNotFoundException)
-        {
-            _dbContext.ChangeTracker.Clear();
-            throw;
-        }
-        catch (Exception ex)
-        {
-            _dbContext.ChangeTracker.Clear();
-            throw new Exception();
-        }
-    }
-
-    public void DeleteConnectCircleAndMaterial(string circleId, string materialId, int count = 1)
-    {
-        try
-        {
-            _circleStorageContract.GetElementById(circleId);
-            _materialStorageContract.GetElementById(materialId);
-
-            var element = GetCircleMaterialById(circleId, materialId, count) ?? throw new ConnectElementsNotFoundException(circleId, materialId);
-            _dbContext.CircleMaterials.Remove(element);
-            _dbContext.SaveChanges();
-        }
-        catch (ElementNotFoundException)
-        {
-            _dbContext.ChangeTracker.Clear();
-            throw;
-        }
-        catch (Exception ex)
-        {
-            _dbContext.ChangeTracker.Clear();
-            throw new Exception();
-        }
-    }
-
-    public void CreateConnectLessonAndInterest(string lessonId, string interestId)
+    public void CreateConnectLessonAndInterest(string lessonId, string interestId, string category)
     {
         try
         {
@@ -172,7 +126,7 @@ public class ConnectEntitiesStorageContract : IConnectEntitiesStorageContract
         }
     }
 
-    private LessonCircle? GetLessonCircleById(string lessonId, string circleId) => 
+    private LessonCircle? GetLessonCircleById(string lessonId, string circleId) =>
         _dbContext.LessonCircles.FirstOrDefault(x => x.LessonId == lessonId && x.CircleId == circleId);
 
     private LessonInterest? GetLessonInterestById(string lessonId, string interestId) =>
