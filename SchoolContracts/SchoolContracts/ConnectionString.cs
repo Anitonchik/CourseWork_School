@@ -1,9 +1,7 @@
-﻿using SchoolContracts.Infrastructure;
-
-namespace SchoolContracts;
+﻿namespace SchoolContracts;
 
 public class ConnectionString : IConnectionString
 {
-    //string IConnectionString.ConnectionString => "Server=localhost, 5432;Database=school_rpp_2;Uid=postgres;Pwd=postgres;";
-    string IConnectionString.ConnectionString => "Server=localhost, 5432;Database=school;Uid=postgres;Pwd=12345678;";
+    string IConnectionString.ConnectionString => "Server=localhost, 5432;Database=school_rpp_3;Uid=postgres;Pwd=postgres;";
+    //string IConnectionString.ConnectionString => "Server=localhost, 5432;Database=school;Uid=postgres;Pwd=12345678;";
 }

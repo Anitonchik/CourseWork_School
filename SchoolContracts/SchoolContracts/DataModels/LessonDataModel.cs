@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SchoolContracts.DataModels;
 
-public class LessonDataModel(string id, string workerId,  string lessonName, DateTime lessonDate, string description, List<LessonInterestDataModel> LessonInterests)
+public class LessonDataModel(string id, string workerId,  string lessonName, DateTime lessonDate,string description, List<LessonInterestDataModel> LessonInterests)
 {
     public string Id { get; private set; } = id;
     public string WorkerId { get; private set; } = workerId;

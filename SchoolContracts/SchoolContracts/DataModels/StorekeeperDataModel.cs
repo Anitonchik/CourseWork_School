@@ -22,6 +22,12 @@ public class StorekeeperDataModel (string id, string fio, string login, string p
         if (FIO.IsEmpty())
             throw new ValidationException("Field FIO is empty");
 
+        if (Login.IsEmpty())
+            throw new ValidationException("Field Login is empty");
+
+        if (Login.Length >= 50)
+            throw new ValidationException("Field Login is greater than or equal to 50");
+
         if (Password.IsEmpty())
             throw new ValidationException("Field Password is empty");
 

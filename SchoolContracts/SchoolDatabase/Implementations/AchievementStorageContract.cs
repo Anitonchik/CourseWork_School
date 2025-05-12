@@ -17,16 +17,16 @@ public class AchievementStorageContract : IAchievementStorageContract
 {
     private readonly SchoolDbContext _dbContext;
     private readonly Mapper _mapper;
-    private readonly LessonStorageContract? _lessonStorageContract;
+    //private readonly LessonStorageContract? _lessonStorageContract;
 
-    public AchievementStorageContract(SchoolDbContext dbContext, LessonStorageContract? lessonStorageContract)
+    public AchievementStorageContract(SchoolDbContext dbContext/*, LessonStorageContract? lessonStorageContract*/)
     {
         _dbContext = dbContext;
 
         var configuration = new MapperConfiguration(cfg => cfg.AddMaps(typeof(Achievement)));
 
         _mapper = new Mapper(configuration);
-        _lessonStorageContract = lessonStorageContract;
+        //_lessonStorageContract = lessonStorageContract;
     }
      public List<AchievementDataModel> GetList(string workerId)
     {
@@ -59,7 +59,7 @@ public class AchievementStorageContract : IAchievementStorageContract
             throw new Exception();
         }
     }
-    public void CreateConnectWithLesson(string achievementId, string lessonId)
+    /*public void CreateConnectWithLesson(string achievementId, string lessonId)
     {
         try
         {
@@ -85,7 +85,7 @@ public class AchievementStorageContract : IAchievementStorageContract
             _dbContext.ChangeTracker.Clear();
             throw new Exception();
         }
-    }
+    }*/
     public void AddElement(AchievementDataModel achievementDataModel)
     {
         try
