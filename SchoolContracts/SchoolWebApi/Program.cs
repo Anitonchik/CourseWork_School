@@ -12,7 +12,7 @@ using SchoolContracts.Infrastructure;
 using SchoolContracts;
 using SchoolContracts.BusinessLogicsContracts;
 using SchoolBuisnessLogic.Implementations;
-using NUnit.Framework;
+//using NUnit.Framework;
 using Microsoft.OpenApi.Models;
 using SchoolBusinessLogic.Implementations;
 
@@ -24,9 +24,9 @@ builder.Services.AddControllers();
 
 
 //”¡–¿“‹ œŒ“ŒÃ —–Œ◊ÕŒ
-var SchoolDbContext = new SchoolDbContext(new ConnectionString());
+/*var SchoolDbContext = new SchoolDbContext(new ConnectionString());
 SchoolDbContext.Database.EnsureDeleted();
-SchoolDbContext.Database.EnsureCreated();
+SchoolDbContext.Database.EnsureCreated();*/
 
 
 using var loggerFactory = new LoggerFactory();
@@ -131,9 +131,9 @@ app.MapControllers();
 
 app.Run();
 
-[TearDown]
+/*[TearDown]
 void TearDown()
 {
     SchoolDbContext.Database.EnsureDeleted();
     SchoolDbContext.Dispose();
-}
+}*/
