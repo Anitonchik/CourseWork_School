@@ -11,5 +11,6 @@ public class LessonViewModel
     public required string Id { get; set; }
     public required string WorkerId { get; set; }
     public required string LessonName { get; set; }
+    public DateTime LessonDate { get; set; }
     public string Description { get; set; }
 }

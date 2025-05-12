@@ -11,5 +11,6 @@ public class LessonBindingModel
     public string? Id { get; set; }
     public string? WorkerId { get; set; }
     public string LessonName { get; set; }
+    public DateTime LessonDate { get; set; }
     public string Description { get; set; }
 }

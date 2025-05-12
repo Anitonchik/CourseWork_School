@@ -4,4 +4,5 @@ public class LessonInterestViewModel
 {
     public required string LessonId { get; set; }
     public required string InterestId { get; set; }
+    public string Category { get; set; }
 }
