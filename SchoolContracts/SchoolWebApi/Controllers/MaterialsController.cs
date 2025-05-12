@@ -9,9 +9,9 @@ namespace SchoolWebApi.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [Produces("application/json")]
-public class CircleController(ICircleAdapter adapter) : ControllerBase
+public class MaterialsController(IMaterialAdapter adapter) : ControllerBase
 {
-    private readonly ICircleAdapter _adapter = adapter;
+    private readonly IMaterialAdapter _adapter = adapter;
 
     [HttpGet]
     public IActionResult GetAllRecords(string storekeeperId)
@@ -26,20 +26,20 @@ public class CircleController(ICircleAdapter adapter) : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Register(string storekeeperId, [FromBody] CircleBindingModel model)
+    public IActionResult Register(string storekeeperId, [FromBody] MaterialBindingModel model)
     {
-        return _adapter.RegisterCircle(storekeeperId, model).GetResponse(Request, Response);
+        return _adapter.RegisterMaterial(storekeeperId, model).GetResponse(Request, Response);
     }
 
     [HttpPut]
-    public IActionResult ChangeInfo(string storekeeperId, [FromBody] CircleBindingModel model)
+    public IActionResult ChangeInfo(string storekeeperId, [FromBody] MaterialBindingModel model)
     {
-        return _adapter.ChangeCircleInfo(storekeeperId, model).GetResponse(Request, Response);
+        return _adapter.ChangeMaterialInfo(storekeeperId, model).GetResponse(Request, Response);
     }
 
     [HttpDelete("{id}")]
     public IActionResult Delete(string storekeeperId, string id)
     {
-        return _adapter.RemoveCircle(storekeeperId, id).GetResponse(Request, Response);
+        return _adapter.RemoveMaterial(storekeeperId, id).GetResponse(Request, Response);
     }
 }

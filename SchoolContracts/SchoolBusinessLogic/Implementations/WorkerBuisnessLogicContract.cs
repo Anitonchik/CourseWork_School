@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using SchoolContracts.BusinessLogicsContracts;
 using SchoolContracts.DataModels;
+using SchoolContracts.Exceptions;
 using SchoolContracts.Extensions;
 using SchoolContracts.StoragesContracts;
 using System.ComponentModel.DataAnnotations;
@@ -13,6 +14,17 @@ public class WorkerBuisnessLogicContract(IWorkerStorageContract workerStorageCon
 {
     private readonly ILogger _logger = logger;
     private readonly IWorkerStorageContract _workerStorageContract = workerStorageContract;
+
+    public WorkerDataModel GetWorkerByLogin(string login)
+    {
+        _logger.LogInformation("Get element by login: {data}", login);
+
+        if (login.IsEmpty())
+        {
+            throw new ValidationException("Login is not a unique identifier");
+        }
+        return _workerStorageContract.GetElementByLogin(login) ?? throw new ElementNotFoundException(login);
+    }
 
     public void InsertWorker(WorkerDataModel workerDataModel)
     {

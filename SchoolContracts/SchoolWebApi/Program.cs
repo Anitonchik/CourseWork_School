@@ -1,10 +1,33 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Serilog;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using SchoolWebApi.Services;
+using SchoolContracts.AdapterContracts;
+using SchoolWebApi.Adapters;
+using SchoolContracts.StoragesContracts;
+using SchoolDatabase.Implementations;
+using SchoolDatabase;
+using SchoolContracts.Infrastructure;
+using SchoolContracts;
+using SchoolContracts.BusinessLogicsContracts;
+using SchoolBuisnessLogic.Implementations;
+using NUnit.Framework;
+using Microsoft.OpenApi.Models;
+using SchoolBusinessLogic.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+
+//УБРАТЬ ПОТОМ СРОЧНО
+var SchoolDbContext = new SchoolDbContext(new ConnectionString());
+SchoolDbContext.Database.EnsureDeleted();
+SchoolDbContext.Database.EnsureCreated();
+
 
 using var loggerFactory = new LoggerFactory();
 loggerFactory.AddSerilog(new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger());
@@ -13,10 +36,77 @@ builder.Services.AddSingleton(loggerFactory.CreateLogger("Any"));
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    //options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = builder.Configuration["JwtConfig:Issuer"],
+        ValidAudience = builder.Configuration["JwtConfig:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtConfig:Key"]!)),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true
+    };
+});
 
-//builder.Services.AddAuthentication("Bearer")  // добавление сервисов аутентификации
- //   .AddJwtBearer();      // подключение аутентификации с помощью jwt-токенов
-builder.Services.AddAuthorization();            // добавление сервисов авторизации
+builder.Services.AddAuthorization();
+
+builder.Services.AddSingleton<IConnectionString, ConnectionString>();
+
+builder.Services.AddTransient<IStorekeeperBuisnessLogicContract, StorekeeperBuisnessLogicContract>();
+builder.Services.AddTransient<IWorkerBuisnessLogicContract, WorkerBuisnessLogicContract>();
+builder.Services.AddTransient<ICircleBuisnessLogicContract, CircleBuisnessLogicContract>();
+builder.Services.AddTransient<ILessonCircleBuisnessLogicContract, LessonCircleBuisnessLogicContract>();
+builder.Services.AddTransient<IMaterialBuisnessLogicContract, MaterialBuisnessLogicContract>();
+builder.Services.AddTransient<IMedalBuisnessLogicContract, MedalBuisnessLogicContract>();
+
+builder.Services.AddTransient<SchoolDbContext>();
+builder.Services.AddTransient<IStorekeeperStorageContract, StorekeeperStorageContract>();
+builder.Services.AddTransient<IWorkerStorageContract, WorkerStorageContract>();
+builder.Services.AddTransient<ICircleStorageContract, CircleStorageContract>();
+builder.Services.AddTransient<ILessonCircleStorageContract, LessonCircleStorageContract>();
+builder.Services.AddTransient<IMaterialStorageContract, MaterialStorageContract>();
+builder.Services.AddTransient<IMedalStorageContract, MedalStorageContract>();
+
+builder.Services.AddTransient<IStorekeeperAdapter, UserStorekeeperAdapter>();
+builder.Services.AddTransient<ICircleAdapter, CircleAdapter>();
+builder.Services.AddTransient<IMaterialAdapter, MaterialAdapter>();
+builder.Services.AddTransient<IMedalAdapter, MedalAdapter>();
+builder.Services.AddTransient<ILessonCircleAdapter, LessonCircleAdapter>();
+
+builder.Services.AddScoped<JwtService>();
+
+
+builder.Services.AddSwaggerGen(options =>
+{
+    var jwtSecurityScheme = new OpenApiSecurityScheme
+    {
+        BearerFormat = "JWT",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+        Description = "Enter your JWT Access Token",
+        Reference = new OpenApiReference
+        {
+            Id = JwtBearerDefaults.AuthenticationScheme,
+            Type = ReferenceType.SecurityScheme
+        }
+    };
+    options.AddSecurityDefinition("Bearer", jwtSecurityScheme);
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        { jwtSecurityScheme, Array.Empty<string>() }
+    });
+});
 
 var app = builder.Build();
 
@@ -24,12 +114,26 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI(options => // UseSwaggerUI is called only in Development.
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        options.RoutePrefix = string.Empty;
+    });
 }
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
+
+[TearDown]
+void TearDown()
+{
+    SchoolDbContext.Database.EnsureDeleted();
+    SchoolDbContext.Dispose();
+}

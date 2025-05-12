@@ -34,7 +34,7 @@ public class OperationResponse
         return new ObjectResult(Result);
     }
 
-    protected static TResult OK<TResult, TData>(TData data) where TResult : OperationResponse, new() => new() { StatusCode = HttpStatusCode.OK, Result = data };
+    public static TResult OK<TResult, TData>(TData data) where TResult : OperationResponse, new() => new() { StatusCode = HttpStatusCode.OK, Result = data };
 
     protected static TResult OK<TResult, TData>(TData data, string fileName) where TResult : OperationResponse, new() => new() { StatusCode = HttpStatusCode.OK, Result = data, FileName = fileName };
 

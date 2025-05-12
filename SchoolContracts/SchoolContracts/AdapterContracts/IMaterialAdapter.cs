@@ -5,13 +5,13 @@ namespace SchoolContracts.AdapterContracts;
 
 public interface IMaterialAdapter
 {
-    MaterialOperationResponse GetList();
+    MaterialOperationResponse GetList(string storekeeperId);
 
-    MaterialOperationResponse GetElement(string data);
+    MaterialOperationResponse GetElement(string storekeeperId, string data);
 
-    MaterialOperationResponse RegisterMaterial(MaterialBindingModel materialModel);
+    MaterialOperationResponse RegisterMaterial(string storekeeperId, MaterialBindingModel materialModel);
 
-    MaterialOperationResponse ChangeMaterialInfo(MaterialBindingModel materialModel);
+    MaterialOperationResponse ChangeMaterialInfo(string storekeeperId, MaterialBindingModel materialModel);
 
-    MaterialOperationResponse RemoveMaterial(string id);
+    MaterialOperationResponse RemoveMaterial(string storekeeperId, string id);
 }
