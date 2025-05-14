@@ -1,6 +1,6 @@
-﻿namespace SchoolDatabase.Models.ModelsForReports;
+﻿namespace SchoolContracts.ViewModels;
 
-public class MaterialByLesson
+public class MaterialByLessonViewModel
 {
     public string LessonName { get; set; }
     public string MaterialName { get; set; }
