@@ -5,8 +5,8 @@ namespace SchoolContracts.BusinessLogicsContracts;
 
 public interface IReportContract
 {
-    List<CirclesWithInterestsWithMedals> GetCirclesWithInterestsWithMedals(string storekeeperId, DateTime fromDate, DateTime toDate);
-    List<InterestsWithAchievementsWithCircles> GetInterestsWithAchievementsWithCircles(string workerId, DateTime fromDate, DateTime toDate);
-    List<MaterialByLesson> GetMaterialsByLesson(string storekeeperId, string lessonId);
-    List<LessonByMaterial> GetLessonsByMaterial(string workerId, string materialId);
+    Task<List<CirclesWithInterestsWithMedalsModel>> GetCirclesWithInterestsWithMedals(string storekeeperId, DateTime fromDate, DateTime toDate, CancellationToken ct);
+    Task<List<InterestsWithAchievementsWithCirclesModel>> GetInterestsWithAchievementsWithCircles(string workerId, DateTime fromDate, DateTime toDate, CancellationToken ct);
+    Task<List<MaterialByLesson>> GetMaterialsByLesson(string storekeeperId, string lessonId, CancellationToken ct);
+    Task<List<LessonByMaterialModel>> GetLessonsByMaterial(string workerId, string materialId, CancellationToken ct);
 }

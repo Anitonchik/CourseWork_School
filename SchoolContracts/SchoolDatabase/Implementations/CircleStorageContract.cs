@@ -35,7 +35,7 @@ public class CircleStorageContract : ICircleStorageContract
         }
     }
 
-    public List<CirclesWithInterestsWithMedals> GetCirclesWithInterestsWithMedals(string storekeeperId, DateTime fromDate, DateTime toDate)
+    public List<CirclesWithInterestsWithMedalsModel> GetCirclesWithInterestsWithMedals(string storekeeperId, DateTime fromDate, DateTime toDate)
     {
         try
         {
@@ -52,7 +52,7 @@ public class CircleStorageContract : ICircleStorageContract
                 $"JOIN \"Lessons\" l ON l.\"Id\" = li.\"LessonId\" " +
                 $"WHERE(st.\"Id\" = '{storekeeperId}' AND l.\"LessonDate\" between '{fromDate}' and '{toDate}');";
 
-            return _dbContext.Set<CirclesWithInterestsWithMedals>().FromSqlRaw(sql).ToList();
+            return _dbContext.Set<CirclesWithInterestsWithMedalsModel>().FromSqlRaw(sql).ToList();
         }
         catch (Exception ex)
         {

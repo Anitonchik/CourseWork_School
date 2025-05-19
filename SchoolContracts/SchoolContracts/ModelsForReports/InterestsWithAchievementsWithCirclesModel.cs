@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SchoolContracts.ModelsForReports;
 
-public class InterestsWithAchievementsWithCircles
+public class InterestsWithAchievementsWithCirclesModel
 {
     public string InterestName { get; set; }
     public string AchievementName { get; set; }

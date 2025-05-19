@@ -1,5 +1,4 @@
 ﻿using SchoolContracts.Infrastructure;
-using SchoolContracts.ModelsForReports;
 using SchoolContracts.ViewModels;
 
 namespace SchoolContracts.AdapterContracts.OperationResponses;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SchoolContracts.ModelsForReports;
 
-public class LessonByMaterial
+public class LessonByMaterialModel
 {
     public string LessonName { get; set; }
     public string MaterialName { get; set; }

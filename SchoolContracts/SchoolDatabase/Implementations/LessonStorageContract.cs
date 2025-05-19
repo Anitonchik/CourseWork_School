@@ -41,7 +41,7 @@ public class LessonStorageContract: ILessonStorageContract
             throw new Exception();
         }
     }
-    public List<LessonByMaterial> GetLessonsByMaterial(string workerId,string materialId)
+    public List<LessonByMaterialModel> GetLessonsByMaterial(string workerId,string materialId)
     {
         /*try
         {
@@ -65,7 +65,7 @@ public class LessonStorageContract: ILessonStorageContract
                        $"JOIN \"Materials\" m ON im.\"MaterialId\" = m.\"Id\" " +
                        $"WHERE (wo.\"Id\" = '{workerId}' AND  m.\"Id\" = '{materialId}');";
 
-            return _dbContext.Set<LessonByMaterial>().FromSqlRaw(sql).ToList();
+            return _dbContext.Set<LessonByMaterialModel>().FromSqlRaw(sql).ToList();
         }
         catch (Exception ex)
         {
@@ -167,7 +167,7 @@ public class LessonStorageContract: ILessonStorageContract
         throw new NotImplementedException();
     }
 
-    public List<LessonByMaterial> GetLessonsByMaterial(string materialId)
+    public List<LessonByMaterialModel> GetLessonsByMaterial(string materialId)
     {
         throw new NotImplementedException();
     }

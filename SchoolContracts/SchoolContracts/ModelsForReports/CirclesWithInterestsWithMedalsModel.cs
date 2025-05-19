@@ -1,7 +1,7 @@
 ﻿namespace SchoolContracts.ModelsForReports;
 
 
-public class CirclesWithInterestsWithMedals
+public class CirclesWithInterestsWithMedalsModel
 {
     //[HasNoKey]
     public string CircleName { get; set; }
