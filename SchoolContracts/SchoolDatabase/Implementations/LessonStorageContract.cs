@@ -41,31 +41,21 @@ public class LessonStorageContract: ILessonStorageContract
             throw new Exception();
         }
     }
-    public List<LessonByMaterialModel> GetLessonsByMaterial(string workerId,string materialId)
+
+    public async Task<List<LessonByMaterialModel>> GetLessonsByMaterial(string storekeeperId, string materialId, CancellationToken ct)
     {
-        /*try
-        {
-            var lessons = (from l in _dbContext.Lessons
-                           join li in _dbContext.LessonInterests on l.Id equals li.LessonId
-                           join i in _dbContext.Interests on li.InterestId equals i.Id
-                           join im in _dbContext.InterestMaterials on i.Id equals im.InterestId
-                           join m in _dbContext.Materials on im.MaterialId equals m.Id
-                           where im.MaterialId == materialId
-                           select l).ToList();
-           return [.. lessons.Select(x => _mapper.Map<LessonDataModel>(x))];
-        }*/
         try
         {
             var sql = $"SELECT   m.\"MaterialName\" as \"MaterialName\",l.\"LessonName\" as \"LessonName\", l.\"Description\" as \"LessonDescription\" " +
                        $"FROM \"Lessons\" l " +
-                       $"JOIN \"Workers\" wo ON wo.\"Id\" = l.\"WorkerId\" " +
                        $"JOIN \"LessonInterests\" li ON l.\"Id\" = li.\"LessonId\" " +
                        $"JOIN \"Interests\" i ON li.\"InterestId\" = i.\"Id\" " +
                        $"JOIN \"InterestMaterials\" im ON i.\"Id\" = im.\"InterestId\" " +
                        $"JOIN \"Materials\" m ON im.\"MaterialId\" = m.\"Id\" " +
-                       $"WHERE (wo.\"Id\" = '{workerId}' AND  m.\"Id\" = '{materialId}');";
+                       $"JOIN \"Storekeepers\" st ON st.\"Id\" = m.\"StorekeeperId\" " +
+                       $"WHERE (st.\"Id\" = '{storekeeperId}' AND  m.\"Id\" = '{materialId}');";
 
-            return _dbContext.Set<LessonByMaterialModel>().FromSqlRaw(sql).ToList();
+            return await _dbContext.Set<LessonByMaterialModel>().FromSqlRaw(sql).ToListAsync(ct);
         }
         catch (Exception ex)
         {

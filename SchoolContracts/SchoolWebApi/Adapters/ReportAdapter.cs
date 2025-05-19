@@ -27,6 +27,34 @@ public class ReportAdapter : IReportAdapter
         _mapper = new Mapper(config);
     }
 
+    public async Task<ReportOperationResponse> CreateDocumentCirclesWithInterestsWithMedals(string storekeeperId, DateTime fromDate, DateTime toDate, CancellationToken ct)
+    {
+        try
+        {
+            return await SendStream(await _reportContract.CreateDocumentCirclesWithInterestsWithMedals(storekeeperId, fromDate, toDate, ct), "CirclesWithInterestsWithMedals.docx");
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogError(ex, "InvalidOperationException");
+            return ReportOperationResponse.InternalServerError($"Error while working with data storage: {ex.InnerException!.Message}");
+        }
+        catch (StorageException ex)
+        {
+            _logger.LogError(ex, "StorageException");
+            return ReportOperationResponse.InternalServerError($"Error while working with data storage: {ex.InnerException!.Message}");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Exception");
+            return ReportOperationResponse.InternalServerError(ex.Message);
+        }
+    }
+
+    private async Task<ReportOperationResponse> SendStream(object value, string v)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<ReportOperationResponse> GetCirclesWithInterestsWithMedalsAsync(string storekeeperId, DateTime fromDate, DateTime toDate, CancellationToken ct)
     {
         try
@@ -60,7 +88,7 @@ public class ReportAdapter : IReportAdapter
         throw new NotImplementedException();
     }
 
-    public Task<ReportOperationResponse> GetMaterialsByLessonAsync(string storekeeperId, DateTime fromDate, DateTime toDate, CancellationToken ct)
+    public Task<ReportOperationResponse> GetMaterialsByLessonAsync(string workerId, DateTime fromDate, DateTime toDate, CancellationToken ct)
     {
         throw new NotImplementedException();
     }

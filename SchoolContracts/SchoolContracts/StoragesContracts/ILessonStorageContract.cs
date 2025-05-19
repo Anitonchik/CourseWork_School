@@ -12,7 +12,7 @@ namespace SchoolContracts.StoragesContracts;
 public interface ILessonStorageContract
 {
     List<LessonDataModel> GetList(string workerId);
-    //List<LessonByMaterial> GetLessonsByMaterial(string workerId,string materialId);
+    Task<List<LessonByMaterialModel>> GetLessonsByMaterial(string storekeeperId, string materialId, CancellationToken ct);
     LessonDataModel? GetElementById(string id);
     LessonDataModel? GetElementByName(string name);
     void AddElement(LessonDataModel lessonDataModel);
