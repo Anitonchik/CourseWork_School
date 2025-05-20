@@ -35,7 +35,7 @@ public class MaterialStorageContract : IMaterialStorageContract
         }
     }
 
-    public List<MaterialByLesson> GetMaterialsByLesson(string workerId, string lessonId)
+    public async Task<List<MaterialByLessonModel>> GetMaterialsByLesson(string workerId, string lessonId, CancellationToken ct)
     {   
         try
         {
@@ -49,7 +49,7 @@ public class MaterialStorageContract : IMaterialStorageContract
                 $"JOIN \"Workers\" w ON w.\"Id\" = l.\"WorkerId\" " +
                 $"WHERE (w.\"Id\" = '{workerId}' AND l.\"Id\" = '{lessonId}');";
 
-            return _dbContext.Set<MaterialByLesson>().FromSqlRaw(sql).ToList();
+            return await _dbContext.Set<MaterialByLessonModel>().FromSqlRaw(sql).ToListAsync(ct);
         }
         catch (Exception ex)
         {

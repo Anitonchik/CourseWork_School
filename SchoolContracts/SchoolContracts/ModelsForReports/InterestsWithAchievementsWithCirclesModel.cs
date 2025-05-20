@@ -11,6 +11,6 @@ public class InterestsWithAchievementsWithCirclesModel
     public string InterestName { get; set; }
     public string AchievementName { get; set; }
     public string CircleName { get; set; }
-    public string Description { get; set; }
+    public string InterestDescription { get; set; }
     public DateTime Date { get; set; }
 }
