@@ -64,13 +64,13 @@ public class JwtService
         string userId = string.Empty;
         string userFIO = string.Empty;
         string userMail = string.Empty;
-        UserRole userRole = UserRole.Storekeeper;
+        string userRole = string.Empty;
 
         try
         {
             switch (request.Role)
             {
-                case UserRole.Storekeeper:
+                case "storekeeper":
                     userStorekeeperAccaunt = _storekeeperBuisnessLogicContract.GetStorekeeperByLogin(request.UserLogin);
                     if (userStorekeeperAccaunt is null || request.Password != userStorekeeperAccaunt.Password)
                         return null;
@@ -78,11 +78,11 @@ public class JwtService
                     userId = userStorekeeperAccaunt.Id;
                     userFIO = userStorekeeperAccaunt.FIO;
                     userMail = userStorekeeperAccaunt.Mail;
-                    userRole = UserRole.Storekeeper;
+                    userRole = "storekeeper";
 
                     break;
 
-                case UserRole.Worker:
+                case "worker":
                     userWorkerAccaunt = _workerBuisnessLogicContract.GetWorkerByLogin(request.UserLogin);
                     if (userWorkerAccaunt is null || request.Password != userWorkerAccaunt.Password)
                         return null;
@@ -90,7 +90,7 @@ public class JwtService
                     userId = userWorkerAccaunt.Id;
                     userFIO = userWorkerAccaunt.FIO;
                     userMail = userWorkerAccaunt.Mail;
-                    userRole = UserRole.Worker;
+                    userRole = "worker";
 
                     break;
             }
@@ -168,7 +168,7 @@ public class JwtService
 
         switch (userModel.Role)
         {
-            case 0:
+            case "worker":
                 worker = new Worker
                 {
                     Id = userModel.Id,
@@ -187,10 +187,10 @@ public class JwtService
                 {
                     UserLogin = userWorker.Login,
                     Password = userWorker.Password,
-                    Role = UserRole.Worker
+                    Role = "worker"
                 };
                 return await Authenticate(response);
-            case 1:
+            case "storekeeper":
                 storekeeper = new Storekeeper
                 {
                     Id = userModel.Id,
@@ -199,7 +199,6 @@ public class JwtService
                     Mail = userModel.Mail,
                     Password = userModel.Password
                 };
-                userRole = UserRole.Storekeeper;
 
                 _storekeeperBuisnessLogicContract.InsertStorekeeper(_mapperStorekeeper.Map<StorekeeperDataModel>(storekeeper));
 
@@ -209,7 +208,7 @@ public class JwtService
                 {
                     UserLogin = userStorekeeper.Login,
                     Password = userStorekeeper.Password,
-                    Role = UserRole.Storekeeper
+                    Role = "storekeeper"
                 };
 
                 return await Authenticate(response);

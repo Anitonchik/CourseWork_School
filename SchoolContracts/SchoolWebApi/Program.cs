@@ -21,16 +21,22 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-
-
-
-
 using var loggerFactory = new LoggerFactory();
 loggerFactory.AddSerilog(new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger());
 builder.Services.AddSingleton(loggerFactory.CreateLogger("Any"));
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin(); /*"http://localhost:5173"*/
+        policy.AllowAnyHeader();
+        policy.AllowAnyMethod();
+    });
+});
 
 builder.Services.AddAuthentication(options =>
 {
@@ -131,10 +137,13 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseCors();
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 

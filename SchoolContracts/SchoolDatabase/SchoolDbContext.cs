@@ -77,7 +77,7 @@ public class SchoolDbContext : DbContext
             x.LessonId,
             x.InterestId
         });
-        modelBuilder.Entity<MaterialByLesson>().HasNoKey();
+        modelBuilder.Entity<MaterialByLessonModel>().HasNoKey();
         modelBuilder.Entity<LessonByMaterialModel>().HasNoKey();
     }
 
@@ -93,6 +93,6 @@ public class SchoolDbContext : DbContext
     public DbSet<Medal> Medals { get; set; }
     public DbSet<Storekeeper> Storekeepers { get; set; }
     public DbSet<Worker> Workers { get; set; }
-    public DbSet<MaterialByLesson> MaterialByLessons { get; set; }
+    public DbSet<MaterialByLessonModel> MaterialByLessons { get; set; }
     public DbSet<LessonByMaterialModel> LessonByMaterials { get; set; }
 }

@@ -13,11 +13,11 @@ public class LessonCircleController(ILessonCircleAdapter adapter) : ControllerBa
 {
     private readonly ILessonCircleAdapter _adapter = adapter;
 
-    [HttpPost]
+    /*[HttpPost]
     public IActionResult Register(string storekeeperId, [FromBody] CircleBindingModel circleModel, [FromBody] LessonCircleBindingModel lessonCircleModel)
     {
         return _adapter.RegisterLessonCircle(storekeeperId, circleModel, lessonCircleModel).GetResponse(Request, Response);
-    }
+    }*/
 
     [HttpDelete]
     public IActionResult Delete(string storekeeperId, string lessonId, string circleId)

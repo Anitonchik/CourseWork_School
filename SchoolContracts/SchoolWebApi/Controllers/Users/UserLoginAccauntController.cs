@@ -6,6 +6,9 @@ using SchoolWebApi.Services;
 
 namespace SchoolWebApi.Controllers.Users;
 
+[Route("api/[controller]")]
+[ApiController]
+[Produces("application/json")]
 public class UserLoginAccauntController : ControllerBase
 {
 
@@ -13,8 +16,8 @@ public class UserLoginAccauntController : ControllerBase
     public UserLoginAccauntController(JwtService jwtService) => _jwtService = jwtService;
 
     [AllowAnonymous]
-    [HttpPost("Login")]
-    public async Task<ActionResult<LoginResponseModel>> Login(LoginRequestModel request)
+    [HttpPost("login")]
+    public async Task<ActionResult<LoginResponseModel>> Login([FromBody]  LoginRequestModel request)
     {
         var result = await _jwtService.Authenticate(request);
 
@@ -36,6 +39,4 @@ public class UserLoginAccauntController : ControllerBase
             AccessToken = result.AccessToken
         });
     }
-
-
 }

@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using SchoolContracts.AdapterContracts;
 using SchoolContracts.BindingModels;
 
 namespace SchoolWebApi.Controllers;
+
 
 [Authorize]
 [Route("api/[controller]")]
