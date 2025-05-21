@@ -31,7 +31,7 @@ public class ReportAdapter : IReportAdapter
     {
         try
         {
-            return SendStream(await _reportContract.CreateDocumentCirclesWithInterestsWithMedals(storekeeperId, fromDate, toDate, ct), "CirclesWithInterestsWithMedals.docx");
+            return SendStream(await _reportContract.CreateDocumentCirclesWithInterestsWithMedals(storekeeperId, fromDate, toDate, ct), "CirclesWithInterestsWithMedals.pdf");
         }
         catch (InvalidOperationException ex)
         {
@@ -54,7 +54,7 @@ public class ReportAdapter : IReportAdapter
     {
         try
         {
-            return SendStream(await _reportContract.CreateDocumentInterestsWithAchievementsWithCircles(workerId, fromDate, toDate, ct), "InterestsWithAchievementsWithCircles.docx");
+            return SendStream(await _reportContract.CreateDocumentInterestsWithAchievementsWithCircles(workerId, fromDate, toDate, ct), "InterestsWithAchievementsWithCircles.pdf");
         }
         catch (InvalidOperationException ex)
         {
