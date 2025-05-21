@@ -27,11 +27,11 @@ public class ReportAdapter : IReportAdapter
         _mapper = new Mapper(config);
     }
 
-    public async Task<ReportOperationResponse> CreateDocumentCirclesWithInterestsWithMedals(string storekeeperId, DateTime fromDate, DateTime toDate, CancellationToken ct)
+    public async Task<ReportOperationResponse> CreateDocumentCirclesWithInterestsWithMedalsAsync(string storekeeperId, DateTime fromDate, DateTime toDate, CancellationToken ct)
     {
         try
         {
-            return await SendStream(await _reportContract.CreateDocumentCirclesWithInterestsWithMedals(storekeeperId, fromDate, toDate, ct), "CirclesWithInterestsWithMedals.docx");
+            return SendStream(await _reportContract.CreateDocumentCirclesWithInterestsWithMedals(storekeeperId, fromDate, toDate, ct), "CirclesWithInterestsWithMedals.docx");
         }
         catch (InvalidOperationException ex)
         {
@@ -50,9 +50,118 @@ public class ReportAdapter : IReportAdapter
         }
     }
 
-    private async Task<ReportOperationResponse> SendStream(object value, string v)
+    public async Task<ReportOperationResponse> CreateDocumentInterestsWithAchievementsWithCirclesAsync(string workerId, DateTime fromDate, DateTime toDate, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        try
+        {
+            return SendStream(await _reportContract.CreateDocumentInterestsWithAchievementsWithCircles(workerId, fromDate, toDate, ct), "InterestsWithAchievementsWithCircles.docx");
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogError(ex, "InvalidOperationException");
+            return ReportOperationResponse.InternalServerError($"Error while working with data storage: {ex.InnerException!.Message}");
+        }
+        catch (StorageException ex)
+        {
+            _logger.LogError(ex, "StorageException");
+            return ReportOperationResponse.InternalServerError($"Error while working with data storage: {ex.InnerException!.Message}");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Exception");
+            return ReportOperationResponse.InternalServerError(ex.Message);
+        }
+    }
+
+    public async Task<ReportOperationResponse> CreateWordDocumentLessonByMaterialsAsync(string storekeeperId, List<string> materialIds, CancellationToken ct)
+    {
+        try
+        {
+            return SendStream(await _reportContract.CreateWordDocumentLessonByMaterialsAsync(storekeeperId, materialIds, ct), "LessonByMaterials.docx");
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogError(ex, "InvalidOperationException");
+            return ReportOperationResponse.InternalServerError($"Error while working with data storage: {ex.InnerException!.Message}");
+        }
+        catch (StorageException ex)
+        {
+            _logger.LogError(ex, "StorageException");
+            return ReportOperationResponse.InternalServerError($"Error while working with data storage: {ex.InnerException!.Message}");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Exception");
+            return ReportOperationResponse.InternalServerError(ex.Message);
+        }
+    }
+    public async Task<ReportOperationResponse> CreateWordDocumentMaterialByLessonsAsync(string workerId, List<string> lessonIds, CancellationToken ct)
+    {
+        try
+        {
+            return SendStream(await _reportContract.CreateWordDocumentMaterialByLessonsAsync(workerId, lessonIds, ct), "MaterialByLessons.docx");
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogError(ex, "InvalidOperationException");
+            return ReportOperationResponse.InternalServerError($"Error while working with data storage: {ex.InnerException!.Message}");
+        }
+        catch (StorageException ex)
+        {
+            _logger.LogError(ex, "StorageException");
+            return ReportOperationResponse.InternalServerError($"Error while working with data storage: {ex.InnerException!.Message}");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Exception");
+            return ReportOperationResponse.InternalServerError(ex.Message);
+        }
+    }
+
+    public async Task<ReportOperationResponse> CreateExcelDocumentLessonByMaterialsAsync(string storekeeperId, List<string> materialIds, CancellationToken ct)
+    {
+        try
+        {
+            return SendStream(await _reportContract.CreateExcelDocumentLessonByMaterialsAsync(storekeeperId, materialIds, ct), "LessonByMaterials.xslx");
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogError(ex, "InvalidOperationException");
+            return ReportOperationResponse.InternalServerError($"Error while working with data storage: {ex.InnerException!.Message}");
+        }
+        catch (StorageException ex)
+        {
+            _logger.LogError(ex, "StorageException");
+            return ReportOperationResponse.InternalServerError($"Error while working with data storage: {ex.InnerException!.Message}");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Exception");
+            return ReportOperationResponse.InternalServerError(ex.Message);
+        }
+    }
+
+    public async Task<ReportOperationResponse> CreateExcelDocumentMaterialByLessonsAsync(string workerId, List<string> lessonIds, CancellationToken ct)
+    {
+        try
+        {
+            return SendStream(await _reportContract.CreateExcelDocumentMaterialByLessonsAsync(workerId, lessonIds, ct), "MaterialByLessons.xslx");
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogError(ex, "InvalidOperationException");
+            return ReportOperationResponse.InternalServerError($"Error while working with data storage: {ex.InnerException!.Message}");
+        }
+        catch (StorageException ex)
+        {
+            _logger.LogError(ex, "StorageException");
+            return ReportOperationResponse.InternalServerError($"Error while working with data storage: {ex.InnerException!.Message}");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Exception");
+            return ReportOperationResponse.InternalServerError(ex.Message);
+        }
     }
 
     public async Task<ReportOperationResponse> GetCirclesWithInterestsWithMedalsAsync(string storekeeperId, DateTime fromDate, DateTime toDate, CancellationToken ct)
@@ -61,6 +170,11 @@ public class ReportAdapter : IReportAdapter
         {
             return ReportOperationResponse.OK([.. (await _reportContract.GetCirclesWithInterestsWithMedals(storekeeperId, fromDate, toDate, ct)).Select(x => _mapper.Map<CirclesWithInterestsWithMedalsViewModel>(x))]);
         }
+        catch (IncorrectDatesException ex)
+        {
+            _logger.LogError(ex, "IncorrectDatesException");
+            return ReportOperationResponse.BadRequest($"Incorrect dates: {ex.Message}");
+        }
         catch (InvalidOperationException ex)
         {
             _logger.LogError(ex, "InvalidOperationException");
@@ -78,18 +192,93 @@ public class ReportAdapter : IReportAdapter
         }
     }
 
-    public Task<ReportOperationResponse> GetInterestsWithAchievementsWithCirclesAsync(string storekeeperId, DateTime fromDate, DateTime toDate, CancellationToken ct)
+    public async Task<ReportOperationResponse> GetInterestsWithAchievementsWithCirclesAsync(string workerId, DateTime fromDate, DateTime toDate, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        try
+        {
+            return ReportOperationResponse.OK((await _reportContract.GetInterestsWithAchievementsWithCircles(workerId, fromDate, toDate, ct)).Select(x => _mapper.Map<InterestsWithAchievementsWithCirclesViewModel>(x)).ToList());
+        }
+        catch (IncorrectDatesException ex)
+        {
+            _logger.LogError(ex, "IncorrectDatesException");
+            return ReportOperationResponse.BadRequest($"Incorrect dates: {ex.Message}");
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogError(ex, "InvalidOperationException");
+            return ReportOperationResponse.InternalServerError($"Error while working with data storage: {ex.InnerException!.Message}");
+        }
+        catch (StorageException ex)
+        {
+            _logger.LogError(ex, "StorageException");
+            return ReportOperationResponse.InternalServerError($"Error while working with data storage: {ex.InnerException!.Message}");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Exception");
+            return ReportOperationResponse.InternalServerError(ex.Message);
+        }
     }
 
-    public Task<ReportOperationResponse> GetLessonsByMaterialAsync(string storekeeperId, DateTime fromDate, DateTime toDate, CancellationToken ct)
+    public async Task<ReportOperationResponse> GetLessonsByMaterialAsync(string storekeeperId, List<string> materialIds, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        try
+        {
+            return ReportOperationResponse.OK((await _reportContract.GetLessonsByMaterial(storekeeperId, materialIds, ct)).Select(x => _mapper.Map<LessonByMaterialViewModel>(x.Value)).ToList());
+        }
+        catch (IncorrectDatesException ex)
+        {
+            _logger.LogError(ex, "IncorrectDatesException");
+            return ReportOperationResponse.BadRequest($"Incorrect dates: {ex.Message}");
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogError(ex, "InvalidOperationException");
+            return ReportOperationResponse.InternalServerError($"Error while working with data storage: {ex.InnerException!.Message}");
+        }
+        catch (StorageException ex)
+        {
+            _logger.LogError(ex, "StorageException");
+            return ReportOperationResponse.InternalServerError($"Error while working with data storage: {ex.InnerException!.Message}");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Exception");
+            return ReportOperationResponse.InternalServerError(ex.Message);
+        }
     }
 
-    public Task<ReportOperationResponse> GetMaterialsByLessonAsync(string workerId, DateTime fromDate, DateTime toDate, CancellationToken ct)
+    public async Task<ReportOperationResponse> GetMaterialsByLessonAsync(string workerId, List<string> lessonIds, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        try
+        {
+            return ReportOperationResponse.OK((await _reportContract.GetMaterialsByLesson(workerId, lessonIds, ct)).Select(x => _mapper.Map<MaterialByLessonViewModel>(x.Value)).ToList());
+        }
+        catch (IncorrectDatesException ex)
+        {
+            _logger.LogError(ex, "IncorrectDatesException");
+            return ReportOperationResponse.BadRequest($"Incorrect dates: {ex.Message}");
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogError(ex, "InvalidOperationException");
+            return ReportOperationResponse.InternalServerError($"Error while working with data storage: {ex.InnerException!.Message}");
+        }
+        catch (StorageException ex)
+        {
+            _logger.LogError(ex, "StorageException");
+            return ReportOperationResponse.InternalServerError($"Error while working with data storage: {ex.InnerException!.Message}");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Exception");
+            return ReportOperationResponse.InternalServerError(ex.Message);
+        }
+    }
+
+    private static ReportOperationResponse SendStream(Stream stream, string fileName)
+    {
+        stream.Position = 0;
+        return ReportOperationResponse.OK(stream, fileName);
     }
 }

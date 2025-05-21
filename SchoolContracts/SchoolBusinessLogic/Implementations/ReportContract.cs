@@ -21,8 +21,8 @@ internal class ReportContract(ICircleStorageContract circleStorageContract, IInt
 
     internal static readonly string[] docHeaderLessonByMaterial = ["Название материала", "Название занятия", "Описание занятия"];
     internal static readonly string[] docHeaderMaterialByLesson = ["Название занятия", "Название материала", "Количество материала"];
-    internal static readonly string[] docHeaderCirclesWithInterestsWithMedals = ["Название кружка", "Описание кружка", "Название интереса", "Название медальки"];
-    internal static readonly string[] docHeaderInterestsWithAchievementsWithCircles = ["Название интереса", "Описание интереса", "Название кружка", "Название достижения"];
+    internal static readonly string[] docHeaderCirclesWithInterestsWithMedals = ["Название кружка", "Описание кружка", "Название интереса", "Название медальки", "Дата"];
+    internal static readonly string[] docHeaderInterestsWithAchievementsWithCircles = ["Название интереса", "Описание интереса", "Название кружка", "Название достижения", "Дата"];
 
     public async Task<Stream> CreateDocumentCirclesWithInterestsWithMedals(string storekeeperId, DateTime fromDate, DateTime toDate, CancellationToken ct)
     {
@@ -31,8 +31,8 @@ internal class ReportContract(ICircleStorageContract circleStorageContract, IInt
         return _baseWordBuilder
             .AddHeader("Список кружков")
             .AddParagraph($"С {fromDate} по {toDate}")
-            .AddTable([5000, 5000, 5000, 5000], [.. new List<string[]>() { docHeaderCirclesWithInterestsWithMedals }
-            .Union([.. data.SelectMany(x => (new List<string[]>() { new string[] { x.CircleName, x.CircleDescription, x.InterestName, x.MedalName } }))])])
+            .AddTable([5000, 5000, 5000, 5000, 3000], [.. new List<string[]>() { docHeaderCirclesWithInterestsWithMedals }
+            .Union([.. data.SelectMany(x => (new List<string[]>() { new string[] { x.CircleName, x.CircleDescription, x.InterestName, x.MedalName, x.Date.ToShortDateString() } }))])])
             .Build();
     }
 
@@ -43,8 +43,8 @@ internal class ReportContract(ICircleStorageContract circleStorageContract, IInt
         return _baseWordBuilder
             .AddHeader("Список интересов")
             .AddParagraph($"С {fromDate} по {toDate}")
-            .AddTable([5000, 5000, 5000, 5000], [.. new List<string[]>() { docHeaderInterestsWithAchievementsWithCircles }
-            .Union([.. data.SelectMany(x => (new List<string[]>() { new string[] { x.InterestName, x.InterestDescription, x.CircleName, x.AchievementName } }))])])
+            .AddTable([5000, 5000, 5000, 5000, 3000], [.. new List<string[]>() { docHeaderInterestsWithAchievementsWithCircles }
+            .Union([.. data.SelectMany(x => (new List<string[]>() { new string[] { x.InterestName, x.InterestDescription, x.CircleName, x.AchievementName, x.Date.ToShortDateString() } }))])])
             .Build();
     }
 

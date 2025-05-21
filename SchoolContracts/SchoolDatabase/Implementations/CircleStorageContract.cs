@@ -40,7 +40,7 @@ public class CircleStorageContract : ICircleStorageContract
         try
         {
             var sql = $"SELECT c.\"CircleName\" as \"CircleName\", c.\"Description\" as \"CircleDescription\", " +
-                $"i.\"InterestName\" as \"InterestName\", md.\"MedalName\" as \"MedalName\" " +
+                $"i.\"InterestName\" as \"InterestName\", md.\"MedalName\" as \"MedalName\", l.\"LessonDate\" as \"Date\" " +
                 $"FROM \"Circles\" c " +
                 $"JOIN \"Storekeepers\" st ON st.\"Id\" = c.\"StorekeeperId\" " +
                 $"JOIN \"CircleMaterials\" cm ON c.\"Id\" = cm.\"CircleId\" " +
