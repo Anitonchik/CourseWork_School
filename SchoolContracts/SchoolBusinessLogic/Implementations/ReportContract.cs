@@ -9,7 +9,7 @@ namespace SchoolBuisnessLogic.Implementations;
 
 internal class ReportContract(ICircleStorageContract circleStorageContract, IInterestStorageContract interestStorageContract,
     ILessonStorageContract lessonStorageContract,  IMaterialStorageContract materialStorageContract,
-    BaseWordBuilder baseWordBuilder, BaseExcelBuilder baseExcelBuilder, ILogger logger) : IReportContract
+    BaseWordBuilder baseWordBuilder, BaseExcelBuilder baseExcelBuilder, BasePdfBuilder basePdfBuilder, ILogger logger) : IReportContract
 {
     private readonly ILessonStorageContract _lessonStorageContract = lessonStorageContract;
     private readonly ICircleStorageContract _circleStorageContract = circleStorageContract;
@@ -17,6 +17,7 @@ internal class ReportContract(ICircleStorageContract circleStorageContract, IInt
     private readonly IMaterialStorageContract _materialStorageContract = materialStorageContract;
     private readonly BaseWordBuilder _baseWordBuilder = baseWordBuilder;
     private readonly BaseExcelBuilder _baseExcelBuilder = baseExcelBuilder;
+    private readonly BasePdfBuilder _basePdfBuilder = basePdfBuilder;
     private readonly ILogger _logger = logger;
 
     internal static readonly string[] docHeaderLessonByMaterial = ["Название материала", "Название занятия", "Описание занятия"];
@@ -24,7 +25,7 @@ internal class ReportContract(ICircleStorageContract circleStorageContract, IInt
     internal static readonly string[] docHeaderCirclesWithInterestsWithMedals = ["Название кружка", "Описание кружка", "Название интереса", "Название медальки", "Дата"];
     internal static readonly string[] docHeaderInterestsWithAchievementsWithCircles = ["Название интереса", "Описание интереса", "Название кружка", "Название достижения", "Дата"];
 
-    public async Task<Stream> CreateDocumentCirclesWithInterestsWithMedals(string storekeeperId, DateTime fromDate, DateTime toDate, CancellationToken ct)
+    /*public async Task<Stream> CreateDocumentCirclesWithInterestsWithMedals(string storekeeperId, DateTime fromDate, DateTime toDate, CancellationToken ct)
     {
         _logger.LogInformation("Create report CirclesWithInterestsWithMedals from {dateStart} to {dateFinish}", fromDate, toDate);
         var data = await GetCirclesWithInterestsWithMedals(storekeeperId, fromDate, toDate, ct);
@@ -46,8 +47,45 @@ internal class ReportContract(ICircleStorageContract circleStorageContract, IInt
             .AddTable([5000, 5000, 5000, 5000, 3000], [.. new List<string[]>() { docHeaderInterestsWithAchievementsWithCircles }
             .Union([.. data.SelectMany(x => (new List<string[]>() { new string[] { x.InterestName, x.InterestDescription, x.CircleName, x.AchievementName, x.Date.ToShortDateString() } }))])])
             .Build();
-    }
+    }*/
+    public async Task<Stream> CreateDocumentCirclesWithInterestsWithMedals(string storekeeperId, DateTime fromDate, DateTime toDate, CancellationToken ct)
+    {
+        _logger.LogInformation("Create report CirclesWithInterestsWithMedals from {dateStart} to {dateFinish}", fromDate, toDate);
+        var data = await GetCirclesWithInterestsWithMedals(storekeeperId, fromDate, toDate, ct);
 
+        return _basePdfBuilder
+            .AddHeader("Список кружков")
+            .AddParagraph($"Период: с {fromDate} по {toDate}")
+            .AddTable(docHeaderCirclesWithInterestsWithMedals,
+                     data.Select(x => new string[]
+                     {
+                         x.CircleName,
+                         x.CircleDescription,
+                         x.InterestName,
+                         x.MedalName,
+                         x.Date.ToShortDateString()
+                     }).ToList())
+            .Build();
+    }
+    public async Task<Stream> CreateDocumentInterestsWithAchievementsWithCircles(string workerId, DateTime fromDate, DateTime toDate, CancellationToken ct)
+    {
+        _logger.LogInformation("Create report InterestsWithAchievementsWithCircles from {dateStart} to {dateFinish}", fromDate, toDate);
+        var data = await GetInterestsWithAchievementsWithCircles(workerId, fromDate, toDate, ct);
+
+        return _basePdfBuilder
+            .AddHeader("Список интересов")
+            .AddParagraph($"Период: с {fromDate} по {toDate}")
+            .AddTable(docHeaderInterestsWithAchievementsWithCircles,
+                     data.Select(x => new string[]
+                     {
+                         x.InterestName,
+                         x.InterestDescription,
+                         x.CircleName,
+                         x.AchievementName,
+                         x.Date.ToShortDateString()
+                     }).ToList())
+            .Build();
+    }
     public async Task<Stream> CreateWordDocumentLessonByMaterialsAsync(string storekeeperId, List<string> materialIds, CancellationToken ct)
     {
         _logger.LogInformation("Create word report LessonByMaterials");

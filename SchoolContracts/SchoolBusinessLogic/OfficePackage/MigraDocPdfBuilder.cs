@@ -85,6 +85,41 @@ internal class MigraDocPdfBuilder : BasePdfBuilder
         return stream;
     }
 
+    public override BasePdfBuilder AddTable(string[] headers, List<string[]> rows)
+    {
+        var table = _document.LastSection.AddTable();
+        table.Borders.Width = 0.25;
+
+        // Add columns
+        foreach (var _ in headers)
+        {
+            table.AddColumn(Unit.FromCentimeter(3));
+        }
+
+        // Add header row
+        var headerRow = table.AddRow();
+        headerRow.HeadingFormat = true;
+        headerRow.Format.Alignment = ParagraphAlignment.Center;
+        headerRow.Format.Font.Bold = true;
+
+        for (int i = 0; i < headers.Length; i++)
+        {
+            headerRow.Cells[i].AddParagraph(headers[i]);
+        }
+
+        // Add data rows
+        foreach (var row in rows)
+        {
+            var dataRow = table.AddRow();
+            for (int i = 0; i < row.Length; i++)
+            {
+                dataRow.Cells[i].AddParagraph(row[i]);
+            }
+        }
+
+        return this;
+    }
+
     private void DefineStyles()
     {
         var style = _document.Styles.AddStyle("NormalBold", "Normal");
