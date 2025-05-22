@@ -58,7 +58,7 @@ public class UserWorkerAdapter : IWorkerAdapter
         }
     }
 
-    public WorkerOperationResponse ChangeWorkerInfo(WorkerBindingModel workerModel)
+    /*public WorkerOperationResponse ChangeWorkerInfo(WorkerBindingModel workerModel)
     {
         throw new NotImplementedException();
     }
@@ -104,5 +104,5 @@ public class UserWorkerAdapter : IWorkerAdapter
     public WorkerOperationResponse RemoveWorker(string id)
     {
         throw new NotImplementedException();
-    }
+    }*/
 }

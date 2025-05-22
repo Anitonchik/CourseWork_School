@@ -12,7 +12,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SchoolWebApi.Adapters;
 
-public class UserStorekeeperAdapter : IStorekeeperAdapter
+public class StorekeeperAdapter : IStorekeeperAdapter
 {
     private readonly IStorekeeperBuisnessLogicContract _storekeeperBuisnessLogicContract;
 
@@ -20,7 +20,7 @@ public class UserStorekeeperAdapter : IStorekeeperAdapter
 
     private readonly Mapper _mapper;
 
-    public UserStorekeeperAdapter(IStorekeeperBuisnessLogicContract storekeeperBuisnessLogicContract, ILogger<CircleAdapter> logger)
+    public StorekeeperAdapter(IStorekeeperBuisnessLogicContract storekeeperBuisnessLogicContract, ILogger<CircleAdapter> logger)
     {
         _storekeeperBuisnessLogicContract = storekeeperBuisnessLogicContract;
         _logger = logger;
@@ -60,7 +60,7 @@ public class UserStorekeeperAdapter : IStorekeeperAdapter
         }
     }
 
-    public StorekeeperOperationResponse ChangeStorekeeperInfo(StorekeeperBindingModel storekeeperModel)
+    /*public StorekeeperOperationResponse ChangeStorekeeperInfo(StorekeeperBindingModel storekeeperModel)
     {
         throw new NotImplementedException();
     }
@@ -106,5 +106,5 @@ public class UserStorekeeperAdapter : IStorekeeperAdapter
     public StorekeeperOperationResponse RemoveStorekeeper(string id)
     {
         throw new NotImplementedException();
-    }
+    }*/
 }

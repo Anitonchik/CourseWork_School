@@ -7,9 +7,9 @@ public interface IStorekeeperAdapter
 {
     StorekeeperOperationResponse GetUserByLogin(string login);
 
-    StorekeeperOperationResponse RegisterStorekeeper(StorekeeperBindingModel storekeeperModel);
+    /*StorekeeperOperationResponse RegisterStorekeeper(StorekeeperBindingModel storekeeperModel);
 
     StorekeeperOperationResponse ChangeStorekeeperInfo(StorekeeperBindingModel storekeeperModel);
 
-    StorekeeperOperationResponse RemoveStorekeeper(string id);
+    StorekeeperOperationResponse RemoveStorekeeper(string id);*/
 }

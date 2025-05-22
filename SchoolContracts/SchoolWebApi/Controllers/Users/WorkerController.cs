@@ -9,11 +9,11 @@ namespace SchoolWebApi.Controllers.Users;
 [Route("api/[controller]")]
 [ApiController]
 [Produces("application/json")]
-public class WorkerAccauntController : ControllerBase
+public class WorkerController : ControllerBase
 {
     UserWorkerAdapter _adapter;
 
-    public WorkerAccauntController(UserWorkerAdapter adapter) => _adapter = adapter;
+    public WorkerController(UserWorkerAdapter adapter) => _adapter = adapter;
 
     /* [HttpGet]
      public IActionResult GetAllRecords(string workerId)
@@ -27,11 +27,11 @@ public class WorkerAccauntController : ControllerBase
          return _adapter.GetElement(workerId, data).GetResponse(Request, Response);
      }*/
 
-    [HttpPost]
-    public IActionResult Register([FromBody] WorkerBindingModel model)
+    [HttpGet]
+    public IActionResult GetUserByLogin(string login)
     {
 
-        return _adapter.RegisterWorker(model).GetResponse(Request, Response);
+        return _adapter.GetUserByLogin(login).GetResponse(Request, Response);
     }
 
     /*

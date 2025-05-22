@@ -86,7 +86,7 @@ builder.Services.AddTransient<ILessonInterestStorageContract, LessonInterestStor
 builder.Services.AddTransient<IMaterialStorageContract, MaterialStorageContract>();
 builder.Services.AddTransient<IMedalStorageContract, MedalStorageContract>();
 
-builder.Services.AddTransient<IStorekeeperAdapter, UserStorekeeperAdapter>();
+builder.Services.AddTransient<IStorekeeperAdapter, StorekeeperAdapter>();
 builder.Services.AddTransient<IWorkerAdapter, UserWorkerAdapter>();
 builder.Services.AddTransient<IAchievementAdapter, AchievementAdapter>();
 builder.Services.AddTransient<ICircleAdapter, CircleAdapter>();
