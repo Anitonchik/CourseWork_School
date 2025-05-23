@@ -13,7 +13,7 @@ public class InterestsController(IInterestAdapter adapter) : ControllerBase
 {
     private readonly IInterestAdapter _adapter = adapter;
 
-    [HttpGet]
+    [HttpGet("GetAllRecords")]
     public IActionResult GetAllRecords(string workerId)
     {
         return _adapter.GetList(workerId).GetResponse(Request, Response);
@@ -25,16 +25,16 @@ public class InterestsController(IInterestAdapter adapter) : ControllerBase
         return _adapter.GetElement(workerId, data).GetResponse(Request, Response);
     }
 
-    [HttpPost]
-    public IActionResult Register(string workerId, [FromBody] InterestBindingModel model)
+    [HttpPost("register")]
+    public IActionResult Register([FromBody] InterestBindingModel model)
     {
-        return _adapter.RegisterInterest(workerId, model).GetResponse(Request, Response);
+        return _adapter.RegisterInterest(model.WorkerId, model).GetResponse(Request, Response);
     }
 
-    [HttpPut]
-    public IActionResult ChangeInfo(string workerId, [FromBody] InterestBindingModel model)
+    [HttpPut("ChangeInfo")]
+    public IActionResult ChangeInfo( [FromBody] InterestBindingModel model)
     {
-        return _adapter.ChangeInterestInfo(workerId, model).GetResponse(Request, Response);
+        return _adapter.ChangeInterestInfo(model.WorkerId, model).GetResponse(Request, Response);
     }
 
     [HttpDelete("{id}")]

@@ -8,7 +8,7 @@ namespace SchoolContracts.BindingModels;
 
 public class LessonBindingModel
 {
-    public string? Id { get; set; }
+    public string? Id { get; set; } = Guid.NewGuid().ToString();
     public string? WorkerId { get; set; }
     public string LessonName { get; set; }
     public DateTime LessonDate { get; set; }

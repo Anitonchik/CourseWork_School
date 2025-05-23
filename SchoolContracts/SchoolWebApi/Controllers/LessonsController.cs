@@ -12,7 +12,7 @@ public class LessonsController(ILessonAdapter adapter) : ControllerBase
 {
     private readonly ILessonAdapter _adapter = adapter;
 
-    [HttpGet]
+    [HttpGet("GetAllRecords")]
     public IActionResult GetAllRecords(string workerId)
     {
         return _adapter.GetList(workerId).GetResponse(Request, Response);
@@ -24,16 +24,16 @@ public class LessonsController(ILessonAdapter adapter) : ControllerBase
         return _adapter.GetElement(workerId, data).GetResponse(Request, Response);
     }
 
-    [HttpPost]
-    public IActionResult Register(string workerId, [FromBody] LessonBindingModel model)
+    [HttpPost("register")]
+    public IActionResult Register( [FromBody] LessonBindingModel model)
     {
-        return _adapter.RegisterLesson(workerId, model).GetResponse(Request, Response);
+        return _adapter.RegisterLesson(model.WorkerId, model).GetResponse(Request, Response);
     }
 
-    [HttpPut]
-    public IActionResult ChangeInfo(string workerId, [FromBody] LessonBindingModel model)
+    [HttpPut("ChangeInfo")]
+    public IActionResult ChangeInfo( [FromBody] LessonBindingModel model)
     {
-        return _adapter.ChangeLessonInfo(workerId, model).GetResponse(Request, Response);
+        return _adapter.ChangeLessonInfo(model.WorkerId, model).GetResponse(Request, Response);
     }
 
     [HttpDelete("{id}")]

@@ -130,7 +130,7 @@ public class InterestAdapter:IInterestAdapter
     {
         try
         {
-            _interestBuisnessLogicContract.InsertInterest(workerId, _mapper.Map<InterestDataModel>(interestModel));
+            _interestBuisnessLogicContract.UpdateInterest(workerId, _mapper.Map<InterestDataModel>(interestModel));
             return InterestOperationResponse.NoContent();
         }
         catch (ArgumentNullException ex)

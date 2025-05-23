@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SchoolWebApi.Adapters;
 
-public class UserWorkerAdapter : IWorkerAdapter
+public class WorkerAdapter : IWorkerAdapter
 {
     private readonly IWorkerBuisnessLogicContract _workerBuisnessLogicContract;
 
@@ -18,7 +18,7 @@ public class UserWorkerAdapter : IWorkerAdapter
 
     private readonly Mapper _mapper;
 
-    public UserWorkerAdapter(IWorkerBuisnessLogicContract workerBuisnessLogicContract, ILogger<UserWorkerAdapter> logger)
+    public WorkerAdapter(IWorkerBuisnessLogicContract workerBuisnessLogicContract, ILogger<WorkerAdapter> logger)
     {
         _workerBuisnessLogicContract = workerBuisnessLogicContract;
         _logger = logger;

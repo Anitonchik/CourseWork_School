@@ -130,7 +130,7 @@ public class LessonAdapter:ILessonAdapter
     {
         try
         {
-            _lessonBuisnessLogicContract.InsertLesson(workerId, _mapper.Map<LessonDataModel>(lessonModel));
+            _lessonBuisnessLogicContract.UpdateLesson(workerId, _mapper.Map<LessonDataModel>(lessonModel));
             return LessonOperationResponse.NoContent();
         }
         catch (ArgumentNullException ex)
