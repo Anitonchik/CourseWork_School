@@ -13,7 +13,7 @@ public class MaterialsController(IMaterialAdapter adapter) : ControllerBase
 {
     private readonly IMaterialAdapter _adapter = adapter;
 
-    [HttpGet]
+    [HttpGet("GetAllRecords")]
     public IActionResult GetAllRecords(string storekeeperId)
     {
         return _adapter.GetList(storekeeperId).GetResponse(Request, Response);
@@ -25,16 +25,16 @@ public class MaterialsController(IMaterialAdapter adapter) : ControllerBase
         return _adapter.GetElement(storekeeperId, data).GetResponse(Request, Response);
     }
 
-    [HttpPost]
-    public IActionResult Register(string storekeeperId, [FromBody] MaterialBindingModel model)
+    [HttpPost("register")]
+    public IActionResult Register([FromBody] MaterialBindingModel model)
     {
-        return _adapter.RegisterMaterial(storekeeperId, model).GetResponse(Request, Response);
+        return _adapter.RegisterMaterial(model.StorekeeperId, model).GetResponse(Request, Response);
     }
 
-    [HttpPut]
-    public IActionResult ChangeInfo(string storekeeperId, [FromBody] MaterialBindingModel model)
+    [HttpPut("ChangeInfo")]
+    public IActionResult ChangeInfo([FromBody] MaterialBindingModel model)
     {
-        return _adapter.ChangeMaterialInfo(storekeeperId, model).GetResponse(Request, Response);
+        return _adapter.ChangeMaterialInfo(model.StorekeeperId, model).GetResponse(Request, Response);
     }
 
     [HttpDelete("{id}")]

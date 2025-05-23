@@ -131,7 +131,7 @@ public class MaterialAdapter : IMaterialAdapter
     {
         try
         {
-            _materialBuisnessLogicContract.InsertMaterial(storekeeperId, _mapper.Map<MaterialDataModel>(materialModel));
+            _materialBuisnessLogicContract.UpdateMaterial(storekeeperId, _mapper.Map<MaterialDataModel>(materialModel));
             return MaterialOperationResponse.NoContent();
         }
         catch (ArgumentNullException ex)

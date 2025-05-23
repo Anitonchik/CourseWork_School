@@ -130,7 +130,7 @@ public class CircleAdapter : ICircleAdapter
     {
         try
         {
-            _circleBuisnessLogicContract.InsertCircle(storekeeperId, _mapper.Map<CircleDataModel>(circleModel));
+            _circleBuisnessLogicContract.UpdateCircle(storekeeperId, _mapper.Map<CircleDataModel>(circleModel));
             return CircleOperationResponse.NoContent();
         }
         catch (ArgumentNullException ex)
