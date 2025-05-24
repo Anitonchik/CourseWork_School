@@ -129,7 +129,7 @@ public class AchievementAdapter:IAchievementAdapter
     {
         try
         {
-            _achievementBuisnessLogicContract.InsertAchievement(workerId, _mapper.Map<AchievementDataModel>(achievementModel));
+            _achievementBuisnessLogicContract.UpdateAchievement(workerId, _mapper.Map<AchievementDataModel>(achievementModel));
             return AchievementOperationResponse.NoContent();
         }
         catch (ArgumentNullException ex)

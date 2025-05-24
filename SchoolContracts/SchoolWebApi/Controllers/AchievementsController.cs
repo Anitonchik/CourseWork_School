@@ -14,7 +14,7 @@ public class AchievementsController(IAchievementAdapter adapter) : ControllerBas
 {
     private readonly IAchievementAdapter _adapter = adapter;
 
-    [HttpGet]
+    [HttpGet("GetAllRecords")]
     public IActionResult GetAllRecords(string workerId)
     {
         return _adapter.GetList(workerId).GetResponse(Request, Response);
@@ -26,16 +26,16 @@ public class AchievementsController(IAchievementAdapter adapter) : ControllerBas
         return _adapter.GetElement(workerId, data).GetResponse(Request, Response);
     }
 
-    [HttpPost]
-    public IActionResult Register(string workerId, [FromBody] AchievementBindingModel model)
+    [HttpPost("register")]
+    public IActionResult Register( [FromBody] AchievementBindingModel model)
     {
-        return _adapter.RegisterAchievement(workerId, model).GetResponse(Request, Response);
+        return _adapter.RegisterAchievement(model.WorkerId, model).GetResponse(Request, Response);
     }
 
-    [HttpPut]
-    public IActionResult ChangeInfo(string workerId, [FromBody] AchievementBindingModel model)
+    [HttpPut("ChangeInfo")]
+    public IActionResult ChangeInfo( [FromBody] AchievementBindingModel model)
     {
-        return _adapter.ChangeAchievementInfo(workerId, model).GetResponse(Request, Response);
+        return _adapter.ChangeAchievementInfo(model.WorkerId, model).GetResponse(Request, Response);
     }
 
     [HttpDelete("{id}")]
