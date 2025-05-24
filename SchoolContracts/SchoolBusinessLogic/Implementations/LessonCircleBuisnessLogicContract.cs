@@ -17,25 +17,35 @@ public class LessonCircleBuisnessLogicContract(ILessonCircleStorageContract less
     private readonly ICircleBuisnessLogicContract _circleBuisnessLogicContract = circleBuisnessLogicContract;
     private readonly ILessonCircleStorageContract _lessonCircleStorageContract = lessonCircleStorageContract;
 
-    public void CreateLessonCircle(string storekeeperId, CircleDataModel circleDataModel,  LessonCircleDataModel lessonCircleDataModel)
+    public void CreateLessonCircle(string storekeeperId, string circleId, string lessonId, int count)
     {
-        _logger.LogInformation("New data: {json}", JsonSerializer.Serialize(circleDataModel));
-        _logger.LogInformation("New data: {json}", JsonSerializer.Serialize(lessonCircleDataModel));
-        ArgumentNullException.ThrowIfNull(circleDataModel);
-        ArgumentNullException.ThrowIfNull(lessonCircleDataModel);
-        circleDataModel.Validate();
-        lessonCircleDataModel.Validate();
-        if (circleDataModel.Id != lessonCircleDataModel.CircleId)
+        if (lessonId.IsEmpty())
         {
-            throw new ArgumentException("Id are not equals");
+            throw new ArgumentNullException(nameof(lessonId));
         }
-        if (circleDataModel.StorekeeperId != storekeeperId)
+        if (!lessonId.IsGuid())
         {
-            throw new UnauthorizedAccessException(storekeeperId);
+            throw new ValidationException("lessonId is not a unique identifier");
+        }
+        if (circleId.IsEmpty())
+        {
+            throw new ArgumentNullException(nameof(circleId));
+        }
+        if (!circleId.IsGuid())
+        {
+            throw new ValidationException("circleId is not a unique identifier");
+        }
+        if (count < 0)
+        {
+            throw new ValidationException("count is less 0");
         }
 
-        circleDataModel.Lessons.Add(lessonCircleDataModel);
-        _circleBuisnessLogicContract.UpdateCircle(storekeeperId, circleDataModel);
+        var lessonCircle = new LessonCircleDataModel(lessonId, circleId, count);
+
+        var circle = _circleBuisnessLogicContract.GetCircleByData(storekeeperId, circleId);
+        circle.Lessons.Add(lessonCircle);
+
+        _circleBuisnessLogicContract.UpdateCircle(storekeeperId, circle);
 
 
     }

@@ -31,11 +31,11 @@ public class LessonCircleAdapter : ILessonCircleAdapter
         _mapper = new Mapper(config);
     }
 
-    public LessonCircleOperationResponse RegisterLessonCircle(string storekeeperId, CircleBindingModel circleModel, LessonCircleBindingModel lessonCircleModel)
+    public LessonCircleOperationResponse RegisterLessonCircle(string storekeeperId, string circleId, string lessonId, int count)
     {
         try
         {
-            _lessonCircleBuisnessLogicContract.CreateLessonCircle(storekeeperId, _mapper.Map<CircleDataModel>(circleModel), _mapper.Map<LessonCircleDataModel>(lessonCircleModel));
+            _lessonCircleBuisnessLogicContract.CreateLessonCircle(storekeeperId, circleId, lessonId, count);
             return LessonCircleOperationResponse.NoContent();
         }
         catch (ArgumentNullException ex)
