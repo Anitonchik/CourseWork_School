@@ -12,7 +12,13 @@ public class LessonsController(ILessonAdapter adapter) : ControllerBase
 {
     private readonly ILessonAdapter _adapter = adapter;
 
-    [HttpGet("GetAllRecords")]
+    [HttpGet("GetWholeRecords")]
+    public IActionResult GetWholeRecords()
+    {
+        return _adapter.GetWholeList().GetResponse(Request, Response);
+    }
+
+    [HttpGet]
     public IActionResult GetAllRecords(string workerId)
     {
         return _adapter.GetList(workerId).GetResponse(Request, Response);

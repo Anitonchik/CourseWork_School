@@ -1,4 +1,5 @@
-﻿using SchoolContracts.DataModels;
+﻿using SchoolContracts.AdapterContracts.OperationResponses;
+using SchoolContracts.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace SchoolContracts.BusinessLogicsContracts;
 
 public interface ILessonBuisnessLogicContract
 {
+    List<LessonDataModel> GetWholeLessons();
     List<LessonDataModel> GetAllLessons(string workerId);
     LessonDataModel GetLessonByData(string workerId, string data);
     //List<LessonInterestDataModel> GetInterestsByLessonId(string lessonId);

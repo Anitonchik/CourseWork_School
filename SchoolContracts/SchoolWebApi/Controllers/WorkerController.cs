@@ -6,44 +6,39 @@ using SchoolWebApi.Adapters;
 
 namespace SchoolWebApi.Controllers;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 [Produces("application/json")]
-public class WorkersController : ControllerBase
+public class WorkerController : ControllerBase
 {
     IWorkerAdapter _adapter;
 
-    public WorkersController(IWorkerAdapter adapter) => _adapter = adapter;
+    public WorkerController(IWorkerAdapter adapter) => _adapter = adapter;
 
-    /* [HttpGet]
-     public IActionResult GetAllRecords(string storekeeperId)
-     {
-         return _adapter.GetList(storekeeperId).GetResponse(Request, Response);
-     }
-
-     [HttpGet("{id}")]
-     public IActionResult GetRecordBuId(string storekeeperId, string data)
-     {
-         return _adapter.GetElement(storekeeperId, data).GetResponse(Request, Response);
-     }*/
-
-    [HttpGet("GetUserByLogin")]
+    [HttpGet]
     public IActionResult GetUserByLogin(string login)
     {
 
         return _adapter.GetUserByLogin(login).GetResponse(Request, Response);
     }
 
+    /*[HttpGet("{id}")]
+     public IActionResult GetRecordBuId(string workerId, string data)
+     {
+         return _adapter.GetElement(workerId, data).GetResponse(Request, Response);
+     }*/
+
     /*
     [HttpPut]
-    public IActionResult ChangeInfo(string storekeeperId, [FromBody] CircleBindingModel model)
+    public IActionResult ChangeInfo(string workerId, [FromBody] WorkerBindingModel model)
     {
-        return _adapter.ChangeCircleInfo(storekeeperId, model).GetResponse(Request, Response);
+        return _adapter.ChangeWorkerInfo(workerId, model).GetResponse(Request, Response);
     }
 
     [HttpDelete("{id}")]
-    public IActionResult Delete(string storekeeperId, string id)
+    public IActionResult Delete(string workerId, string id)
     {
-        return _adapter.RemoveCircle(storekeeperId, id).GetResponse(Request, Response);
+        return _adapter.RemoveWorker(workerId, id).GetResponse(Request, Response);
     }*/
 }

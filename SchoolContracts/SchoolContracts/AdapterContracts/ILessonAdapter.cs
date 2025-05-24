@@ -10,6 +10,7 @@ namespace SchoolContracts.AdapterContracts;
 
 public interface ILessonAdapter
 {
+    LessonOperationResponse GetWholeList();
     LessonOperationResponse GetList(string workerId);
 
     LessonOperationResponse GetElement(string workerId, string data);

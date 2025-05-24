@@ -29,6 +29,20 @@ public class LessonStorageContract: ILessonStorageContract
 
         _mapper = new Mapper(configuration);
     }
+
+    public List<LessonDataModel> GetWholeList()
+    {
+        try
+        {
+            return [.. _dbContext.Lessons.Select(x => _mapper.Map<LessonDataModel>(x))];
+        }
+        catch (Exception ex)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new Exception();
+        }
+    }
+
     public List<LessonDataModel> GetList(string workerId)
     {
         try
@@ -151,12 +165,6 @@ public class LessonStorageContract: ILessonStorageContract
         }
     }
     private Lesson? GetLessonById(string id) => _dbContext.Lessons.FirstOrDefault(x => x.Id == id);
-
-    public List<LessonDataModel> GetList()
-    {
-        throw new NotImplementedException();
-    }
-
     public List<LessonByMaterialModel> GetLessonsByMaterial(string materialId)
     {
         throw new NotImplementedException();

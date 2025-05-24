@@ -11,6 +11,7 @@ namespace SchoolContracts.StoragesContracts;
 
 public interface ILessonStorageContract
 {
+    List<LessonDataModel> GetWholeList();
     List<LessonDataModel> GetList(string workerId);
     Task<List<LessonByMaterialModel>> GetLessonsByMaterial(string storekeeperId, string materialId, CancellationToken ct);
     LessonDataModel? GetElementById(string id);

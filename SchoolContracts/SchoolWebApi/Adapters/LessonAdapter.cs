@@ -31,6 +31,29 @@ public class LessonAdapter:ILessonAdapter
         _mapper = new Mapper(config);
     }
 
+    public LessonOperationResponse GetWholeList()
+    {
+        try
+        {
+            return LessonOperationResponse.OK([.. _lessonBuisnessLogicContract.GetWholeLessons().Select(x => _mapper.Map<LessonViewModel>(x))]);
+        }
+        catch (NullListException)
+        {
+            _logger.LogError("NullListException");
+            return LessonOperationResponse.NotFound("The list is not initialized");
+        }
+        catch (StorageException ex)
+        {
+            _logger.LogError(ex, "StorageException");
+            return LessonOperationResponse.InternalServerError($"Error while working with data storage: {ex.InnerException!.Message}");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Exception");
+            return LessonOperationResponse.InternalServerError(ex.Message);
+        }
+    }
+
     public LessonOperationResponse GetList(string workerId)
     {
         try
