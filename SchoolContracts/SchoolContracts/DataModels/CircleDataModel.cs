@@ -3,15 +3,27 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SchoolContracts.DataModels;
 
-public class CircleDataModel(string id, string storekeeperId, string circleName,
-    string description, List<CircleMaterialDataModel> circleMaterials, List<LessonCircleDataModel> lessonCircles)
+public class CircleDataModel
 {
-    public string Id { get; private set; } = id;
-    public string StorekeeperId { get; private set; } = storekeeperId;
-    public string CircleName { get; private set; } = circleName;
-    public string Description { get; private set; } = description;
-    public List<CircleMaterialDataModel> Materials { get; private set; } = circleMaterials;
-    public List<LessonCircleDataModel> Lessons { get; private set; } = lessonCircles;
+    public string Id { get; private set; }
+    public string StorekeeperId { get; private set; }
+    public string CircleName { get; private set; }
+    public string Description { get; private set; }
+    public List<CircleMaterialDataModel> Materials { get; private set; }
+    public List<LessonCircleDataModel> Lessons { get; private set; }
+
+    public CircleDataModel() { }
+ 
+    public CircleDataModel(string id, string storekeeperId, string circleName,
+        string description, List<CircleMaterialDataModel> circleMaterials, List<LessonCircleDataModel> lessonCircles)
+    {
+        Id = id;
+        StorekeeperId = storekeeperId;
+        CircleName = circleName;
+        Description = description;
+        Materials = circleMaterials;
+        Lessons = lessonCircles;
+    }
 
     public void Validate()
     {

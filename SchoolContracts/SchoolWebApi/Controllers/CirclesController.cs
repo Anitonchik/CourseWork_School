@@ -15,7 +15,7 @@ public class CirclesController(ICircleAdapter adapter) : ControllerBase
 {
     private readonly ICircleAdapter _adapter = adapter;
 
-    [HttpGet]
+    [HttpGet("GetAllRecords")]
     public IActionResult GetAllRecords(string storekeeperId)
     {
         return _adapter.GetList(storekeeperId).GetResponse(Request, Response);
@@ -27,16 +27,16 @@ public class CirclesController(ICircleAdapter adapter) : ControllerBase
         return _adapter.GetElement(storekeeperId, data).GetResponse(Request, Response);
     }
 
-    [HttpPost]
-    public IActionResult Register(string storekeeperId, [FromBody] CircleBindingModel model)
+    [HttpPost("register")]
+    public IActionResult Register([FromBody] CircleBindingModel model)
     {
-        return _adapter.RegisterCircle(storekeeperId, model).GetResponse(Request, Response);
+        return _adapter.RegisterCircle(model.StorekeeperId, model).GetResponse(Request, Response);
     }
 
-    [HttpPut]
-    public IActionResult ChangeInfo(string storekeeperId, [FromBody] CircleBindingModel model)
+    [HttpPut("ChangeInfo")]
+    public IActionResult ChangeInfo([FromBody] CircleBindingModel model)
     {
-        return _adapter.ChangeCircleInfo(storekeeperId, model).GetResponse(Request, Response);
+        return _adapter.ChangeCircleInfo(model.StorekeeperId, model).GetResponse(Request, Response);
     }
 
     [HttpDelete("{id}")]
