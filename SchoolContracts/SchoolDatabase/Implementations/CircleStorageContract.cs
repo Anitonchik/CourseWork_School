@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using Microsoft.EntityFrameworkCore;
 using SchoolContracts.DataModels;
 using SchoolContracts.Exceptions;
 using SchoolContracts.ModelsForReports;
 using SchoolContracts.StoragesContracts;
 using SchoolDatabase.Models;
+using System;
 
 namespace SchoolDatabase.Implementations;
 
@@ -17,9 +19,22 @@ public class CircleStorageContract : ICircleStorageContract
     {
         _dbContext = dbContext;
 
-        var configuration = new MapperConfiguration(cfg => cfg.AddMaps(typeof(Circle)));
+        _dbContext = dbContext;
+        var config = new MapperConfiguration(cfg =>
+        {
+            cfg.CreateMap<Storekeeper, StorekeeperDataModel>();
 
-        _mapper = new Mapper(configuration);
+            cfg.CreateMap<CircleMaterial, CircleMaterialDataModel>();
+            cfg.CreateMap<CircleMaterialDataModel, CircleMaterial>();
+
+            cfg.CreateMap<LessonCircle, LessonCircleDataModel>();
+            cfg.CreateMap<LessonCircleDataModel, LessonCircle>();
+
+            cfg.CreateMap<Circle, CircleDataModel>();
+            cfg.CreateMap<CircleDataModel, Circle>()
+            .ForMember(x => x.CircleMaterials, x => x.MapFrom(src => src.Materials));
+        });
+        _mapper = new Mapper(config);
     }
 
     public List<CircleDataModel> GetList(string storekeeperId)
@@ -98,7 +113,8 @@ public class CircleStorageContract : ICircleStorageContract
     {
         try
         {
-            _dbContext.Circles.Add(_mapper.Map<Circle>(circleDataModel));
+            var data = _mapper.Map<Circle>(circleDataModel);
+            _dbContext.Circles.Add(data);
             _dbContext.SaveChanges();
         }
         catch (InvalidOperationException ex)

@@ -17,7 +17,7 @@ public class LessonCircleBuisnessLogicContract(ILessonCircleStorageContract less
     private readonly ICircleBuisnessLogicContract _circleBuisnessLogicContract = circleBuisnessLogicContract;
     private readonly ILessonCircleStorageContract _lessonCircleStorageContract = lessonCircleStorageContract;
 
-    public void CreateLessonCircle(string storekeeperId, string circleId, string lessonId, int count)
+    public void CreateLessonCircle(string storekeeperId, string lessonId, string circleId, int count)
     {
         if (lessonId.IsEmpty())
         {

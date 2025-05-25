@@ -11,8 +11,6 @@ public class CircleDataModel
     public string Description { get; private set; }
     public List<CircleMaterialDataModel> Materials { get; private set; }
     public List<LessonCircleDataModel> Lessons { get; private set; }
-
-    public CircleDataModel() { }
  
     public CircleDataModel(string id, string storekeeperId, string circleName,
         string description, List<CircleMaterialDataModel> circleMaterials, List<LessonCircleDataModel> lessonCircles)
@@ -24,6 +22,9 @@ public class CircleDataModel
         Materials = circleMaterials;
         Lessons = lessonCircles;
     }
+
+    public CircleDataModel(string id, string storekeeperId, string CircleName,
+        string Description, List<CircleMaterialDataModel> materials) : this(id, storekeeperId, CircleName, Description, materials, new List<LessonCircleDataModel>()) { }
 
     public void Validate()
     {

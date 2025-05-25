@@ -5,10 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SchoolDatabase.Models;
 
-[AutoMap(typeof(CircleDataModel), ReverseMap = true)]
 public class Circle
 {
-    [Key]
     public required string Id { get; set; } = Guid.NewGuid().ToString();
     public required string StorekeeperId { get; set; }
     public required string CircleName { get; set; }

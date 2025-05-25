@@ -40,6 +40,12 @@ public class SchoolDbContext : DbContext
         ]);
 
         modelBuilder.Entity<Circle>().HasIndex(x => x.CircleName).IsUnique();
+
+        modelBuilder.Entity<Circle>()
+            .HasOne(e => e.Storekeeper)
+            .WithMany(e => e.Circles)
+            .OnDelete(DeleteBehavior.SetNull);
+
         modelBuilder.Entity<Material>().HasIndex(x => x.MaterialName).IsUnique();
 
         modelBuilder.Entity<Worker>().HasIndex(x => x.Login).IsUnique();

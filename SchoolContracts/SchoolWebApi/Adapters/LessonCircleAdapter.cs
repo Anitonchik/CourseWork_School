@@ -31,11 +31,11 @@ public class LessonCircleAdapter : ILessonCircleAdapter
         _mapper = new Mapper(config);
     }
 
-    public LessonCircleOperationResponse RegisterLessonCircle(string storekeeperId, string circleId, string lessonId, int count)
+    public LessonCircleOperationResponse RegisterLessonCircle(string storekeeperId, string lessonId, string circleId, int count)
     {
         try
         {
-            _lessonCircleBuisnessLogicContract.CreateLessonCircle(storekeeperId, circleId, lessonId, count);
+            _lessonCircleBuisnessLogicContract.CreateLessonCircle(storekeeperId, lessonId, circleId, count);
             return LessonCircleOperationResponse.NoContent();
         }
         catch (ArgumentNullException ex)
@@ -56,7 +56,7 @@ public class LessonCircleAdapter : ILessonCircleAdapter
         catch (UnauthorizedAccessException ex)
         {
             _logger.LogError(ex, "UnauthorizedAccessException");
-            return LessonCircleOperationResponse.BadRequest($"Storekeeper by id: {storekeeperId} doesn't have access to data by id: {circleModel.Id}");
+            return LessonCircleOperationResponse.BadRequest($"Storekeeper by id: {storekeeperId} doesn't have access to data by id: {circleId}");
         }
         catch (StorageException ex)
         {

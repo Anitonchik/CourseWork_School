@@ -27,6 +27,13 @@ public class CircleAdapter : ICircleAdapter
         {
             cfg.CreateMap<CircleBindingModel, CircleDataModel>();
             cfg.CreateMap<CircleDataModel, CircleViewModel>();
+
+            cfg.CreateMap<CircleMaterialBindingModel, CircleMaterialDataModel>();
+            cfg.CreateMap<CircleMaterialDataModel, CircleMaterialViewModel>();
+            
+            cfg.CreateMap<CircleMaterialBindingModel, CircleMaterialDataModel>();
+            cfg.CreateMap<CircleMaterialDataModel, CircleMaterialViewModel>();
+
         });
         _mapper = new Mapper(config);
     }
@@ -91,7 +98,8 @@ public class CircleAdapter : ICircleAdapter
     {
         try
         {
-            _circleBuisnessLogicContract.InsertCircle(storekeeperId, _mapper.Map<CircleDataModel>(circleModel));
+            var data = _mapper.Map<CircleDataModel>(circleModel);
+            _circleBuisnessLogicContract.InsertCircle(storekeeperId, data);
             return CircleOperationResponse.NoContent();
         }
         catch (ArgumentNullException ex)

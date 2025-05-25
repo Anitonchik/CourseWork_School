@@ -6,4 +6,7 @@ public class CircleBindingModel
     public string? StorekeeperId { get; set; }
     public string CircleName { get; set; }
     public string Description { get; set; }
+    public List<CircleMaterialBindingModel>? Materials { get; set; }
+
+    public List<LessonCircleBindingModel>? Lessons { get; set; }
 }
