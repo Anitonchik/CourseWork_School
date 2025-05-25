@@ -7,6 +7,7 @@ using SchoolContracts.ModelsForReports;
 using SchoolContracts.StoragesContracts;
 using SchoolDatabase.Models;
 using System;
+using System.Collections.Generic;
 
 namespace SchoolDatabase.Implementations;
 
@@ -18,13 +19,16 @@ public class CircleStorageContract : ICircleStorageContract
     public CircleStorageContract(SchoolDbContext dbContext)
     {
         _dbContext = dbContext;
-
-        _dbContext = dbContext;
         var config = new MapperConfiguration(cfg =>
         {
             cfg.CreateMap<Storekeeper, StorekeeperDataModel>();
 
-            cfg.CreateMap<CircleMaterial, CircleMaterialDataModel>();
+            cfg.CreateMap<CircleMaterial, CircleMaterialDataModel>()
+            .ConstructUsing(src => new CircleMaterialDataModel(
+           src.CircleId,
+           src.MaterialId,
+           src.Count,
+           src.Material != null ? new MaterialDataModel(src.Material.Id, src.Material.StorekeeperId, src.Material.MaterialName, src.Material.Description) : null));
             cfg.CreateMap<CircleMaterialDataModel, CircleMaterial>();
 
             cfg.CreateMap<LessonCircle, LessonCircleDataModel>();
@@ -41,7 +45,13 @@ public class CircleStorageContract : ICircleStorageContract
     {
         try
         {
-            return [.. _dbContext.Circles.Where(x => x.StorekeeperId == storekeeperId).Select(x => _mapper.Map<CircleDataModel>(x))];
+            
+            List<CircleDataModel> data1 = [.. _dbContext.Circles
+                .Include(x => x.CircleMaterials)!.ThenInclude(x => x.Material)
+                .Include(x => x.LessonCircles)!.ThenInclude(x => x.Lesson)
+                .Where(x => x.StorekeeperId == storekeeperId).Select(x => _mapper.Map<CircleDataModel>(x))];
+
+            return data1;
         }
         catch (Exception ex)
         {

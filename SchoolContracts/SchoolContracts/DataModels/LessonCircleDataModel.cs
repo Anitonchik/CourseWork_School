@@ -3,11 +3,20 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SchoolContracts.DataModels;
 
-public class LessonCircleDataModel (string lessonId, string circleId, int count)
+public class LessonCircleDataModel
 {
-    public string LessonId { get; private set; } = lessonId;
-    public string CircleId { get; private set; } = circleId;
-    public int Count { get; private set; } = count;
+    public string LessonId { get; private set; }
+    public string CircleId { get; private set; }
+    public int Count { get; private set; }
+
+    public LessonCircleDataModel() { }
+
+    public LessonCircleDataModel(string lessonId, string circleId, int count)
+    {
+        LessonId = lessonId;
+        CircleId = circleId;    
+        Count = count;
+    }
 
     public void Validate()
     {

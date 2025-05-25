@@ -42,11 +42,12 @@ public class LessonCircleBuisnessLogicContract(ILessonCircleStorageContract less
 
         var lessonCircle = new LessonCircleDataModel(lessonId, circleId, count);
 
-        var circle = _circleBuisnessLogicContract.GetCircleByData(storekeeperId, circleId);
+        /*var circle = _circleBuisnessLogicContract.GetCircleByData(storekeeperId, circleId);
         circle.Lessons.Add(lessonCircle);
 
-        _circleBuisnessLogicContract.UpdateCircle(storekeeperId, circle);
+        _circleBuisnessLogicContract.UpdateCircle(storekeeperId, circle);*/
 
+        _lessonCircleStorageContract.AddElement(lessonCircle);
 
     }
 

@@ -31,8 +31,8 @@ public class CircleAdapter : ICircleAdapter
             cfg.CreateMap<CircleMaterialBindingModel, CircleMaterialDataModel>();
             cfg.CreateMap<CircleMaterialDataModel, CircleMaterialViewModel>();
             
-            cfg.CreateMap<CircleMaterialBindingModel, CircleMaterialDataModel>();
-            cfg.CreateMap<CircleMaterialDataModel, CircleMaterialViewModel>();
+            cfg.CreateMap<LessonCircleBindingModel, LessonCircleDataModel>();
+            cfg.CreateMap<LessonCircleDataModel, LessonCircleViewModel>();
 
         });
         _mapper = new Mapper(config);

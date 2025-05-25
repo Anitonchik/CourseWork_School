@@ -14,9 +14,33 @@ public class LessonCircleStorageContract : ILessonCircleStorageContract
     {
         _dbContext = dbContext;
 
-        var configuration = new MapperConfiguration(cfg => cfg.AddMaps(typeof(LessonCircle)));
+        var configuration = new MapperConfiguration(cfg =>
+        {
+            cfg.CreateMap<LessonCircleDataModel, LessonCircle>();
+            cfg.CreateMap<LessonCircle, LessonCircleDataModel>();
+        });
 
         _mapper = new Mapper(configuration);
+    }
+
+    public void AddElement(LessonCircleDataModel lessonCircleDataModel)
+    {
+        try
+        {
+            var data = _mapper.Map<LessonCircle>(lessonCircleDataModel);
+            _dbContext.LessonCircles.Add(data);
+            _dbContext.SaveChanges();
+        }
+        catch (InvalidOperationException ex)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new ElementExistsException("Id", lessonCircleDataModel.LessonId);
+        }
+        catch (Exception ex)
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new Exception();
+        }
     }
 
     public LessonCircleDataModel? GetLessonCircleById(string lessonId, string circleId) => _mapper.Map<LessonCircleDataModel>(
