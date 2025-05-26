@@ -79,6 +79,7 @@ builder.Services.AddTransient<IStorekeeperStorageContract, StorekeeperStorageCon
 builder.Services.AddTransient<IWorkerStorageContract, WorkerStorageContract>();
 builder.Services.AddTransient<IAchievementStorageContract, AchievementStorageContract>();
 builder.Services.AddTransient<ICircleStorageContract, CircleStorageContract>();
+builder.Services.AddTransient<ICircleMaterialStorageContract, CircleMaterialStorageContract>();
 builder.Services.AddTransient<IInterestStorageContract, InterestStorageContract>();
 builder.Services.AddTransient<ILessonStorageContract, LessonStorageContract>();
 builder.Services.AddTransient<ILessonCircleStorageContract, LessonCircleStorageContract>();

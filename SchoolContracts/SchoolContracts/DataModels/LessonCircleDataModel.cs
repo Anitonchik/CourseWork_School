@@ -5,9 +5,12 @@ namespace SchoolContracts.DataModels;
 
 public class LessonCircleDataModel
 {
+    public LessonDataModel? _lesson;
     public string LessonId { get; private set; }
     public string CircleId { get; private set; }
     public int Count { get; private set; }
+
+    public string LessonName => _lesson?.LessonName ?? string.Empty;
 
     public LessonCircleDataModel() { }
 
@@ -16,6 +19,11 @@ public class LessonCircleDataModel
         LessonId = lessonId;
         CircleId = circleId;    
         Count = count;
+    }
+
+    public LessonCircleDataModel(string lessonId, string circleId, int count, LessonDataModel lesson) : this(lessonId, circleId, count)
+    {
+        _lesson = lesson;
     }
 
     public void Validate()

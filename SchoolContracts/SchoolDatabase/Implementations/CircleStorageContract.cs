@@ -13,11 +13,14 @@ namespace SchoolDatabase.Implementations;
 
 public class CircleStorageContract : ICircleStorageContract
 {
+    private readonly ICircleMaterialStorageContract _circleMaterialStorageContract;
     private readonly SchoolDbContext _dbContext;
     private readonly Mapper _mapper;
 
-    public CircleStorageContract(SchoolDbContext dbContext)
+    public CircleStorageContract(ICircleMaterialStorageContract circleMaterialStorageContract, SchoolDbContext dbContext)
     {
+        _circleMaterialStorageContract = circleMaterialStorageContract;
+
         _dbContext = dbContext;
         var config = new MapperConfiguration(cfg =>
         {
@@ -144,6 +147,21 @@ public class CircleStorageContract : ICircleStorageContract
         try
         {
             var element = GetCircleById(circleDataModel.Id) ?? throw new ElementNotFoundException(circleDataModel.Id);
+
+            if (element.CircleMaterials != null)
+            {
+                _dbContext.CircleMaterials.RemoveRange(element.CircleMaterials);
+            }
+
+
+            /*if (circleDataModel.Materials.Count > 0)
+            {
+                foreach (CircleMaterialDataModel circleMaterial in  circleDataModel.Materials)
+                {
+                    _circleMaterialStorageContract.UpdElement(circleMaterial);
+                }
+            }*/
+
             _dbContext.Circles.Update(_mapper.Map(circleDataModel, element));
             _dbContext.SaveChanges();
         }
@@ -179,5 +197,7 @@ public class CircleStorageContract : ICircleStorageContract
         }
     }
 
-    private Circle? GetCircleById(string id) => _dbContext.Circles.FirstOrDefault(x => x.Id == id);
+    private Circle? GetCircleById(string id) => _dbContext.Circles
+        .Include(x => x.CircleMaterials)!.ThenInclude(x => x.Material)
+                .Include(x => x.LessonCircles)!.ThenInclude(x => x.Lesson).FirstOrDefault(x => x.Id == id);
 }
