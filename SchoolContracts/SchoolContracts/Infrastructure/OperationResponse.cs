@@ -25,6 +25,12 @@ public class OperationResponse
         }
         if (Result is Stream stream)
         {
+            string contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+
+            // Установка заголовков
+            response.ContentType = contentType;
+            response.Headers["Content-Disposition"] = $"attachment; filename=\"{FileName}\"";
+
             return new FileStreamResult(stream, "application/octet-stream")
             {
                 FileDownloadName = FileName

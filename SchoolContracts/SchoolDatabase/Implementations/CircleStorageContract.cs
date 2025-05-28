@@ -34,7 +34,13 @@ public class CircleStorageContract : ICircleStorageContract
            src.Material != null ? new MaterialDataModel(src.Material.Id, src.Material.StorekeeperId, src.Material.MaterialName, src.Material.Description) : null));
             cfg.CreateMap<CircleMaterialDataModel, CircleMaterial>();
 
-            cfg.CreateMap<LessonCircle, LessonCircleDataModel>();
+        cfg.CreateMap<LessonCircle, LessonCircleDataModel>()
+        .ConstructUsing(src => new LessonCircleDataModel(
+            src.LessonId,
+            src.CircleId,
+            src.Count,
+            src.Lesson != null ? new LessonDataModel(src.Lesson.Id, src.Lesson.WorkerId, src.Lesson.LessonName, DateTime.UtcNow, src.Lesson.Description, null) : null));
+                
             cfg.CreateMap<LessonCircleDataModel, LessonCircle>();
 
             cfg.CreateMap<Circle, CircleDataModel>();

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SchoolBuisnessLogic.OfficePackage;
 
-internal class OpenXmlWordBuilder : BaseWordBuilder
+public class OpenXmlWordBuilder : BaseWordBuilder
 {
     private readonly Document _document;
 

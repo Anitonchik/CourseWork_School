@@ -25,13 +25,13 @@ public class MaterialsController(IMaterialAdapter adapter) : ControllerBase
         return _adapter.GetElement(storekeeperId, data).GetResponse(Request, Response);
     }
 
-    [HttpPost("register")]
+    [HttpPost]
     public IActionResult Register([FromBody] MaterialBindingModel model)
     {
         return _adapter.RegisterMaterial(model.StorekeeperId, model).GetResponse(Request, Response);
     }
 
-    [HttpPut("ChangeInfo")]
+    [HttpPut]
     public IActionResult ChangeInfo([FromBody] MaterialBindingModel model)
     {
         return _adapter.ChangeMaterialInfo(model.StorekeeperId, model).GetResponse(Request, Response);

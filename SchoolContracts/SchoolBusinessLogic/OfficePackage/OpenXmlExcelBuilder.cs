@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SchoolBuisnessLogic.OfficePackage;
 
-internal class OpenXmlExcelBuilder : BaseExcelBuilder
+public class OpenXmlExcelBuilder : BaseExcelBuilder
 {
     private readonly SheetData _sheetData;
 

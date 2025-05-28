@@ -153,7 +153,7 @@ public class MedalAdapter : IMedalAdapter
     {
         try
         {
-            _medalBuisnessLogicContract.InsertMedal(storekeeperId, _mapper.Map<MedalDataModel>(medalModel));
+            _medalBuisnessLogicContract.UpdateMedal(storekeeperId, _mapper.Map<MedalDataModel>(medalModel));
             return MedalOperationResponse.NoContent();
         }
         catch (ArgumentNullException ex)

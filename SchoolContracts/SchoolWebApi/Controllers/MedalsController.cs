@@ -13,7 +13,7 @@ public class MedalsController(IMedalAdapter adapter) : ControllerBase
 {
     private readonly IMedalAdapter _adapter = adapter;
 
-    [HttpGet]
+    [HttpGet("GetAllRecords")]
     public IActionResult GetAllRecords(string storekeeperId)
     {
         return _adapter.GetList(storekeeperId).GetResponse(Request, Response);
@@ -31,16 +31,16 @@ public class MedalsController(IMedalAdapter adapter) : ControllerBase
         return _adapter.GetElement(storekeeperId, data).GetResponse(Request, Response);
     }
 
-    [HttpPost]
-    public IActionResult Register(string storekeeperId, [FromBody] MedalBindingModel model)
+    [HttpPost("register")]
+    public IActionResult Register([FromBody] MedalBindingModel model)
     {
-        return _adapter.RegisterMedal(storekeeperId, model).GetResponse(Request, Response);
+        return _adapter.RegisterMedal(model.StorekeeperId, model).GetResponse(Request, Response);
     }
 
-    [HttpPut]
-    public IActionResult ChangeInfo(string storekeeperId, [FromBody] MedalBindingModel model)
+    [HttpPut("ChangeInfo")]
+    public IActionResult ChangeInfo([FromBody] MedalBindingModel model)
     {
-        return _adapter.ChangeMedalInfo(storekeeperId, model).GetResponse(Request, Response);
+        return _adapter.ChangeMedalInfo(model.StorekeeperId, model).GetResponse(Request, Response);
     }
 
     [HttpDelete("{id}")]

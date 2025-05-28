@@ -63,16 +63,16 @@ public class ReportController(IReportAdapter adapter) : ControllerBase
         return (await _adapter.CreateDocumentInterestsWithAchievementsWithCirclesAsync(workerId, fromDate, toDate, ct)).GetResponse(Request, Response);
     }
 
-    [HttpGet]
+    [HttpGet("CreateWordDocumentLessonByMaterialsAsync")]
     [Consumes("application/octet-stream")]
-    public async Task<IActionResult> CreateWordDocumentLessonByMaterialsAsync(string storekeeperId, List<string> materialIds, CancellationToken ct)
+    public async Task<IActionResult> CreateWordDocumentLessonByMaterialsAsync(string storekeeperId,  [FromQuery] List<string> materialIds, CancellationToken ct)
     {
         return (await _adapter.CreateWordDocumentLessonByMaterialsAsync(storekeeperId, materialIds, ct)).GetResponse(Request, Response);
     }
 
     [HttpGet]
     [Consumes("application/octet-stream")]
-    public async Task<IActionResult> CreateExcelDocumentLessonByMaterialsAsync(string storekeeperId, List<string> materialIds, CancellationToken ct)
+    public async Task<IActionResult> CreateExcelDocumentLessonByMaterialsAsync(string storekeeperId, [FromQuery] List<string> materialIds, CancellationToken ct)
     {
         return (await _adapter.CreateExcelDocumentLessonByMaterialsAsync(storekeeperId, materialIds, ct)).GetResponse(Request, Response);
     }

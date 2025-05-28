@@ -14,6 +14,7 @@ using SchoolContracts.BusinessLogicsContracts;
 using SchoolBuisnessLogic.Implementations;
 using Microsoft.OpenApi.Models;
 using SchoolBusinessLogic.Implementations;
+using SchoolBuisnessLogic.OfficePackage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -86,6 +87,7 @@ builder.Services.AddTransient<ILessonCircleStorageContract, LessonCircleStorageC
 builder.Services.AddTransient<ILessonInterestStorageContract, LessonInterestStorageContract>();
 builder.Services.AddTransient<IMaterialStorageContract, MaterialStorageContract>();
 builder.Services.AddTransient<IMedalStorageContract, MedalStorageContract>();
+builder.Services.AddTransient<IReportContract, ReportContract>();
 
 builder.Services.AddTransient<IStorekeeperAdapter, StorekeeperAdapter>();
 builder.Services.AddTransient<IWorkerAdapter, WorkerAdapter>();
@@ -97,6 +99,12 @@ builder.Services.AddTransient<IMaterialAdapter, MaterialAdapter>();
 builder.Services.AddTransient<IMedalAdapter, MedalAdapter>();
 builder.Services.AddTransient<ILessonCircleAdapter, LessonCircleAdapter>();
 builder.Services.AddTransient<ILessonInterestAdapter, LessonInterestAdapter>();
+
+builder.Services.AddTransient<IReportAdapter, ReportAdapter>();
+builder.Services.AddTransient<BaseWordBuilder, OpenXmlWordBuilder>();
+builder.Services.AddTransient<BaseExcelBuilder, OpenXmlExcelBuilder>();
+builder.Services.AddTransient<BasePdfBuilder, MigraDocPdfBuilder>();
+builder.Services.AddTransient<IReportAdapter, ReportAdapter>();
 
 builder.Services.AddScoped<JwtService>();
 

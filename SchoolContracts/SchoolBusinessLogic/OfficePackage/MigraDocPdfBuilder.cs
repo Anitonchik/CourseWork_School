@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
 using MigraDoc.Rendering;
-using SchoolBuisnessLogic.OfficePackage;
 using Document = MigraDoc.DocumentObjectModel.Document;
 
-namespace PipingHotBusinessLogic.OfficePackage;
+namespace SchoolBuisnessLogic.OfficePackage;
 
-internal class MigraDocPdfBuilder : BasePdfBuilder
+public class MigraDocPdfBuilder : BasePdfBuilder
 {
     private readonly Document _document;
 

@@ -77,7 +77,8 @@ public class ReportAdapter : IReportAdapter
     {
         try
         {
-            return SendStream(await _reportContract.CreateWordDocumentLessonByMaterialsAsync(storekeeperId, materialIds, ct), "LessonByMaterials.docx");
+            var res = await _reportContract.CreateWordDocumentLessonByMaterialsAsync(storekeeperId, materialIds, ct);
+            return SendStream(res, "LessonByMaterials.docx");
         }
         catch (InvalidOperationException ex)
         {

@@ -85,6 +85,7 @@ public class SchoolDbContext : DbContext
         });
         modelBuilder.Entity<MaterialByLessonModel>().HasNoKey();
         modelBuilder.Entity<LessonByMaterialModel>().HasNoKey();
+        modelBuilder.Entity<CirclesWithInterestsWithMedalsModel>().HasNoKey();
     }
 
     public DbSet<Achievement> Achievements { get; set; }
