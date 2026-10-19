@@ -8,9 +8,10 @@ using SchoolContracts.StoragesContracts;
 
 namespace Test.Tests;
 
+[TestFixture]
 public class AchievementStorageContractTests : BaseStorageContractTests
 {
-    /*private AchievementStorageContract _achievementStorageContract;
+    private AchievementStorageContract _achievementStorageContract;
     private LessonStorageContract _lessonStorageContract;
     private Worker _worker;
     private Lesson _lesson;
@@ -18,7 +19,7 @@ public class AchievementStorageContractTests : BaseStorageContractTests
     public void Setup()
     {
         _lessonStorageContract = new LessonStorageContract(SchoolDbContext);
-        _achievementStorageContract = new AchievementStorageContract(SchoolDbContext,_lessonStorageContract);
+        _achievementStorageContract = new AchievementStorageContract(SchoolDbContext);
         _worker = new Worker()
         {
             Id = Guid.NewGuid().ToString(),
@@ -97,5 +98,5 @@ public class AchievementStorageContractTests : BaseStorageContractTests
         Assert.That(actual.LessonId, Is.EqualTo(expected.LessonId));
         Assert.That(actual.AchievementName, Is.EqualTo(expected.AchievementName));
         Assert.That(actual.Description, Is.EqualTo(expected.Description));
-    }*/
+    }
 }

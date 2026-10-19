@@ -4,14 +4,18 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	  <CETCompat>false</CETCompat>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DocumentFormat.OpenXml" Version="3.3.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.4" />
+    <PackageReference Include="PdfSharp.MigraDoc.Standard" Version="1.51.15" />
   </ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\SchoolContracts\SchoolContracts.csproj" />
+		<ProjectReference Include="..\SchoolDatabase\SchoolDatabase.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SchoolContracts;
+using SchoolContracts.Infrastructure;
 using SchoolContracts.ModelsForReports;
 using SchoolDatabase.Models;
 using SchoolDatabase.Models.ModelsForReports;
@@ -29,11 +29,36 @@ public class SchoolDbContext : DbContext
 
         modelBuilder.Entity<Storekeeper>().HasIndex(x => x.Login).IsUnique();
         modelBuilder.Entity<Storekeeper>().HasIndex(x => x.Mail).IsUnique();
+        modelBuilder.Entity<Storekeeper>().HasData([
+            new Storekeeper {
+                Id = Guid.NewGuid().ToString(),
+                FIO = "fio",
+                Login = "storekeeper login",
+                Password = "psw",
+                Mail = "mail@a.com"
+            }
+        ]);
+
         modelBuilder.Entity<Circle>().HasIndex(x => x.CircleName).IsUnique();
+
+        modelBuilder.Entity<Circle>()
+            .HasOne(e => e.Storekeeper)
+            .WithMany(e => e.Circles)
+            .OnDelete(DeleteBehavior.SetNull);
+
         modelBuilder.Entity<Material>().HasIndex(x => x.MaterialName).IsUnique();
 
         modelBuilder.Entity<Worker>().HasIndex(x => x.Login).IsUnique();
         modelBuilder.Entity<Worker>().HasIndex(x => x.Mail).IsUnique();
+        modelBuilder.Entity<Worker>().HasData([
+            new Worker {
+                Id = Guid.NewGuid().ToString(),
+                FIO = "fio2",
+                Login = "worker login",
+                Password = "psw2",
+                Mail = "mail2@a.com"
+            }
+        ]);
         modelBuilder.Entity<Lesson>().HasIndex(x => x.LessonName).IsUnique();
         modelBuilder.Entity<Interest>().HasIndex(x => x.InterestName).IsUnique();
 
@@ -58,8 +83,9 @@ public class SchoolDbContext : DbContext
             x.LessonId,
             x.InterestId
         });
-        modelBuilder.Entity<MaterialByLesson>().HasNoKey();
-        modelBuilder.Entity<LessonByMaterial>().HasNoKey();
+        modelBuilder.Entity<MaterialByLessonModel>().HasNoKey();
+        modelBuilder.Entity<LessonByMaterialModel>().HasNoKey();
+        modelBuilder.Entity<CirclesWithInterestsWithMedalsModel>().HasNoKey();
     }
 
     public DbSet<Achievement> Achievements { get; set; }
@@ -74,6 +100,6 @@ public class SchoolDbContext : DbContext
     public DbSet<Medal> Medals { get; set; }
     public DbSet<Storekeeper> Storekeepers { get; set; }
     public DbSet<Worker> Workers { get; set; }
-    public DbSet<MaterialByLesson> MaterialByLessons { get; set; }
-    public DbSet<LessonByMaterial> LessonByMaterials { get; set; }
+    public DbSet<MaterialByLessonModel> MaterialByLessons { get; set; }
+    public DbSet<LessonByMaterialModel> LessonByMaterials { get; set; }
 }

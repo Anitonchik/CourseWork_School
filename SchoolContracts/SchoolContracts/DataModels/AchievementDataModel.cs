@@ -3,15 +3,25 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SchoolContracts.DataModels;
 
-public class AchievementDataModel(string id, string workerId,string lessonId, string achievementName, string description)
+public class AchievementDataModel
 {
-    public string Id { get; private set; } = id;
-    public string WorkerId { get; private set; } = workerId;
-    public string? LessonId { get; private set; } = lessonId;
-    public string AchievementName { get; private set; } = achievementName;
-    public DateTime AchievementDate { get; private set; } = DateTime.UtcNow;
-    public string Description { get; private set; } = description;
-
+    public string Id { get; private set; }
+    public string WorkerId { get; private set; } 
+    public string? LessonId { get; private set; } 
+    public string AchievementName { get; private set; } 
+    //public DateTime AchievementDate { get; private set; } = DateTime.UtcNow;
+    public string Description { get; private set; }
+    public AchievementDataModel() { }
+    public AchievementDataModel(string id, string workerId, string? lessonId, string achievementName/*, DateTime achievementDate*/,
+    string description)
+    {
+        Id = id;
+        WorkerId = workerId;
+        LessonId = lessonId;
+        AchievementName = achievementName;
+        //AchievementDate = achievementDate;
+        Description = description;
+    }
     public void Validate()
     {
         if (Id.IsEmpty())

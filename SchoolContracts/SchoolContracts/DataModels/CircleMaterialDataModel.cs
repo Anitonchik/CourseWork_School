@@ -5,9 +5,17 @@ namespace SchoolContracts.DataModels;
 
 public class CircleMaterialDataModel (string circleId, string materialId, int count)
 {
+    private readonly MaterialDataModel? _material;
     public string CircleId { get; private set; } = circleId;
     public string MaterialId { get; private set; } = materialId;
     public int Count { get; private set; } = count;
+
+    public string MaterialName => _material?.MaterialName ?? string.Empty;
+
+    public CircleMaterialDataModel(string circleId, string materialId, int count, MaterialDataModel material) : this(circleId, materialId, count)
+    {
+        _material = material;
+    }
 
     public void Validate()
     {

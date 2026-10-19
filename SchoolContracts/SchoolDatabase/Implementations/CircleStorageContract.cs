@@ -1,32 +1,66 @@
 ﻿using AutoMapper;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using Microsoft.EntityFrameworkCore;
 using SchoolContracts.DataModels;
 using SchoolContracts.Exceptions;
 using SchoolContracts.ModelsForReports;
 using SchoolContracts.StoragesContracts;
 using SchoolDatabase.Models;
+using System;
+using System.Collections.Generic;
 
 namespace SchoolDatabase.Implementations;
 
 public class CircleStorageContract : ICircleStorageContract
 {
+    private readonly ICircleMaterialStorageContract _circleMaterialStorageContract;
     private readonly SchoolDbContext _dbContext;
     private readonly Mapper _mapper;
 
-    public CircleStorageContract(SchoolDbContext dbContext)
+    public CircleStorageContract(ICircleMaterialStorageContract circleMaterialStorageContract, SchoolDbContext dbContext)
     {
+        _circleMaterialStorageContract = circleMaterialStorageContract;
+
         _dbContext = dbContext;
+        var config = new MapperConfiguration(cfg =>
+        {
+            cfg.CreateMap<Storekeeper, StorekeeperDataModel>();
 
-        var configuration = new MapperConfiguration(cfg => cfg.AddMaps(typeof(Circle)));
+            cfg.CreateMap<CircleMaterial, CircleMaterialDataModel>()
+            .ConstructUsing(src => new CircleMaterialDataModel(
+           src.CircleId,
+           src.MaterialId,
+           src.Count,
+           src.Material != null ? new MaterialDataModel(src.Material.Id, src.Material.StorekeeperId, src.Material.MaterialName, src.Material.Description) : null));
+            cfg.CreateMap<CircleMaterialDataModel, CircleMaterial>();
 
-        _mapper = new Mapper(configuration);
+        cfg.CreateMap<LessonCircle, LessonCircleDataModel>()
+        .ConstructUsing(src => new LessonCircleDataModel(
+            src.LessonId,
+            src.CircleId,
+            src.Count,
+            src.Lesson != null ? new LessonDataModel(src.Lesson.Id, src.Lesson.WorkerId, src.Lesson.LessonName, DateTime.UtcNow, src.Lesson.Description, null) : null));
+                
+            cfg.CreateMap<LessonCircleDataModel, LessonCircle>();
+
+            cfg.CreateMap<Circle, CircleDataModel>();
+            cfg.CreateMap<CircleDataModel, Circle>()
+            .ForMember(x => x.CircleMaterials, x => x.MapFrom(src => src.Materials));
+        });
+        _mapper = new Mapper(config);
     }
 
     public List<CircleDataModel> GetList(string storekeeperId)
     {
         try
         {
-            return [.. _dbContext.Circles.Where(x => x.StorekeeperId == storekeeperId).Select(x => _mapper.Map<CircleDataModel>(x))];
+            
+            List<CircleDataModel> data1 = [.. _dbContext.Circles
+                .Include(x => x.CircleMaterials)!.ThenInclude(x => x.Material)
+                .Include(x => x.LessonCircles)!.ThenInclude(x => x.Lesson)
+                .Where(x => x.StorekeeperId == storekeeperId).Select(x => _mapper.Map<CircleDataModel>(x))];
+
+            return data1;
         }
         catch (Exception ex)
         {
@@ -35,12 +69,12 @@ public class CircleStorageContract : ICircleStorageContract
         }
     }
 
-    public List<CirclesWithInterestsWithMedals> GetCirclesWithInterestsWithMedals(string storekeeperId, DateTime fromDate, DateTime toDate)
+    public async Task<List<CirclesWithInterestsWithMedalsModel>> GetCirclesWithInterestsWithMedals(string storekeeperId, DateTime fromDate, DateTime toDate, CancellationToken ct)
     {
         try
         {
             var sql = $"SELECT c.\"CircleName\" as \"CircleName\", c.\"Description\" as \"CircleDescription\", " +
-                $"i.\"InterestName\" as \"InterestName\", md.\"MedalName\" as \"MedalName\" " +
+                $"i.\"InterestName\" as \"InterestName\", md.\"MedalName\" as \"MedalName\", l.\"LessonDate\" as \"Date\" " +
                 $"FROM \"Circles\" c " +
                 $"JOIN \"Storekeepers\" st ON st.\"Id\" = c.\"StorekeeperId\" " +
                 $"JOIN \"CircleMaterials\" cm ON c.\"Id\" = cm.\"CircleId\" " +
@@ -52,7 +86,7 @@ public class CircleStorageContract : ICircleStorageContract
                 $"JOIN \"Lessons\" l ON l.\"Id\" = li.\"LessonId\" " +
                 $"WHERE(st.\"Id\" = '{storekeeperId}' AND l.\"LessonDate\" between '{fromDate}' and '{toDate}');";
 
-            return _dbContext.Set<CirclesWithInterestsWithMedals>().FromSqlRaw(sql).ToList();
+            return await _dbContext.Set<CirclesWithInterestsWithMedalsModel>().FromSqlRaw(sql).ToListAsync(ct);
         }
         catch (Exception ex)
         {
@@ -98,7 +132,8 @@ public class CircleStorageContract : ICircleStorageContract
     {
         try
         {
-            _dbContext.Circles.Add(_mapper.Map<Circle>(circleDataModel));
+            var data = _mapper.Map<Circle>(circleDataModel);
+            _dbContext.Circles.Add(data);
             _dbContext.SaveChanges();
         }
         catch (InvalidOperationException ex)
@@ -118,6 +153,21 @@ public class CircleStorageContract : ICircleStorageContract
         try
         {
             var element = GetCircleById(circleDataModel.Id) ?? throw new ElementNotFoundException(circleDataModel.Id);
+
+            if (element.CircleMaterials != null)
+            {
+                _dbContext.CircleMaterials.RemoveRange(element.CircleMaterials);
+            }
+
+
+            /*if (circleDataModel.Materials.Count > 0)
+            {
+                foreach (CircleMaterialDataModel circleMaterial in  circleDataModel.Materials)
+                {
+                    _circleMaterialStorageContract.UpdElement(circleMaterial);
+                }
+            }*/
+
             _dbContext.Circles.Update(_mapper.Map(circleDataModel, element));
             _dbContext.SaveChanges();
         }
@@ -153,5 +203,7 @@ public class CircleStorageContract : ICircleStorageContract
         }
     }
 
-    private Circle? GetCircleById(string id) => _dbContext.Circles.FirstOrDefault(x => x.Id == id);
+    private Circle? GetCircleById(string id) => _dbContext.Circles
+        .Include(x => x.CircleMaterials)!.ThenInclude(x => x.Material)
+                .Include(x => x.LessonCircles)!.ThenInclude(x => x.Lesson).FirstOrDefault(x => x.Id == id);
 }

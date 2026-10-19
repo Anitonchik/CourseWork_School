@@ -7,7 +7,7 @@ namespace SchoolContracts.StoragesContracts;
 public interface IMaterialStorageContract
 {
     List<MaterialDataModel> GetList(string storekeeperId);
-    List<MaterialByLesson> GetMaterialsByLesson(string storekeeperId, string lessonId);
+    Task<List<MaterialByLessonModel>> GetMaterialsByLesson(string workerId, string lessonId, CancellationToken ct);
     MaterialDataModel? GetElementById(string id);
     MaterialDataModel? GetElementByName(string name);
     void AddElement(MaterialDataModel materialDataModel);

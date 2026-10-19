@@ -11,6 +11,7 @@ using SchoolContracts.Exceptions;
 using System.ComponentModel.DataAnnotations;
 using UnauthorizedAccessException = SchoolContracts.Exceptions.UnauthorizedAccessException;
 using SchoolBuisnessLogic.Implementations;
+using SchoolTests.Infrastructure;
 
 namespace Test.BLTests;
 [TestFixture]

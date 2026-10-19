@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using SchoolContracts.DataModels;
 using SchoolContracts.Exceptions;
 using SchoolContracts.StoragesContracts;
@@ -118,6 +120,12 @@ public class WorkerStorageContract: IWorkerStorageContract
             var element = GetWorkerById(workerDataModel.Id) ?? throw new ElementNotFoundException(workerDataModel.Id);
             _dbContext.Workers.Update(_mapper.Map(workerDataModel, element));
             _dbContext.SaveChanges();
+            
+        }
+        catch (DbUpdateException ex) when (ex.InnerException is PostgresException { ConstraintName: "IX_Workers_Login" })
+        {
+            _dbContext.ChangeTracker.Clear();
+            throw new ElementExistsException("WorkerLogin", workerDataModel.Login);
         }
         catch (ElementNotFoundException)
         {

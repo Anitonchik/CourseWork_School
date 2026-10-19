@@ -6,6 +6,7 @@ using SchoolContracts.DataModels;
 using SchoolContracts.Exceptions;
 using SchoolContracts.StoragesContracts;
 using SchoolDatabase.Models;
+using SchoolTests.Infrastructure;
 using System.ComponentModel.DataAnnotations;
 using Test.Tests;
 using UnauthorizedAccessException = SchoolContracts.Exceptions.UnauthorizedAccessException;

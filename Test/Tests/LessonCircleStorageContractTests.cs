@@ -2,10 +2,10 @@
 using SchoolContracts.DataModels;
 using SchoolDatabase.Implementations;
 using SchoolDatabase.Models;
-using Test;
+using SchoolTests.Infrastructure;
 using Test.Tests;
 
-namespace SchoolTests.Tests;
+namespace Test.Tests;
 
 [TestFixture]
 internal class LessonCircleStorageContractTests : BaseStorageContractTests

@@ -5,11 +5,11 @@ using SchoolContracts.StoragesContracts;
 using SchoolDatabase.Models;
 using SchoolDatabase;
 using Test.Tests;
-using Test;
 using Microsoft.Extensions.Logging;
 using SchoolBuisnessLogic.Implementations;
 using SchoolContracts.DataModels;
 using SchoolDatabase.Implementations;
+using SchoolTests.Infrastructure;
 
 namespace SchoolTests.BLTests;
 

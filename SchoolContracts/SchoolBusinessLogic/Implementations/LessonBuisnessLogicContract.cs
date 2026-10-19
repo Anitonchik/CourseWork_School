@@ -4,6 +4,7 @@ using SchoolContracts.DataModels;
 using SchoolContracts.Exceptions;
 using SchoolContracts.Extensions;
 using SchoolContracts.StoragesContracts;
+using SchoolDatabase.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 using UnauthorizedAccessException = SchoolContracts.Exceptions.UnauthorizedAccessException;
@@ -14,6 +15,12 @@ public class LessonBuisnessLogicContract(ILessonStorageContract lessonStorageCon
 {
     private readonly ILogger _logger = logger;
     private readonly ILessonStorageContract _lessonStorageContract = lessonStorageContract;
+
+    public List<LessonDataModel> GetWholeLessons()
+    {
+        _logger.LogInformation("GetAllLessons");
+        return _lessonStorageContract.GetWholeList() ?? throw new NullListException();
+    }
 
     public List<LessonDataModel> GetAllLessons(string workerId)
     {

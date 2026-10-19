@@ -3,6 +3,7 @@ using SchoolContracts.DataModels;
 using SchoolContracts.Exceptions;
 using SchoolDatabase.Implementations;
 using SchoolDatabase.Models;
+using SchoolTests.Infrastructure;
 
 namespace Test.Tests;
 

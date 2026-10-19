@@ -17,7 +17,7 @@ public class ConnectEntitiesStorageContract : IConnectEntitiesStorageContract
     private readonly InterestStorageContract _interestStorageContract;
 
 
-    public ConnectEntitiesStorageContract(SchoolDbContext dbContext, 
+    public ConnectEntitiesStorageContract(SchoolDbContext dbContext,
         CircleStorageContract? circleStorageContract, LessonStorageContract? lessonStorageContract,
         InterestStorageContract? interestStorageContract)
     {
@@ -25,7 +25,7 @@ public class ConnectEntitiesStorageContract : IConnectEntitiesStorageContract
 
         var configurationLessonCircle = new MapperConfiguration(cfg => cfg.AddMaps(typeof(LessonCircle)));
         var configurationLessonInterest = new MapperConfiguration(cfg => cfg.AddMaps(typeof(LessonInterest)));
-       
+
         _mapperLessonCircle = new Mapper(configurationLessonCircle);
         _mapperLessonInterest = new Mapper(configurationLessonInterest);
 
@@ -80,7 +80,7 @@ public class ConnectEntitiesStorageContract : IConnectEntitiesStorageContract
         }
     }
 
-    public void CreateConnectLessonAndInterest(string lessonId, string interestId,string category)
+    public void CreateConnectLessonAndInterest(string lessonId, string interestId, string category)
     {
         try
         {
@@ -126,7 +126,7 @@ public class ConnectEntitiesStorageContract : IConnectEntitiesStorageContract
         }
     }
 
-    private LessonCircle? GetLessonCircleById(string lessonId, string circleId) => 
+    private LessonCircle? GetLessonCircleById(string lessonId, string circleId) =>
         _dbContext.LessonCircles.FirstOrDefault(x => x.LessonId == lessonId && x.CircleId == circleId);
 
     private LessonInterest? GetLessonInterestById(string lessonId, string interestId) =>
