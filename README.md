@@ -1,8 +1,8 @@
-# Онлайн-школа - Backend
+# Онлайн-школа — Backend
 
 Серверная часть веб-приложения для учёта кружков. Реализована на **C# (ASP.NET)** и предоставляет REST API для клиентской части на JavaScript.
 
-> Групповой проект. В рамках командной разработки я реализовывала роль **«Кладовщик»**.
+> Групповой проект. В рамках командной разработки я реализовывала роль «Кладовщик».
 
 ---
 
@@ -11,6 +11,7 @@
 Система предназначена для ведения учёта кружков и поддерживает разделение прав доступа по двум ролям — **работник** и **кладовщик**.
 
 ### Возможности роли «Работник»
+
 - управление интересами и подбор к ним материалов;
 - создание занятий и связывание их с интересами;
 - создание достижений и привязка их к занятиям;
@@ -18,6 +19,7 @@
 - получение отчётов по интересам с расшифровкой по кружкам и достижениям за период — на почту или в программе.
 
 ### Возможности роли «Кладовщик»
+
 - формирование списка проводимых кружков и необходимых для них материалов;
 - создание медалек школьникам за успешную работу на кружках;
 - связывание кружков и занятий, привязка материалов к кружкам и медалек к материалам;
@@ -27,11 +29,6 @@
 ---
 
 ## Технологический стек
-
-![C#](https://img.shields.io/badge/C%23-512BD4?style=flat&logo=csharp&logoColor=white)
-![.NET](https://img.shields.io/badge/.NET-512BD4?style=flat&logo=dotnet&logoColor=white)
-![ASP.NET](https://img.shields.io/badge/ASP.NET-512BD4?style=flat&logo=dotnet&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat&logo=postgresql&logoColor=white)
 
 - **C# / ASP.NET** — язык и платформа для построения REST API;
 - **PostgreSQL** — реляционная база данных;
@@ -44,10 +41,68 @@
 ## Запуск проекта
 
 ### Требования
+
 - .NET SDK (актуальная LTS-версия)
 - PostgreSQL
 - Запущенный фронтенд — репозиторий: [ссылка на фронтенд](https://github.com/Anitonchik/CourseWork_School_Front)
 
 ### 1. Подготовка базы данных
 
-Для работы бэкенда требуется поднятая база данных PostgreSQL с названием: school_rpp_3
+Для работы бэкенда требуется поднятая база данных PostgreSQL с названием:
+
+```
+school_rpp_3
+```
+
+Создать БД можно, например, через `psql`:
+
+```sql
+CREATE DATABASE school_rpp_3;
+```
+
+Параметры подключения задаются в файле `appsettings.json`:
+
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "Host=localhost;Port=port;Database=school_rpp_3;Username=your_username;Password=your_password"
+}
+```
+
+> Укажите свои логин и пароль от PostgreSQL.
+
+### 2. Запуск приложения
+
+```bash
+# Восстановить зависимости
+dotnet restore
+
+# Запустить проект
+dotnet run
+```
+
+После запуска API-сервер доступен по адресам:
+
+- **HTTP:** http://localhost:5281
+- **HTTPS:** https://localhost:7235
+
+### Swagger
+
+После запуска документация API доступна по адресу:
+
+```
+http://localhost:5281/swagger
+```
+
+или
+
+```
+https://localhost:7235/swagger
+```
+---
+
+
+## Связанные репозитории
+
+- **Frontend (JavaScript + Vite):** https://github.com/Anitonchik/CourseWork_School_Front
+
+---
