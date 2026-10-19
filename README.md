@@ -98,8 +98,6 @@ http://localhost:5281/swagger
 ```
 https://localhost:7235/swagger
 ```
----
-
 
 ## Связанные репозитории
 
